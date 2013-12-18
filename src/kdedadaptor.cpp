@@ -24,63 +24,63 @@
 #include <QDBusMessage>
 
 KdedAdaptor::KdedAdaptor(QObject *parent)
-   : QDBusAbstractAdaptor(parent)
+    : QDBusAbstractAdaptor(parent)
 {
 }
 
 bool KdedAdaptor::isModuleAutoloaded(const QString &module)
 {
-   return Kded::self()->isModuleAutoloaded(module);
+    return Kded::self()->isModuleAutoloaded(module);
 }
 
 bool KdedAdaptor::isModuleLoadedOnDemand(const QString &module)
 {
-   return Kded::self()->isModuleLoadedOnDemand(module);
+    return Kded::self()->isModuleLoadedOnDemand(module);
 }
 
 bool KdedAdaptor::loadModule(const QString &module)
 {
-   return Kded::self()->loadModule(module, false) != 0;
+    return Kded::self()->loadModule(module, false) != 0;
 }
 
 bool KdedAdaptor::unloadModule(const QString &module)
 {
-   return Kded::self()->unloadModule(module);
+    return Kded::self()->unloadModule(module);
 }
 
 void KdedAdaptor::registerWindowId(qlonglong windowId, const QDBusMessage &msg)
 {
-   Kded::self()->registerWindowId(windowId, msg.service());
+    Kded::self()->registerWindowId(windowId, msg.service());
 }
 
 void KdedAdaptor::setModuleAutoloading(const QString &module, bool autoload)
 {
-        return Kded::self()->setModuleAutoloading(module, autoload);
+    return Kded::self()->setModuleAutoloading(module, autoload);
 }
 void KdedAdaptor::unregisterWindowId(qlonglong windowId, const QDBusMessage &msg)
 {
-   Kded::self()->unregisterWindowId(windowId, msg.service());
+    Kded::self()->unregisterWindowId(windowId, msg.service());
 }
 
 QStringList KdedAdaptor::loadedModules()
 {
-   return Kded::self()->loadedModules();
+    return Kded::self()->loadedModules();
 }
 
 void KdedAdaptor::reconfigure()
 {
-   KSharedConfig::openConfig()->reparseConfiguration();
-   Kded::self()->initModules();
-   Kded::self()->loadSecondPhase();
+    KSharedConfig::openConfig()->reparseConfiguration();
+    Kded::self()->initModules();
+    Kded::self()->loadSecondPhase();
 }
 
 void KdedAdaptor::loadSecondPhase()
 {
-   Kded::self()->loadSecondPhase();
+    Kded::self()->loadSecondPhase();
 }
 
 void KdedAdaptor::quit()
 {
-   QCoreApplication::instance()->quit();
+    QCoreApplication::instance()->quit();
 }
 
