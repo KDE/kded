@@ -1,11 +1,13 @@
-Welcome to this readme about KDED.
+# KDED
+
+## Introduction
 
 KDED stands for KDE Daemon which isn't very descriptive.
 KDED runs in the background and performs a number of small tasks.
 Some of these tasks are built in, others are started on demand.
 
-Built in tasks
-==============
+### Built in tasks
+
 * Checking for newly installed software and updating ksycoca when new
   software is detected. Updating of ksycoca is done by the program kbuildsycoca
   which gets started by kded. When kded is first started it always runs
@@ -28,8 +30,8 @@ Built in tasks
   KDE environemnt and X-server to allow continued proper operation. The
   program kdontchangethehostname is executed to make the actual changes.
 
-Configuration of built in tasks.
-================================
+### Configuration of built in tasks.
+
 The built in tasks have some configuration options that can be changed by
 editing the kdedrc configuration file. Changes need to be made with a text-
 editor, there is no GUI available. All options are listed under the [General]
@@ -57,13 +59,13 @@ disabled by setting this option to "false".
 
 Example kdedrc file with default values:
 
-[General]
-HostnamePollInterval=5000
-CheckSycoca=true
-CheckUpdates=true
-CheckHostname=true
-CheckFileStamps=true
-DelayedCheck=false
+    [General]
+    HostnamePollInterval=5000
+    CheckSycoca=true
+    CheckUpdates=true
+    CheckHostname=true
+    CheckFileStamps=true
+    DelayedCheck=false
 
 If FAM or DNOTIFY is not available, the filesystem will be polled at regular interval for any changes. Under the [DirWatch] group in the kdeglobals file
 the following options are available to adjust the polling frequency:
@@ -86,15 +88,21 @@ the kderc file.
 
 Example kdeglobals fragment:
 
-[DirWatch]
-PollInterval=500
-NFSPollInterval=5000
+    [DirWatch]
+    PollInterval=500
+    NFSPollInterval=5000
 
-KDED modules
-============
+### KDED modules
+
 Some things can be greatly simplified if they can be coordinated from a 
 central place. KDED has support for modules that will be demand-loaded 
 whenever an application attempts to make DBus call to the module.
 This can be useful for central administration tasks.
 
 See kded/doc/HOWTO.
+
+## Links
+
+- Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
+- IRC channel: #kde-devel on Freenode
+- Git repository: <https://projects.kde.org/projects/frameworks/kded/repository>
