@@ -32,18 +32,18 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
+#include <QApplication>
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusServiceWatcher>
 #include <QDBusPendingCall>
 
-#include <kdbusservice.h>
-#include <qapplication.h>
+#include <KDBusService>
 #include <kconfiggroup.h>
-#include <kdirwatch.h>
-#include <kservicetypetrader.h>
-#include <ktoolinvocation.h>
+#include <KDirWatch>
+#include <KServiceTypeTrader>
+#include <KToolInvocation>
 
 #define KDED_EXENAME "kded5"
 
