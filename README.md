@@ -1,5 +1,7 @@
 # KDED
 
+Central daemon of KDE work spaces
+
 ## Introduction
 
 KDED stands for KDE Daemon which isn't very descriptive.
@@ -103,6 +105,7 @@ See kded/doc/HOWTO.
 
 ## Links
 
+- Home page: <https://projects.kde.org/projects/frameworks/kded>
 - Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
 - IRC channel: #kde-devel on Freenode
 - Git repository: <https://projects.kde.org/projects/frameworks/kded/repository>
