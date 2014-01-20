@@ -16,14 +16,14 @@ Some of these tasks are built in, others are started on demand.
   kbuildsycoca to ensure that ksycoca is up to date.
 
 * Checking for newly installed update files. Applications can install
-  *.upd update files. These *.upd files are used to update configuration files
+  \*.upd update files. These \*.upd files are used to update configuration files
   of users, primarily when new versions of applications are installed with
   (slightly) different configuration file formats. Updating of configuration
-  files is done by kconf_update. kded starts kconf_update when it detects a
-  new update file. When kded is first started it always runs kconf_update to
-  ensure that it has not missed any update files. kconf_update keeps track
+  files is done by kconf\_update. kded starts kconf\_update when it detects a
+  new update file. When kded is first started it always runs kconf\_update to
+  ensure that it has not missed any update files. kconf\_update keeps track
   of which update files have been processed already in the config-file
-  kconf_updaterc. It only performs a certain update once.
+  kconf\_updaterc. It only performs a certain update once.
 
 * Checking for hostname changes. It is a really bad idea to change the
   hostname of a running system and it usually only happens with incorrectly
@@ -51,7 +51,7 @@ The default value of this option is "true". Checking can be disabled by
 setting this option to "false".
 
 **CheckUpdates**: This option can be used to disable checking for update files.
-kconf_update will still be run when kded starts up.
+kconf\_update will still be run when kded starts up.
 The default value of this option is "true". Checking can be disabled by 
 setting this option to "false".
 
@@ -101,7 +101,7 @@ central place. KDED has support for modules that will be demand-loaded
 whenever an application attempts to make DBus call to the module.
 This can be useful for central administration tasks.
 
-See kded/doc/HOWTO.
+See docs/HOWTO.
 
 ## Links
 
