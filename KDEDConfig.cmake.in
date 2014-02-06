@@ -2,6 +2,6 @@
 
 set(KDED_DBUS_INTERFACE "${PACKAGE_PREFIX_DIR}/@DBUS_INTERFACES_INSTALL_DIR@/org.kde.kded5.xml")
 
-find_package(Qt5 "@REQUIRED_QT_VERSION@" CONFIG REQUIRED Xml Widgets DBus Network)
+find_package(Qt5 "@REQUIRED_QT_VERSION@" CONFIG REQUIRED DBus Widgets)
 
 include("${CMAKE_CURRENT_LIST_DIR}/KDEDTargets.cmake")
