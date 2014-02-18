@@ -22,7 +22,7 @@ find_package(KF5Init ${KF5_VERSION} REQUIRED)
 find_package(KF5Service ${KF5_VERSION} REQUIRED)
 
 include(FeatureSummary)
-include(CMakePackageConfigHelpers)
+include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 
 ecm_setup_version(
@@ -44,7 +44,7 @@ add_subdirectory(src)
 # Create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KDED")
 
-configure_package_config_file(
+ecm_configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KDEDConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfig.cmake"
   INSTALL_DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
