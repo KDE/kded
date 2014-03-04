@@ -53,10 +53,8 @@ Kded *Kded::_self = 0;
 
 static bool checkStamps = true;
 static bool delayedCheck = false;
-static int HostnamePollInterval;
 static bool bCheckSycoca;
 static bool bCheckUpdates;
-static bool bCheckHostname;
 
 #ifdef Q_DBUS_EXPORT
 extern Q_DBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
@@ -94,14 +92,6 @@ static void runBuildSycoca(QObject *callBackObj = 0, const char *callBackSlot = 
 static void runKonfUpdate()
 {
     KToolInvocation::kdeinitExecWait("kconf_update", QStringList(), 0, 0, "0" /*no startup notification*/);
-}
-
-static void runDontChangeHostname(const QByteArray &oldName, const QByteArray &newName)
-{
-    QStringList args;
-    args.append(QFile::decodeName(oldName));
-    args.append(QFile::decodeName(newName));
-    KToolInvocation::kdeinitExecWait("kdontchangethehostname", args);
 }
 
 Kded::Kded()
@@ -721,41 +711,6 @@ void KUpdateD::slotNewUpdateFile(const QString &dirty)
     m_pTimer->start(500);
 }
 
-KHostnameD::KHostnameD(int pollInterval)
-{
-    m_Timer.start(pollInterval); // repetitive timer (not single-shot)
-    connect(&m_Timer, SIGNAL(timeout()), this, SLOT(checkHostname()));
-    checkHostname();
-}
-
-KHostnameD::~KHostnameD()
-{
-    // Empty
-}
-
-void KHostnameD::checkHostname()
-{
-    char buf[1024 + 1];
-    if (gethostname(buf, 1024) != 0) {
-        return;
-    }
-    buf[sizeof(buf) - 1] = '\0';
-
-    if (m_hostname.isEmpty()) {
-        m_hostname = buf;
-        return;
-    }
-
-    if (m_hostname == buf) {
-        return;
-    }
-
-    QByteArray newHostname = buf;
-
-    runDontChangeHostname(m_hostname, newHostname);
-    m_hostname = newHostname;
-}
-
 KBuildsycocaAdaptor::KBuildsycocaAdaptor(QObject *parent)
     : QDBusAbstractAdaptor(parent)
 {
@@ -804,10 +759,8 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
 
     KDBusService service(KDBusService::Unique);
 
-    HostnamePollInterval = cg.readEntry("HostnamePollInterval", 5000);
     bCheckSycoca = cg.readEntry("CheckSycoca", true);
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
-    bCheckHostname = cg.readEntry("CheckHostname", true);
     checkStamps = cg.readEntry("CheckFileStamps", true);
     delayedCheck = cg.readEntry("DelayedCheck", false);
 
@@ -847,9 +800,6 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     ksplashProgressMessage.setArguments(QList<QVariant>() << QStringLiteral("confupdate"));
     QDBusConnection::sessionBus().asyncCall(ksplashProgressMessage);
 #endif
-
-    //if (bCheckHostname)
-    //    (void) new KHostnameD(HostnamePollInterval); // Watch for hostname changes
 
     int result = app.exec(); // keep running
 

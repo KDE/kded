@@ -25,13 +25,6 @@ Some of these tasks are built in, others are started on demand.
   of which update files have been processed already in the config-file
   kconf\_updaterc. It only performs a certain update once.
 
-* Checking for hostname changes. It is a really bad idea to change the
-  hostname of a running system and it usually only happens with incorrectly
-  configured dial-up connections. Never the less, kded will check for hostname
-  changes and if it detects one it will make the necassery changes to the
-  KDE environemnt and X-server to allow continued proper operation. The
-  program kdontchangethehostname is executed to make the actual changes.
-
 ### Configuration of built in tasks.
 
 The built in tasks have some configuration options that can be changed by

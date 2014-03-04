@@ -61,8 +61,6 @@
 </para>
 <para>It checks newly installed update files, i.e. the *.upd files used to update configuration files of users when the configuration file formats changes. <command>kconf_update</command> is launched to do the updates.
 </para>
-<para>When the hostname changes, it will make the necessary changes to the KDE environment and X-server to allow continued proper operation, launching <command>kdontchangethehostname</command> to do the changes.
-</para>
 <para>Those tasks are also performed always at kded5 start to ensure that the user configuration is up to date.
 </para>
 <para>It is also responsible for launching the on-demand kded5 modules and init enabled kded5 modules like:

@@ -255,22 +255,4 @@ private:
     QTimer *m_pTimer;
 };
 
-class KHostnameD : public QObject
-{
-    Q_OBJECT
-public:
-    KHostnameD(int pollInterval);
-    ~KHostnameD();
-
-public Q_SLOTS:
-    void checkHostname();
-
-private:
-    /**
-     * Timer for interval hostname checking.
-     */
-    QTimer m_Timer;
-    QByteArray m_hostname;
-};
-
 #endif
