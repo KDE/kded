@@ -204,9 +204,10 @@ void Kded::initModules()
             kde_running = false;
         }
 
+        //TODO: Change 5 to KDED_VERSION_MAJOR the moment KF5 are stable
         // not the same kde version as the current desktop
         const QByteArray kdeSession = qgetenv("KDE_SESSION_VERSION");
-        if (kdeSession.toInt() != KDED_VERSION_MAJOR) {
+        if (kdeSession.toInt() != 5) {
             kde_running = false;
         }
     }
