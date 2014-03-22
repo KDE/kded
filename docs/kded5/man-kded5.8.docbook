@@ -6,10 +6,11 @@
 <refentry>
 
 <refentryinfo>
-<title>&kde; User's Manual</title>
+<title>KDED</title>
 <author>
 <firstname>David</firstname>
 <surname>Faure</surname>
+<contrib>Maintainer</contrib>
 <affiliation>
 <address><email>faure@kde.org</email></address>
 </affiliation>
@@ -18,13 +19,14 @@
 <author>
 <firstname>Waldo</firstname>
 <surname>Bastian</surname>
+<contrib>Original author</contrib>
 <affiliation>
 <address><email>bastian@kde.org</email></address>
 </affiliation>
 </author>
 
-<date>2010-10-28</date>
-<releaseinfo>&kde; 4.5</releaseinfo>
+<date>2014-03-22</date>
+<releaseinfo>5.0</releaseinfo>
 
 </refentryinfo>
 
@@ -43,11 +45,6 @@
 
 <cmdsynopsis>
 <command>kded5</command>
-
-<arg choice="opt">--help</arg>
-<arg choice="opt">Generic options</arg>
-<arg choice="opt">Qt-options</arg>
-<arg choice="opt">KDE-options</arg>
 <arg choice="opt">--check</arg>
 </cmdsynopsis>
 </refsynopsisdiv>
@@ -55,275 +52,86 @@
 <refsect1>
 <title>Description</title>
 
-<para><command>kded5</command> is responsible for creating the sycoca file, i.e. the binary cache of servicetypes, mimetypes, and services for a particular user.
-</para>
-<para>It monitors the directories containing .desktop files. When a file is added/removed, it waits 5 seconds (in case of a series of updates), and then launches <command>kbuildsycoca4</command> to update the sycoca.
-</para>
-<para>It checks newly installed update files, i.e. the *.upd files used to update configuration files of users when the configuration file formats changes. <command>kconf_update</command> is launched to do the updates.
-</para>
-<para>Those tasks are also performed always at kded5 start to ensure that the user configuration is up to date.
-</para>
-<para>It is also responsible for launching the on-demand kded5 modules and init enabled kded5 modules like:
-<variablelist>
-<varlistentry>
-<term><option>Konqueror Browser Preloader</option></term>
-<listitem><para>Reduces Konqueror startup time.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Directory Watcher</option></term>
-<listitem><para>Monitors directories for changes.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Hardware Detection</option></term>
-<listitem><para>Provides a user interface for hardware events.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>SSL Certificate Policy</option></term>
-<listitem><para>Provides the user configured SSL certificate policy to applications.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Network Proxy Configuration</option></term>
-<listitem><para>Automatic proxy configuration.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Password Caching</option></term>
-<listitem><para>Temporary password caching, for example: so that a webpage with HTTP
-authentication doesn't ask for your password for every link and every image in the page.
-These passwords are forgotten when exiting KDE (unlike <command>KWallet</command>)</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Sound Policy</option></term>
-<listitem><para>Provides the sound system policy to applications.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Favicons</option></term>
-<listitem><para>Stores website icons.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Display Management</option></term>
-<listitem><para>Manages displays and video outputs.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Cookie jar</option></term>
-<listitem><para>Stores network cookies.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Network Watcher</option></term>
-<listitem><para>Keeps track of the network and updates directory listings of the <application>network:/</application> KIO slave.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Subversion Module</option></term>
-<listitem><para>Provides various subversion actions to filemanager and other software.</para>
-</listitem>
-</varlistentry>
+<para><command>kded5</command> consolidates several small services in one process.  These are mostly D-Bus services provided by KDED modules, but it also manages sycoca (a binary cache of servicetypes, mimetypes and services used by KService) and KConfig update scripts as needed.</para>
 
-<varlistentry>
-<term><option>Network Status</option></term>
-<listitem><para>Tracks status of network interfaces and provides notifications for applications using the network.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Write Daemon</option></term>
-<listitem><para>Watches the messages from local users sent with <replaceable>write</replaceable>(1) or <replaceable>wall</replaceable>(1).</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Notification area watcher</option></term>
-<listitem><para>Keeps track of applications that want to use the D-Bus based notification area.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>KMixD</option></term>
-<listitem><para>KMixD Mixer Service</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Systemtray daemon</option></term>
-<listitem><para>Keeps track of applications that want to use the D-Bus based system tray.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Keyboard Daemon</option></term>
-<listitem><para>Keeps track of keyboard changes (new keyboard, changed layout)</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Remote URL Change Notifier</option></term>
-<listitem>
-<para>Provides change notifications for network folders</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Activity Manager</option></term>
-<listitem><para>The Nepomuk activities manager backend</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Display Management change monitor</option></term>
-<listitem><para>Notifies how the display has been rotated (where available)</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Free Space Notifier</option></term>
-<listitem><para>Warns when running out of space in your home folder.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Removable Device Automounter</option></term>
-<listitem><para>Automatically mounts devices as needed.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Nepomuk Search Module</option></term>
-<listitem><para>Helper module for KIO to ensure automatic updates of Nepomuk search listings.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Power Management</option></term>
-<listitem><para>Battery, Display and CPU power management and notifications.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>K Remote Control Daemon</option></term>
-<listitem><para>Manages the Remote Control commands received</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Status Notifier Manager</option></term>
-<listitem><para>Manages services that provide status notifier user interfaces.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>DNS-SD Service Discovery Monitor</option></term>
-<listitem><para>Monitors the network for DNS-SD services.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Drive Ejector</option></term>
-<listitem><para>Automatically unmounts and releases drives when their eject button is pushed.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Time zone</option></term>
-<listitem><para>Provides access to the system's time zones for applications.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term><option>Input Actions</option></term>
-<listitem><para>Input Actions service performing configured actions on key presses.</para>
-</listitem>
-</varlistentry>
+<para>For sycoca, it monitors the directories containing .desktop files. When a file is added/removed, it waits 5 seconds (in case of a series of updates), and then launches <command>kbuildsycoca5</command> to update the sycoca.</para>
 
-</variablelist>
-</para>
+<para>For KConfig, it checks newly-installed update files, i.e. the *.upd files used to update configuration files of users when the configuration file formats changes, and runs the KConfig update utility to perform the updates.</para>
 
- <para>The init modules can be enabled/disabled using <command>systemsettings</command>, in System Administration > Startup and Shutdown > Service Manager.</para>
+<para>Those tasks are also run when <command>kded5</command> is started to ensure that the user configuration is up to date.</para>
+
+<para>You do not normally need to run <command>kded5</command> directly; Plasma desktop sessions run it automatically, and it is started on demand when an application attempts to use a D-Bus interface provided by it or one of its modules.</para>
 
 </refsect1>
 
-<refsect1><title>Generic Options</title>
-<!--<para>--><variablelist>
-<varlistentry>
-<term><option>--author</option></term>
-<listitem>
-<para>Show author information.</para>
-</listitem>
-</varlistentry>
 
-<varlistentry>
-<term><option>--help</option></term>
-<listitem>
-<para>Show help about options.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><option>--help-all</option></term>
-<listitem>
-<para>Show all options.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><option>--help-kde</option></term>
-<listitem>
-<para>Show KDE specific options.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><option>--help-qt</option></term>
-<listitem>
-<para>Show Qt specific options.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><option>--license</option></term>
-<listitem>
-<para>Show license information.</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><option>-v</option> <option>--version</option></term>
-<listitem>
-<para>Show version information</para>
-</listitem>
-</varlistentry>
-
-</variablelist>
-<!--</para>-->
-</refsect1>
 
 <refsect1>
-<title>Application Options</title>
-<variablelist>
+<title>Options</title>
 
+<variablelist>
 <varlistentry>
 <term><option>--check</option></term>
 <listitem>
-<para>Check Sycoca database only once.
+<para>Check the sycoca database, updating it if necessary, and exit.
 </para>
 </listitem>
 </varlistentry>
-
 </variablelist>
-
 </refsect1>
+
+
 
 <refsect1>
-<title>Usage</title>
-<para>If <command>kded5</command> is called without parameters and is already running, it shows the message:
-<screen>KDE Daemon (kded) already running.</screen>
+<title>Configuration</title>
+
+<para><command>kded5</command> can be configured with the <filename>kded5rc</filename> ini-style configuration file.  On Unix systems, this can be found at <filename><varname>$XDG_CONFIG_HOME</varname>/kded5rc</filename>; if <varname>$XDG_CONFIG_HOME</varname> is not set, this defaults to <filename>~/.config/kded5rc</filename>.</para>
+
+<para>Configuration file entries are read on-demand, so changes can be made while <command>kded5</command> is running.  However, all the current configuration options only really affect the startup behaviour of <command>kded5</command>.</para>
+
+<para>The <option>[General]</option> section has the following options:
+<variablelist>
+<varlistentry>
+<term><option>CheckSycoca</option></term>
+<listitem><para>Whether to update sycoca at startup (default: <constant>true</constant>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term><option>CheckUpdates</option></term>
+<listitem><para>Whether to perform outstanding KConfig updates at startup (default: <constant>true</constant>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term><option>CheckFileStamps</option></term>
+<listitem><para>Whether to check file timestamps when performing the initial sycoca update (default: <constant>true</constant>).  See the documentation for <command>kbuildsycoca5</command> for more details.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term><option>DelayedCheck</option></term>
+<listitem><para>Whether to delay the initial sycoca update until about a minute after starting (default: <constant>false</constant>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
 </para>
-<para>
-If <command>kded5</command> is called with <command>kded5 --check</command>, then
-it updates the &kde; sycoca using <command>kbuildsycoca4</command>.
-</para>
+
+<para>Each module also has a <option>[Module-<replaceable>name</replaceable>]</option> section in <filename>kded5rc</filename>, where <replaceable>name</replaceable> is the name of the module's desktop file without the <filename>.desktop</filename> extension.  This contains an <option>autoload</option> option that specifies whether the module should be automatically loaded when <command>kded5</command> is started (default: <constant>false</constant>).  Note that this setting can also be changed via <command>kded5</command>'s D-Bus interface.</para>
 </refsect1>
+
+
 
 <refsect1>
 <title>See Also</title>
-<para><replaceable>kdeoptions</replaceable>(7), <replaceable>qtoptions</replaceable>(7),
-<replaceable>kbuildsycoca4</replaceable>(8)
+<para>
+<citerefentry><refentrytitle>kbuildsycoca5</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
+<citerefentry><refentrytitle>kdeinit5</refentrytitle><manvolnum>8</manvolnum></citerefentry>
 </para>
 </refsect1>
 
+
+
 <refsect1>
 <title>Bugs</title>
-<para>There are probably tons of bugs. Use <ulink url="http://bugs.kde.org">bugs.kde.org</ulink> to report them.</para>
+<para>There are probably tons of bugs. Use <ulink url="http://bugs.kde.org">KDE's bugtracker</ulink> to report them.</para>
 </refsect1>
 
 </refentry>
