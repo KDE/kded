@@ -45,16 +45,15 @@
 #include <KServiceTypeTrader>
 #include <KToolInvocation>
 
-#define KDED_EXENAME "kded5"
-
 #define MODULES_PATH "/modules/"
 
 Kded *Kded::_self = 0;
 
-static bool checkStamps = true;
-static bool delayedCheck = false;
+static bool checkStamps;
+static bool delayedCheck;
 static bool bCheckSycoca;
 static bool bCheckUpdates;
+static bool s_checkStampsDefault = true;
 
 #ifdef Q_DBUS_EXPORT
 extern Q_DBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
@@ -732,6 +731,12 @@ void KBuildsycocaAdaptor::enableTestMode()
     QStandardPaths::enableTestMode(true);
 }
 
+static void setupAppInfo(QCoreApplication *app)
+{
+    app->setApplicationName("kded5");
+    app->setOrganizationDomain("kde.org");
+}
+
 extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
 {
     //options.add("check", qi18n("Check Sycoca database only once"));
@@ -740,29 +745,33 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     putenv(qstrdup("SESSION_MANAGER="));
 
     // Parse command line before checking D-Bus
-    KSharedConfig::Ptr config = KSharedConfig::openConfig("kdedrc");
-
-    KConfigGroup cg(config, "General");
     if (argc > 1 && QByteArray(argv[1]) == "--check") {
         // KDBusService not wanted here.
         QCoreApplication app(argc, argv);
-        checkStamps = cg.readEntry("CheckFileStamps", true);
+        setupAppInfo(&app);
+
+        KSharedConfig::Ptr config = KSharedConfig::openConfig();
+        KConfigGroup cg(config, "General");
+        checkStamps = cg.readEntry("CheckFileStamps", s_checkStampsDefault);
+
         runBuildSycoca();
         runKonfUpdate();
         return 0;
     }
 
     QApplication app(argc, argv);
-    app.setQuitOnLastWindowClosed(false);
-    app.setApplicationName("kded5");
-    app.setOrganizationDomain("kde.org");
+    setupAppInfo(&app);
     app.setApplicationDisplayName("KDE Daemon");
+    app.setQuitOnLastWindowClosed(false);
 
     KDBusService service(KDBusService::Unique);
 
+    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    KConfigGroup cg(config, "General");
+
     bCheckSycoca = cg.readEntry("CheckSycoca", true);
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
-    checkStamps = cg.readEntry("CheckFileStamps", true);
+    checkStamps = cg.readEntry("CheckFileStamps", s_checkStampsDefault);
     delayedCheck = cg.readEntry("DelayedCheck", false);
 
 #ifndef _WIN32_WCE
