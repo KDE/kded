@@ -90,7 +90,8 @@ static void runBuildSycoca(QObject *callBackObj = 0, const char *callBackSlot = 
 
 static void runKonfUpdate()
 {
-    KToolInvocation::kdeinitExecWait("kconf_update", QStringList(), 0, 0, "0" /*no startup notification*/);
+    KToolInvocation::kdeinitExecWait(QStringLiteral(KCONF_UPDATE_EXE),
+            QStringList(), 0, 0, "0" /*no startup notification*/);
 }
 
 Kded::Kded()

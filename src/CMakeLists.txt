@@ -17,6 +17,9 @@ target_link_libraries(kdeinit_kded5
     KF5::DBusAddons # Needed for kdedmodule.h
     KF5::Crash # Sets it as autostart
 )
+target_compile_definitions(kdeinit_kded5 PRIVATE
+    KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
+)
 
 install(TARGETS kdeinit_kded5 EXPORT KDEDTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
