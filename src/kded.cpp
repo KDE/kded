@@ -41,6 +41,7 @@
 
 #include <KDBusService>
 #include <kconfiggroup.h>
+#include <ksharedconfig.h>
 #include <KDirWatch>
 #include <KServiceTypeTrader>
 #include <KToolInvocation>

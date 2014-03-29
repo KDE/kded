@@ -20,6 +20,7 @@
 
 #include "kdedadaptor.h"
 #include "kded.h"
+#include "ksharedconfig.h"
 #include <QCoreApplication>
 #include <QDBusMessage>
 
