@@ -20,6 +20,9 @@ target_link_libraries(kdeinit_kded5
 target_compile_definitions(kdeinit_kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )
+target_compile_definitions(kded5 PRIVATE
+    KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
+)
 
 install(TARGETS kdeinit_kded5 EXPORT KDEDTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
