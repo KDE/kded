@@ -12,14 +12,15 @@ include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)
 
-set(KF5_VERSION "4.98.0")
-find_package(KF5Config ${KF5_VERSION} REQUIRED)
-find_package(KF5CoreAddons ${KF5_VERSION} REQUIRED)
-find_package(KF5Crash ${KF5_VERSION} REQUIRED)
-find_package(KF5DBusAddons ${KF5_VERSION} REQUIRED)
-find_package(KF5DocTools ${KF5_VERSION} REQUIRED)
-find_package(KF5Init ${KF5_VERSION} REQUIRED)
-find_package(KF5Service ${KF5_VERSION} REQUIRED)
+set(KF5_VERSION "4.98.0") # handled by release scripts # handled by release scripts
+set(KF5_DEP_VERSION "4.98.0") # handled by release scripts
+find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Crash ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5DBusAddons ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5DocTools ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Init ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
 include(FeatureSummary)
 include(ECMPackageConfigHelpers)
