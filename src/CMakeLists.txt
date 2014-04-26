@@ -24,10 +24,10 @@ target_compile_definitions(kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )
 
-install(TARGETS kdeinit_kded5 EXPORT KDEDTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kdeinit_kded5 EXPORT KDEDTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 target_link_libraries( kded5 kdeinit_kded5)
-install(TARGETS kded5 EXPORT KDEDTargets ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS kded5 EXPORT KDEDTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 qt5_generate_dbus_interface( kdedadaptor.h org.kde.kded5.xml )
