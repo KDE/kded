@@ -39,6 +39,9 @@ ecm_setup_version(
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
+if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
+    kdoctools_install(po)
+endif()
 add_subdirectory(docs)
 add_subdirectory(src)
 
