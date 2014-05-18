@@ -365,17 +365,25 @@ KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
         }
 
         KDEDModule *module = 0;
-        QString libname = "kded_" + s->library();
-        KPluginLoader loader(libname);
 
-        KPluginFactory *factory = loader.factory();
-        if (!factory) {
-            qWarning() << "Could not load library" << libname << ". ["
-                       << loader.errorString() << "]";
-        } else {
-            // create the module
-            module = factory->create<KDEDModule>(this);
+        QString errorMessage;
+        QStringList libNames;
+        libNames << s->library()
+                 << "kded_" + s->library(); // old-style naming
+        Q_FOREACH(const QString &libname, libNames) {
+            KPluginLoader loader(libname);
+            KPluginFactory *factory = loader.factory();
+            if (factory) {
+                // create the module
+                module = factory->create<KDEDModule>(this);
+                if (module) {
+                    break;
+                }
+            } else {
+                errorMessage = loader.errorString();
+            }
         }
+
         if (module) {
             module->setModuleName(obj);
             m_modules.insert(obj, module);
@@ -384,8 +392,9 @@ KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
             qDebug() << "Successfully loaded module" << obj;
             return module;
         } else {
-            //qDebug() << "Could not load module" << obj;
-            //loader.unload();
+            qWarning() << "Could not load KDED module" << obj << ":"
+                       << errorMessage << "(tried plugins named:"
+                       << libNames << ")";
         }
     }
     return 0;
