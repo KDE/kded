@@ -96,9 +96,3 @@ This can be useful for central administration tasks.
 
 See docs/HOWTO.
 
-## Links
-
-- Home page: <https://projects.kde.org/projects/frameworks/kded>
-- Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
-- IRC channel: #kde-devel on Freenode
-- Git repository: <https://projects.kde.org/projects/frameworks/kded/repository>
