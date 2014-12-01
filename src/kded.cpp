@@ -26,6 +26,7 @@
 #include <qplatformdefs.h>
 
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -44,6 +45,9 @@
 #include <KToolInvocation>
 
 #define MODULES_PATH "/modules/"
+
+Q_DECLARE_LOGGING_CATEGORY(KDED);
+Q_LOGGING_CATEGORY(KDED, "kf5.kded");
 
 Kded *Kded::_self = 0;
 
@@ -180,7 +184,7 @@ void Kded::messageFilter(const QDBusMessage &message)
 
     KDEDModule *module = self()->loadModule(obj, true);
     if (!module) {
-        qWarning() << "Failed to load module for " << obj;
+        qCWarning(KDED) << "Failed to load module for " << obj;
     }
     Q_UNUSED(module);
 }
@@ -265,14 +269,14 @@ void Kded::initModules()
 
 void Kded::loadSecondPhase()
 {
-    //qDebug() << "Loading second phase autoload";
+    qCDebug(KDED) << "Loading second phase autoload";
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     KService::List kdedModules = KServiceTypeTrader::self()->query("KDEDModule");
     for (KService::List::ConstIterator it = kdedModules.constBegin(); it != kdedModules.constEnd(); ++it) {
         const KService::Ptr service = *it;
         const bool autoload = isModuleAutoloaded(service);
         if (autoload && phaseForModule(service) == 2) {
-            //qDebug() << "2nd phase: loading" << service->desktopEntryName();
+            qCDebug(KDED) << "2nd phase: loading" << service->desktopEntryName();
             loadModule(service, false);
         }
     }
@@ -389,10 +393,10 @@ KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
             m_modules.insert(obj, module);
             //m_libs.insert(obj, lib);
             connect(module, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
-            qDebug() << "Successfully loaded module" << obj;
+            qCDebug(KDED) << "Successfully loaded module" << obj;
             return module;
         } else {
-            qWarning() << "Could not load KDED module" << obj << ":"
+            qCWarning(KDED) << "Could not load KDED module" << obj << ":"
                        << errorMessage << "(tried plugins named:"
                        << libNames << ")";
         }
@@ -406,7 +410,7 @@ bool Kded::unloadModule(const QString &obj)
     if (!module) {
         return false;
     }
-    //qDebug() << "Unloading module" << obj;
+    qCDebug(KDED) << "Unloading module" << obj;
     m_modules.remove(obj);
     delete module;
     return true;
@@ -602,7 +606,7 @@ void Kded::readDirectory(const QString &_path)
     //************************************************************************
 
     if (!d.exists()) {                            // exists&isdir?
-        //qDebug() << "Does not exist:" << _path;
+        qCDebug(KDED) << "Does not exist:" << _path;
         return;                             // return false
     }
 
@@ -647,7 +651,7 @@ void Kded::registerWindowId(qlonglong windowId, const QString &sender)
     m_windowIdList.insert(sender, windowIds);
 
     foreach (KDEDModule *module, m_modules) {
-        //qDebug() << module->moduleName();
+        qCDebug(KDED) << module->moduleName();
         emit module->windowRegistered(windowId);
     }
 }
@@ -667,7 +671,7 @@ void Kded::unregisterWindowId(qlonglong windowId, const QString &sender)
     }
 
     foreach (KDEDModule *module, m_modules) {
-        //qDebug() << module->moduleName();
+        qCDebug(KDED) << module->moduleName();
         emit module->windowUnregistered(windowId);
     }
 }
@@ -716,7 +720,7 @@ void KUpdateD::runKonfUpdate()
 void KUpdateD::slotNewUpdateFile(const QString &dirty)
 {
     Q_UNUSED(dirty);
-    //qDebug() << dirty;
+    qCDebug(KDED) << dirty;
     m_pTimer->start(500);
 }
 
