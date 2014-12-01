@@ -100,8 +100,8 @@ Kded::Kded()
     m_serviceWatcher = new QDBusServiceWatcher(this);
     m_serviceWatcher->setConnection(QDBusConnection::sessionBus());
     m_serviceWatcher->setWatchMode(QDBusServiceWatcher::WatchForUnregistration);
-    QObject::connect(m_serviceWatcher, SIGNAL(serviceUnregistered(QString)),
-                     this, SLOT(slotApplicationRemoved(QString)));
+    QObject::connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered,
+                     this, &Kded::slotApplicationRemoved);
 
     new KBuildsycocaAdaptor(this);
     new KdedAdaptor(this);
@@ -114,7 +114,7 @@ Kded::Kded()
 
     m_pTimer = new QTimer(this);
     m_pTimer->setSingleShot(true);
-    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(recreate()));
+    connect(m_pTimer, &QTimer::timeout, this, static_cast<void(Kded::*)()>(&Kded::recreate));
 
     m_pDirWatch = 0;
 
@@ -136,8 +136,8 @@ Kded::~Kded()
 
         // first disconnect otherwise slotKDEDModuleRemoved() is called
         // and changes m_modules while we're iterating over it
-        disconnect(module, SIGNAL(moduleDeleted(KDEDModule*)),
-                   this, SLOT(slotKDEDModuleRemoved(KDEDModule*)));
+        disconnect(module, &KDEDModule::moduleDeleted,
+                   this, &Kded::slotKDEDModuleRemoved);
 
         delete module;
     }
@@ -388,7 +388,7 @@ KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
             module->setModuleName(obj);
             m_modules.insert(obj, module);
             //m_libs.insert(obj, lib);
-            connect(module, SIGNAL(moduleDeleted(KDEDModule*)), SLOT(slotKDEDModuleRemoved(KDEDModule*)));
+            connect(module, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
             qDebug() << "Successfully loaded module" << obj;
             return module;
         } else {
@@ -454,12 +454,12 @@ void Kded::updateDirWatch()
     delete m_pDirWatch;
     m_pDirWatch = new KDirWatch;
 
-    QObject::connect(m_pDirWatch, SIGNAL(dirty(QString)),
-                     this, SLOT(update(QString)));
-    QObject::connect(m_pDirWatch, SIGNAL(created(QString)),
-                     this, SLOT(update(QString)));
-    QObject::connect(m_pDirWatch, SIGNAL(deleted(QString)),
-                     this, SLOT(dirDeleted(QString)));
+    QObject::connect(m_pDirWatch, &KDirWatch::dirty,
+                     this, &Kded::update);
+    QObject::connect(m_pDirWatch, &KDirWatch::created,
+                     this, &Kded::update);
+    QObject::connect(m_pDirWatch, &KDirWatch::deleted,
+                     this, &Kded::dirDeleted);
 
     // For each resource
     for (QStringList::ConstIterator it = m_allResourceDirs.constBegin();
@@ -684,9 +684,9 @@ KUpdateD::KUpdateD()
     m_pDirWatch = new KDirWatch(this);
     m_pTimer = new QTimer(this);
     m_pTimer->setSingleShot(true);
-    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(runKonfUpdate()));
-    QObject::connect(m_pDirWatch, SIGNAL(dirty(QString)),
-                     this, SLOT(slotNewUpdateFile(QString)));
+    connect(m_pTimer, &QTimer::timeout, this, &KUpdateD::runKonfUpdate);
+    QObject::connect(m_pDirWatch, &KDirWatch::dirty,
+                     this, &KUpdateD::slotNewUpdateFile);
 
     const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "kconf_update", QStandardPaths::LocateDirectory);
     for (QStringList::ConstIterator it = dirs.begin();
