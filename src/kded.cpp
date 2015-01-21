@@ -44,7 +44,6 @@
 #include <KServiceTypeTrader>
 #include <KToolInvocation>
 
-static const QLatin1String MODULES_PATH("/modules/");
 static const QString KDED_SLASH=QStringLiteral("kded/");
 static const QString DOT_DESKTOP=QStringLiteral(".desktop");
 
@@ -157,25 +156,9 @@ void Kded::messageFilter(const QDBusMessage &message)
         return;
     }
 
-    if (message.type() != QDBusMessage::MethodCallMessage) {
+    QString obj = KDEDModule::moduleForMessage(message);
+    if (obj.isEmpty() || obj == "ksycoca") {
         return;
-    }
-
-    QString obj = message.path();
-    if (!obj.startsWith(MODULES_PATH)) {
-        return;
-    }
-
-    // Remove the <MODULES_PATH> part
-    obj = obj.mid(MODULES_PATH.size());
-    if (obj == QLatin1String("ksycoca")) {
-        return;    // Ignore this one.
-    }
-
-    // Remove the part after the modules name
-    int index = obj.indexOf('/');
-    if (index != -1) {
-        obj.truncate(index);
     }
 
     if (self()->m_dontLoad.value(obj, 0)) {
