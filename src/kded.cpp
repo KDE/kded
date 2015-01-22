@@ -44,7 +44,9 @@
 #include <KServiceTypeTrader>
 #include <KToolInvocation>
 
-#define MODULES_PATH "/modules/"
+static const QLatin1String MODULES_PATH("/modules/");
+static const QString KDED_SLASH=QStringLiteral("kded/");
+static const QString DOT_DESKTOP=QStringLiteral(".desktop");
 
 Q_DECLARE_LOGGING_CATEGORY(KDED);
 Q_LOGGING_CATEGORY(KDED, "kf5.kded");
@@ -97,7 +99,11 @@ static void runKonfUpdate()
 }
 
 Kded::Kded()
-    : m_needDelayedCheck(false)
+    : m_pDirWatch(0)
+    , m_pTimer(new QTimer(this))
+    , m_recreateCount(0)
+    , m_recreateBusy(false)
+    , m_needDelayedCheck(false)
 {
     _self = this;
 
@@ -111,19 +117,13 @@ Kded::Kded()
     new KdedAdaptor(this);
 
     QDBusConnection session = QDBusConnection::sessionBus();
-    session.registerObject("/kbuildsycoca", this);
-    session.registerObject("/kded", this);
+    session.registerObject(QStringLiteral("/kbuildsycoca"), this);
+    session.registerObject(QStringLiteral("/kded"), this);
 
     qDBusAddSpyHook(messageFilter);
 
-    m_pTimer = new QTimer(this);
     m_pTimer->setSingleShot(true);
     connect(m_pTimer, &QTimer::timeout, this, static_cast<void(Kded::*)()>(&Kded::recreate));
-
-    m_pDirWatch = 0;
-
-    m_recreateCount = 0;
-    m_recreateBusy = false;
 }
 
 Kded::~Kded()
@@ -133,8 +133,8 @@ Kded::~Kded()
     delete m_pTimer;
     delete m_pDirWatch;
 
-    for (QHash<QString, KDEDModule *>::iterator
-            it(m_modules.begin()), itEnd(m_modules.end());
+    for (QHash<QString, KDEDModule *>::const_iterator
+            it(m_modules.constBegin()), itEnd(m_modules.constEnd());
             it != itEnd; ++it) {
         KDEDModule *module(it.value());
 
@@ -167,15 +167,15 @@ void Kded::messageFilter(const QDBusMessage &message)
     }
 
     // Remove the <MODULES_PATH> part
-    obj = obj.mid(strlen(MODULES_PATH));
-    if (obj == "ksycoca") {
+    obj = obj.mid(MODULES_PATH.size());
+    if (obj == QLatin1String("ksycoca")) {
         return;    // Ignore this one.
     }
 
     // Remove the part after the modules name
     int index = obj.indexOf('/');
     if (index != -1) {
-        obj = obj.left(index);
+        obj.truncate(index);
     }
 
     if (self()->m_dontLoad.value(obj, 0)) {
@@ -191,7 +191,7 @@ void Kded::messageFilter(const QDBusMessage &message)
 
 static int phaseForModule(const KService::Ptr &service)
 {
-    const QVariant phasev = service->property("X-KDE-Kded-phase", QVariant::Int);
+    const QVariant phasev = service->property(QStringLiteral("X-KDE-Kded-phase"), QVariant::Int);
     return phasev.isValid() ? phasev.toInt() : 2;
 }
 
@@ -262,7 +262,7 @@ void Kded::initModules()
         // In case of reloading the configuration it is possible for a module
         // to run even if it is now allowed to. Stop it then.
         if (!loadOnDemand && !autoload) {
-            unloadModule(service->desktopEntryName().toLatin1());
+            unloadModule(service->desktopEntryName());
         }
     }
 }
@@ -291,18 +291,18 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
 {
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     // Ensure the service exists.
-    KService::Ptr service = KService::serviceByDesktopPath("kded/" + obj + ".desktop");
+    KService::Ptr service = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
     if (!service) {
         return;
     }
-    KConfigGroup cg(config, QString("Module-%1").arg(service->desktopEntryName()));
+    KConfigGroup cg(config, QByteArray("Module-").append(module->desktopEntryName().toLatin1()).constData());
     cg.writeEntry("autoload", autoload);
     cg.sync();
 }
 
 bool Kded::isModuleAutoloaded(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath("kded/" + obj + ".desktop");
+    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
     if (!s) {
         return false;
     }
@@ -312,15 +312,15 @@ bool Kded::isModuleAutoloaded(const QString &obj) const
 bool Kded::isModuleAutoloaded(const KService::Ptr &module) const
 {
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    bool autoload = module->property("X-KDE-Kded-autoload", QVariant::Bool).toBool();
-    KConfigGroup cg(config, QString("Module-%1").arg(module->desktopEntryName()));
+    bool autoload = module->property(QStringLiteral("X-KDE-Kded-autoload"), QVariant::Bool).toBool();
+    KConfigGroup cg(config, QByteArray("Module-").append(module->desktopEntryName().toLatin1()).constData());
     autoload = cg.readEntry("autoload", autoload);
     return autoload;
 }
 
 bool Kded::isModuleLoadedOnDemand(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath("kded/" + obj + ".desktop");
+    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
     if (!s) {
         return false;
     }
@@ -331,7 +331,7 @@ bool Kded::isModuleLoadedOnDemand(const KService::Ptr &module) const
 {
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     bool loadOnDemand = true;
-    QVariant p = module->property("X-KDE-Kded-load-on-demand", QVariant::Bool);
+    QVariant p = module->property(QStringLiteral("X-KDE-Kded-load-on-demand"), QVariant::Bool);
     if (p.isValid() && (p.toBool() == false)) {
         loadOnDemand = false;
     }
@@ -341,13 +341,13 @@ bool Kded::isModuleLoadedOnDemand(const KService::Ptr &module) const
 KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
 {
     // Make sure this method is only called with valid module names.
-    Q_ASSERT(obj.indexOf('/') == -1);
+    Q_ASSERT(obj.indexOf(QLatin1Char('/')) == -1);
 
     KDEDModule *module = m_modules.value(obj, 0);
     if (module) {
         return module;
     }
-    KService::Ptr s = KService::serviceByDesktopPath("kded/" + obj + ".desktop");
+    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
     return loadModule(s, onDemand);
 }
 
@@ -361,7 +361,7 @@ KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
         }
 
         if (onDemand) {
-            QVariant p = s->property("X-KDE-Kded-load-on-demand", QVariant::Bool);
+            QVariant p = s->property(QStringLiteral("X-KDE-Kded-load-on-demand"), QVariant::Bool);
             if (p.isValid() && (p.toBool() == false)) {
                 noDemandLoad(s->desktopEntryName());
                 return 0;
@@ -586,8 +586,8 @@ void Kded::recreate(const QDBusMessage &msg)
 void Kded::readDirectory(const QString &_path)
 {
     QString path(_path);
-    if (!path.endsWith('/')) {
-        path += '/';
+    if (!path.endsWith(QLatin1Char('/'))) {
+        path += QLatin1Char('/');
     }
 
     if (m_pDirWatch->contains(path)) {   // Already seen this one?
