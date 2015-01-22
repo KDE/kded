@@ -295,7 +295,7 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
     if (!service) {
         return;
     }
-    KConfigGroup cg(config, QByteArray("Module-").append(module->desktopEntryName().toLatin1()).constData());
+    KConfigGroup cg(config, QByteArray("Module-").append(service->desktopEntryName().toLatin1()).constData());
     cg.writeEntry("autoload", autoload);
     cg.sync();
 }
