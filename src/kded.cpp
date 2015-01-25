@@ -44,9 +44,6 @@
 #include <KServiceTypeTrader>
 #include <KToolInvocation>
 
-static const QString KDED_SLASH=QStringLiteral("kded/");
-static const QString DOT_DESKTOP=QStringLiteral(".desktop");
-
 Q_DECLARE_LOGGING_CATEGORY(KDED);
 Q_LOGGING_CATEGORY(KDED, "kf5.kded");
 
@@ -157,7 +154,7 @@ void Kded::messageFilter(const QDBusMessage &message)
     }
 
     QString obj = KDEDModule::moduleForMessage(message);
-    if (obj.isEmpty() || obj == "ksycoca") {
+    if (obj.isEmpty() || obj == QLatin1String("ksycoca")) {
         return;
     }
 
@@ -274,7 +271,7 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
 {
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     // Ensure the service exists.
-    KService::Ptr service = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
+    KService::Ptr service = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
     if (!service) {
         return;
     }
@@ -285,7 +282,7 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
 
 bool Kded::isModuleAutoloaded(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
+    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
     if (!s) {
         return false;
     }
@@ -303,7 +300,7 @@ bool Kded::isModuleAutoloaded(const KService::Ptr &module) const
 
 bool Kded::isModuleLoadedOnDemand(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
+    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
     if (!s) {
         return false;
     }
@@ -330,7 +327,7 @@ KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
     if (module) {
         return module;
     }
-    KService::Ptr s = KService::serviceByDesktopPath(KDED_SLASH + obj + DOT_DESKTOP);
+    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
     return loadModule(s, onDemand);
 }
 
