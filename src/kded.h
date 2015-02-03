@@ -31,10 +31,10 @@
 
 #include <ksycoca.h>
 #include <kdedmodule.h>
-#include <kservice.h>
 
 class QDBusMessage;
 class QDBusServiceWatcher;
+class KPluginMetaData;
 class KDirWatch;
 
 // No need for this in libkio - apps only get readonly access
@@ -54,7 +54,6 @@ public:
     void noDemandLoad(const QString &obj); // Don't load obj on demand
 
     KDEDModule *loadModule(const QString &obj, bool onDemand);
-    KDEDModule *loadModule(const KService::Ptr &service, bool onDemand);
     QStringList loadedModules();
     bool unloadModule(const QString &obj);
     //bool isWindowRegistered(qlonglong windowId) const;
@@ -85,13 +84,6 @@ public:
      * @return @c true if the module will be loaded at startup, @c false otherwise
      */
     bool isModuleAutoloaded(const QString &module) const;
-    /**
-     * Check if a module should be loaded on startup.
-     *
-     * @param module a service description for the module
-     * @return @c true if the module will be loaded at startup, @c false otherwise
-     */
-    bool isModuleAutoloaded(const KService::Ptr &module) const;
     //@}
 
     //@{
@@ -103,14 +95,6 @@ public:
      *         is requested, @c false otherwise
      */
     bool isModuleLoadedOnDemand(const QString &module) const;
-    /**
-     * Check if a module should be loaded on demand
-     *
-     * @param module a service description for the module
-     * @return @c true if the module will be loaded when its D-Bus interface
-     *         is requested, @c false otherwise
-     */
-    bool isModuleLoadedOnDemand(const KService::Ptr &module) const;
     //@}
 
     /**
@@ -181,7 +165,26 @@ protected:
      * Scans dir for new files and new subdirectories.
      */
     void readDirectory(const QString &dir);
+    /**
+     * Check if a module should be loaded on demand
+     *
+     * @param module a service description for the module
+     * @return @c true if the module will be loaded when its D-Bus interface
+     *         is requested, @c false otherwise
+     */
+    bool isModuleLoadedOnDemand(const KPluginMetaData &module) const;
 
+    /**
+     * Check if a module should be loaded on startup.
+     *
+     * @param module a service description for the module
+     * @return @c true if the module will be loaded at startup, @c false otherwise
+     */
+    bool isModuleAutoloaded(const KPluginMetaData &module) const;
+
+    KDEDModule *loadModule(const KPluginMetaData &module, bool onDemand);
+
+    QVector<KPluginMetaData> availableModules() const;
     /**
      * Pointer to the dirwatch class which tells us, when some directories
      * changed.

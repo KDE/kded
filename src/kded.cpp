@@ -43,6 +43,8 @@
 #include <KDirWatch>
 #include <KServiceTypeTrader>
 #include <KToolInvocation>
+#include <KPluginInfo>
+#include <KPluginMetaData>
 
 Q_DECLARE_LOGGING_CATEGORY(KDED);
 Q_LOGGING_CATEGORY(KDED, "kf5.kded");
@@ -169,10 +171,49 @@ void Kded::messageFilter(const QDBusMessage &message)
     Q_UNUSED(module);
 }
 
-static int phaseForModule(const KService::Ptr &service)
+static int phaseForModule(const KPluginMetaData &module)
 {
-    const QVariant phasev = service->property(QStringLiteral("X-KDE-Kded-phase"), QVariant::Int);
+    const QVariant phasev = module.rawData().value("X-KDE-Kded-phase").toVariant();
     return phasev.isValid() ? phasev.toInt() : 2;
+}
+
+QVector<KPluginMetaData> Kded::availableModules() const
+{
+    QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins("kf5/kded");
+    QSet<QString> moduleIds;
+    foreach (const KPluginMetaData &md, plugins) {
+        moduleIds.insert(md.pluginId());
+    }
+    // also search for old .desktop based kded modules
+    KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query("KDEDModule"));
+    foreach (const KPluginInfo &info, oldStylePlugins) {
+        if (moduleIds.contains(info.pluginName())) {
+            qCWarning(KDED).nospace() << "kded module " << info.pluginName() << " has already been found using "
+                "JSON metadata, please don't install the now unneeded .desktop file (" << info.entryPath() << ").";
+        } else {
+            qCDebug(KDED).nospace() << "kded module " << info.pluginName() << " still uses .desktop files ("
+                << info.entryPath() << "). Please port it to JSON metadata.";
+            plugins.append(info.toMetaData());
+        }
+    }
+    return plugins;
+}
+
+static KPluginMetaData findModule(const QString &id)
+{
+    KPluginMetaData module(QStringLiteral("kf5/kded/") + id);
+    if (module.isValid()) {
+        return module;
+    }
+    // TODO KF6: remove the .desktop fallback code
+    KService::Ptr oldStyleModule = KService::serviceByDesktopPath(QStringLiteral("kded/") + id + QStringLiteral(".desktop"));
+    if (oldStyleModule) {
+        qCDebug(KDED).nospace() << "kded module " << oldStyleModule->desktopEntryName()
+            << " still uses .desktop files (" << oldStyleModule->entryPath() << "). Please port it to JSON metadata.";
+        return KPluginInfo(oldStyleModule).toMetaData();
+    }
+    qCWarning(KDED) << "could not find kded module with id" << id;
+    return KPluginMetaData();
 }
 
 void Kded::initModules()
@@ -202,15 +243,14 @@ void Kded::initModules()
     const bool loadPhase2Now = (kde_running && qgetenv("KDED_STARTED_BY_KDEINIT").toInt() == 0);
 
     // Preload kded modules.
-    const KService::List kdedModules = KServiceTypeTrader::self()->query("KDEDModule");
-    for (KService::List::ConstIterator it = kdedModules.begin(); it != kdedModules.end(); ++it) {
-        KService::Ptr service = *it;
+    const QVector<KPluginMetaData> kdedModules = availableModules();
+    foreach (const KPluginMetaData &module, kdedModules) {
         // Should the service load on startup?
-        const bool autoload = isModuleAutoloaded(service);
+        const bool autoload = isModuleAutoloaded(module);
 
         // see ksmserver's README for description of the phases
         bool prevent_autoload = false;
-        switch (phaseForModule(service)) {
+        switch (phaseForModule(module)) {
         case 0: // always autoload
             break;
         case 1: // autoload only in KDE
@@ -228,21 +268,21 @@ void Kded::initModules()
 
         // Load the module if necessary and allowed
         if (autoload && !prevent_autoload) {
-            if (!loadModule(service, false)) {
+            if (!loadModule(module, false)) {
                 continue;
             }
         }
 
         // Remember if the module is allowed to load on demand
-        bool loadOnDemand = isModuleLoadedOnDemand(service);
+        bool loadOnDemand = isModuleLoadedOnDemand(module);
         if (!loadOnDemand) {
-            noDemandLoad(service->desktopEntryName());
+            noDemandLoad(module.pluginId());
         }
 
         // In case of reloading the configuration it is possible for a module
         // to run even if it is now allowed to. Stop it then.
         if (!loadOnDemand && !autoload) {
-            unloadModule(service->desktopEntryName());
+            unloadModule(module.pluginId());
         }
     }
 }
@@ -251,13 +291,12 @@ void Kded::loadSecondPhase()
 {
     qCDebug(KDED) << "Loading second phase autoload";
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    KService::List kdedModules = KServiceTypeTrader::self()->query("KDEDModule");
-    for (KService::List::ConstIterator it = kdedModules.constBegin(); it != kdedModules.constEnd(); ++it) {
-        const KService::Ptr service = *it;
-        const bool autoload = isModuleAutoloaded(service);
-        if (autoload && phaseForModule(service) == 2) {
-            qCDebug(KDED) << "2nd phase: loading" << service->desktopEntryName();
-            loadModule(service, false);
+    QVector<KPluginMetaData> kdedModules = availableModules();
+    foreach (const KPluginMetaData &module, kdedModules) {
+        const bool autoload = isModuleAutoloaded(module);
+        if (autoload && phaseForModule(module) == 2) {
+            qCDebug(KDED) << "2nd phase: loading" << module.pluginId();
+            loadModule(module, false);
         }
     }
 }
@@ -271,47 +310,46 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
 {
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     // Ensure the service exists.
-    KService::Ptr service = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
-    if (!service) {
+    KPluginMetaData module = findModule(obj);
+    if (!module.isValid()) {
         return;
     }
-    KConfigGroup cg(config, QByteArray("Module-").append(service->desktopEntryName().toLatin1()).constData());
+    KConfigGroup cg(config, QString("Module-").append(module.pluginId()));
     cg.writeEntry("autoload", autoload);
     cg.sync();
 }
 
 bool Kded::isModuleAutoloaded(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
-    if (!s) {
-        return false;
-    }
-    return isModuleAutoloaded(s);
+    return isModuleAutoloaded(findModule(obj));
 }
 
-bool Kded::isModuleAutoloaded(const KService::Ptr &module) const
+bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
 {
+    if (!module.isValid()) {
+        return false;
+    }
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    bool autoload = module->property(QStringLiteral("X-KDE-Kded-autoload"), QVariant::Bool).toBool();
-    KConfigGroup cg(config, QByteArray("Module-").append(module->desktopEntryName().toLatin1()).constData());
+    bool autoload = module.rawData().value(QStringLiteral("X-KDE-Kded-autoload")).toVariant().toBool();
+    KConfigGroup cg(config, QString("Module-").append(module.pluginId()));
     autoload = cg.readEntry("autoload", autoload);
     return autoload;
 }
 
 bool Kded::isModuleLoadedOnDemand(const QString &obj) const
 {
-    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
-    if (!s) {
-        return false;
-    }
-    return isModuleLoadedOnDemand(s);
+    return isModuleLoadedOnDemand(findModule(obj));
 }
 
-bool Kded::isModuleLoadedOnDemand(const KService::Ptr &module) const
+bool Kded::isModuleLoadedOnDemand(const KPluginMetaData &module) const
 {
+    if (!module.isValid()) {
+        return false;
+    }
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     bool loadOnDemand = true;
-    QVariant p = module->property(QStringLiteral("X-KDE-Kded-load-on-demand"), QVariant::Bool);
+    // use toVariant() since it could be string or bool in the json and QJsonObject does not convert
+    QVariant p = module.rawData().value(QStringLiteral("X-KDE-Kded-load-on-demand")).toVariant();
     if (p.isValid() && (p.toBool() == false)) {
         loadOnDemand = false;
     }
@@ -321,67 +359,68 @@ bool Kded::isModuleLoadedOnDemand(const KService::Ptr &module) const
 KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
 {
     // Make sure this method is only called with valid module names.
-    Q_ASSERT(obj.indexOf(QLatin1Char('/')) == -1);
-
+    if (obj.contains('/')) {
+        qCWarning(KDED) << "attempting to load invalid kded module name:" << obj;
+        return nullptr;
+    }
     KDEDModule *module = m_modules.value(obj, 0);
     if (module) {
         return module;
     }
-    KService::Ptr s = KService::serviceByDesktopPath(QStringLiteral("kded/") + obj + QStringLiteral(".desktop"));
-    return loadModule(s, onDemand);
+    return loadModule(findModule(obj), onDemand);
 }
 
-KDEDModule *Kded::loadModule(const KService::Ptr &s, bool onDemand)
+KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
 {
-    if (s && !s->library().isEmpty()) {
-        QString obj = s->desktopEntryName();
-        KDEDModule *oldModule = m_modules.value(obj, 0);
-        if (oldModule) {
-            return oldModule;
-        }
+    if (!module.isValid() || module.fileName().isEmpty()) {
+        qCWarning(KDED) << "attempted to load an invalid module.";
+        return nullptr;
+    }
+    const QString moduleId = module.pluginId();
+    KDEDModule *oldModule = m_modules.value(moduleId, 0);
+    if (oldModule) {
+        qCDebug(KDED) << "kded module" << moduleId << "is already loaded.";
+        return oldModule;
+    }
 
-        if (onDemand) {
-            QVariant p = s->property(QStringLiteral("X-KDE-Kded-load-on-demand"), QVariant::Bool);
-            if (p.isValid() && (p.toBool() == false)) {
-                noDemandLoad(s->desktopEntryName());
-                return 0;
-            }
-        }
-
-        KDEDModule *module = 0;
-
-        QString errorMessage;
-        QStringList libNames;
-        libNames << s->library()
-                 << "kded_" + s->library(); // old-style naming
-        Q_FOREACH(const QString &libname, libNames) {
-            KPluginLoader loader(libname);
-            KPluginFactory *factory = loader.factory();
-            if (factory) {
-                // create the module
-                module = factory->create<KDEDModule>(this);
-                if (module) {
-                    break;
-                }
-            } else {
-                errorMessage = loader.errorString();
-            }
-        }
-
-        if (module) {
-            module->setModuleName(obj);
-            m_modules.insert(obj, module);
-            //m_libs.insert(obj, lib);
-            connect(module, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
-            qCDebug(KDED) << "Successfully loaded module" << obj;
-            return module;
-        } else {
-            qCWarning(KDED) << "Could not load KDED module" << obj << ":"
-                       << errorMessage << "(tried plugins named:"
-                       << libNames << ")";
+    if (onDemand) {
+        // use toVariant() since it could be string or bool in the json and QJsonObject does not convert
+        QVariant p = module.rawData().value(QStringLiteral("X-KDE-Kded-load-on-demand")).toVariant();
+        if (p.isValid() && (p.toBool() == false)) {
+            noDemandLoad(moduleId);
+            return nullptr;
         }
     }
-    return 0;
+
+    KDEDModule *kdedModule = nullptr;
+
+    KPluginLoader loader(module.fileName());
+    KPluginFactory *factory = loader.factory();
+    if (factory) {
+        kdedModule = factory->create<KDEDModule>(this);
+    } else {
+        // TODO: remove this fallback code, the kded modules should all be fixed instead
+        KPluginLoader loader2("kded_" + module.fileName());
+        factory = loader2.factory();
+        if (factory) {
+            qCWarning(KDED).nospace() << "found kded module " << moduleId
+                << " by prepending 'kded_' to the library path, please fix your metadata.";
+            kdedModule = factory->create<KDEDModule>(this);
+        } else {
+            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":"
+                << loader.errorString() << " (library path was:" << module.fileName() << ")";
+        }
+    }
+
+    if (kdedModule) {
+        kdedModule->setModuleName(moduleId);
+        m_modules.insert(moduleId, kdedModule);
+        //m_libs.insert(moduleId, lib);
+        connect(kdedModule, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
+        qCDebug(KDED) << "Successfully loaded module" << moduleId;
+        return kdedModule;
+    }
+    return nullptr;
 }
 
 bool Kded::unloadModule(const QString &obj)
