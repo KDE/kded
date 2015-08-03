@@ -3,10 +3,10 @@
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
 ]>
 
-<refentry>
+<refentry lang="&language;">
 
 <refentryinfo>
-<title>KDED</title>
+<title>kded5 User's Manual</title>
 <author>
 <firstname>David</firstname>
 <surname>Faure</surname>
@@ -26,7 +26,8 @@
 </author>
 
 <date>2014-03-22</date>
-<releaseinfo>5.0</releaseinfo>
+<releaseinfo>Frameworks 5.0</releaseinfo>
+<productname>KDE Frameworks</productname>
 
 </refentryinfo>
 
