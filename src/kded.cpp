@@ -449,9 +449,6 @@ QStringList Kded::loadedModules()
 void Kded::slotKDEDModuleRemoved(KDEDModule *module)
 {
     m_modules.remove(module->moduleName());
-    //KLibrary *lib = m_libs.take(module->moduleName());
-    //if (lib)
-    //   lib->unload();
 }
 
 void Kded::slotApplicationRemoved(const QString &name)
@@ -621,48 +618,7 @@ void Kded::readDirectory(const QString &_path)
 
     Q_ASSERT(path != QDir::homePath());
     m_pDirWatch->addDir(path, KDirWatch::WatchFiles | KDirWatch::WatchSubDirs);       // add watch on this dir
-    return; // KDirWatch now claims to also support recursive watching
-#if 0
-    QDir d(_path, QString(), QDir::Unsorted, QDir::Readable | QDir::Executable | QDir::Dirs | QDir::Hidden);
-    // set QDir ...
-
-    //************************************************************************
-    //                           Setting dirs
-    //************************************************************************
-
-    if (!d.exists()) {                            // exists&isdir?
-        qCDebug(KDED) << "Does not exist:" << _path;
-        return;                             // return false
-    }
-
-    // Note: If some directory is gone, dirwatch will delete it from the list.
-
-    //************************************************************************
-    //                               Reading
-    //************************************************************************
-    QString file;
-    unsigned int i;                           // counter and string length.
-    unsigned int count = d.count();
-    for (i = 0; i < count; i++) {                       // check all entries
-        if (d[i] == "." || d[i] == ".." || d[i] == "magic") {
-            continue;    // discard those ".", "..", "magic"...
-        }
-
-        file = path;                           // set full path
-        file += d[i];                          // and add the file name.
-
-        readDirectory(file);        // yes, dive into it.
-    }
-#endif
 }
-
-/*
-bool Kded::isWindowRegistered(long windowId) const
-{
-  return m_globalWindowIdList.contains(windowId);
-
-}
-*/
 
 void Kded::registerWindowId(qlonglong windowId, const QString &sender)
 {
