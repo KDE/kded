@@ -37,7 +37,6 @@ class QDBusServiceWatcher;
 class KPluginMetaData;
 class KDirWatch;
 
-// No need for this in libkio - apps only get readonly access
 class Kded : public QObject
 {
     Q_OBJECT
@@ -72,7 +71,6 @@ public:
      */
     void unregisterWindowId(qlonglong windowId, const QString &sender);
     //@}
-    void recreate(const QDBusMessage &);
     void recreate(bool initial);
     void loadSecondPhase();
 
@@ -199,10 +197,6 @@ protected:
      */
     QTimer *m_pTimer;
 
-    QList<QDBusMessage> m_recreateRequests;
-    int m_recreateCount;
-    bool m_recreateBusy;
-
     QHash<QString, KDEDModule *> m_modules;
     //QHash<QString,KLibrary *> m_libs;
     QHash<QString, QObject *> m_dontLoad;
@@ -226,7 +220,7 @@ public:
     KBuildsycocaAdaptor(QObject *parent);
 
 public Q_SLOTS:
-    void recreate(const QDBusMessage &);
+    void recreate();
     bool isTestModeEnabled();
     void enableTestMode();
 };

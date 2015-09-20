@@ -57,44 +57,15 @@ Q_LOGGING_CATEGORY(KDED, "kf5.kded")
 
 Kded *Kded::_self = 0;
 
-static bool checkStamps;
 static bool delayedCheck;
 static bool bCheckSycoca;
 static bool bCheckUpdates;
-static bool s_checkStampsDefault = true;
 
 #ifdef Q_DBUS_EXPORT
 extern Q_DBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
 #else
 extern QDBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
 #endif
-
-static void runBuildSycoca(QObject *callBackObj = 0, const char *callBackSlot = 0)
-{
-    const QString exe = QStandardPaths::findExecutable(KBUILDSYCOCA_EXENAME);
-    Q_ASSERT(!exe.isEmpty());
-    QStringList args;
-    if (QStandardPaths::isTestModeEnabled()) {
-        args.append("--testmode");
-    }
-    if (checkStamps) {
-        args.append("--checkstamps");
-    }
-    if (delayedCheck) {
-        args.append("--nocheckfiles");
-    } else {
-        checkStamps = false;    // useful only during kded startup
-    }
-    if (callBackObj) {
-        QVariantList argList;
-        argList << exe << args << QStringList() << QString();
-        KToolInvocation::ensureKdeinitRunning();
-        QDBusInterface klauncher(QStringLiteral("org.kde.klauncher5"), QStringLiteral("/KLauncher"), QStringLiteral("org.kde.KLauncher"), QDBusConnection::sessionBus());
-        klauncher.callWithCallback("kdeinit_exec_wait", argList, callBackObj, callBackSlot);
-    } else {
-        KToolInvocation::kdeinitExecWait(exe, args);
-    }
-}
 
 static void runKonfUpdate()
 {
@@ -105,8 +76,6 @@ static void runKonfUpdate()
 Kded::Kded()
     : m_pDirWatch(0)
     , m_pTimer(new QTimer(this))
-    , m_recreateCount(0)
-    , m_recreateBusy(false)
     , m_needDelayedCheck(false)
 {
     _self = this;
@@ -534,19 +503,19 @@ void Kded::runDelayedCheck()
 
 void Kded::recreate(bool initial)
 {
-    m_recreateBusy = true;
     // Using KLauncher here is difficult since we might not have a
     // database
 
     if (!initial) {
         updateDirWatch(); // Update tree first, to be sure to miss nothing.
-        runBuildSycoca(this, SLOT(recreateDone()));
+        KSycoca::self()->ensureCacheValid();
+        recreateDone();
     } else {
         if (!delayedCheck) {
             updateDirWatch();    // this would search all the directories
         }
         if (bCheckSycoca) {
-            runBuildSycoca();
+            KSycoca::self()->ensureCacheValid();
         }
         recreateDone();
         if (delayedCheck) {
@@ -564,19 +533,7 @@ void Kded::recreateDone()
 {
     updateResourceList();
 
-    for (; m_recreateCount; m_recreateCount--) {
-        QDBusMessage msg = m_recreateRequests.takeFirst();
-        QDBusConnection::sessionBus().send(msg.createReply());
-    }
-    m_recreateBusy = false;
-
-    // Did a new request come in while building?
-    if (!m_recreateRequests.isEmpty()) {
-        m_pTimer->start(2000);
-        m_recreateCount = m_recreateRequests.count();
-    } else {
-        initModules();
-    }
+    initModules();
 }
 
 void Kded::dirDeleted(const QString &path)
@@ -586,23 +543,7 @@ void Kded::dirDeleted(const QString &path)
 
 void Kded::update(const QString &)
 {
-    if (!m_recreateBusy) {
-        m_pTimer->start(10000);
-    }
-}
-
-void Kded::recreate(const QDBusMessage &msg)
-{
-    if (!m_recreateBusy) {
-        if (m_recreateRequests.isEmpty()) {
-            m_pTimer->start(0);
-            m_recreateCount = 0;
-        }
-        m_recreateCount++;
-    }
-    msg.setDelayedReply(true);
-    m_recreateRequests.append(msg);
-    return;
+    m_pTimer->start(10000);
 }
 
 void Kded::readDirectory(const QString &_path)
@@ -710,16 +651,18 @@ KBuildsycocaAdaptor::KBuildsycocaAdaptor(QObject *parent)
 {
 }
 
-void KBuildsycocaAdaptor::recreate(const QDBusMessage &msg)
+void KBuildsycocaAdaptor::recreate()
 {
-    Kded::self()->recreate(msg);
+    Kded::self()->recreate();
 }
 
+// KF6: remove
 bool KBuildsycocaAdaptor::isTestModeEnabled()
 {
     return QStandardPaths::isTestModeEnabled();
 }
 
+// KF6: remove
 void KBuildsycocaAdaptor::enableTestMode()
 {
     QStandardPaths::enableTestMode(true);
@@ -744,11 +687,7 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
         QCoreApplication app(argc, argv);
         setupAppInfo(&app);
 
-        KSharedConfig::Ptr config = KSharedConfig::openConfig();
-        KConfigGroup cg(config, "General");
-        checkStamps = cg.readEntry("CheckFileStamps", s_checkStampsDefault);
-
-        runBuildSycoca();
+        KSycoca::self()->ensureCacheValid();
         runKonfUpdate();
         return 0;
     }
@@ -765,7 +704,6 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
 
     bCheckSycoca = cg.readEntry("CheckSycoca", true);
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
-    checkStamps = cg.readEntry("CheckFileStamps", s_checkStampsDefault);
     delayedCheck = cg.readEntry("DelayedCheck", false);
 
 #ifndef Q_OS_WIN
