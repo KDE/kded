@@ -22,7 +22,7 @@ find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Crash ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5DBusAddons ${KF5_DEP_VERSION} REQUIRED)
-find_package(KF5DocTools ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5DocTools ${KF5_DEP_VERSION})
 find_package(KF5Init ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
@@ -43,10 +43,13 @@ ecm_setup_version(
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
-if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
-    kdoctools_install(po)
+if (KF5DocTools_FOUND)
+    if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
+        kdoctools_install(po)
+    endif()
+    add_subdirectory(docs)
 endif()
-add_subdirectory(docs)
+
 add_subdirectory(src)
 
 # Create a Config.cmake and a ConfigVersion.cmake file and install them
