@@ -30,6 +30,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
+#include <QtCore/QCommandLineParser>
 #include <QApplication>
 
 #include <QDBusConnection>
@@ -672,6 +673,7 @@ static void setupAppInfo(QCoreApplication *app)
 {
     app->setApplicationName("kded5");
     app->setOrganizationDomain("kde.org");
+    app->setApplicationVersion(KDED_VERSION_STRING);
 }
 
 extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
@@ -681,21 +683,24 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     // WABA: Make sure not to enable session management.
     putenv(qstrdup("SESSION_MANAGER="));
 
-    // Parse command line before checking D-Bus
-    if (argc > 1 && QByteArray(argv[1]) == "--check") {
-        // KDBusService not wanted here.
-        QCoreApplication app(argc, argv);
-        setupAppInfo(&app);
+    QApplication app(argc, argv);
+    app.setApplicationDisplayName("KDE Daemon");
+    setupAppInfo(&app);
+    app.setQuitOnLastWindowClosed(false);
 
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addOption(QCommandLineOption(QStringLiteral("check"), QStringLiteral("Check cache validity")));
+    parser.process(app);
+
+    // Parse command line before checking D-Bus
+    if (parser.isSet(QStringLiteral("check"))) {
+        // KDBusService not wanted here.
         KSycoca::self()->ensureCacheValid();
         runKonfUpdate();
         return 0;
     }
-
-    QApplication app(argc, argv);
-    setupAppInfo(&app);
-    app.setApplicationDisplayName("KDE Daemon");
-    app.setQuitOnLastWindowClosed(false);
 
     KDBusService service(KDBusService::Unique);
 
