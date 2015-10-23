@@ -681,7 +681,7 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     //options.add("check", qi18n("Check Sycoca database only once"));
 
     // WABA: Make sure not to enable session management.
-    putenv(qstrdup("SESSION_MANAGER"));
+    qunsetenv("SESSION_MANAGER");
 
     QApplication app(argc, argv);
     app.setApplicationDisplayName("KDE Daemon");
