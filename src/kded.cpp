@@ -684,6 +684,10 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     // WABA: Make sure not to enable session management.
     qunsetenv("SESSION_MANAGER");
 
+    // In older versions, QApplication creation was postponed until after
+    // testing for --check, in which case, only a QCoreApplication was created.
+    // Since that option is no longer used at startup, we removed that speed
+    // optimization for code clarity and easier support of standard parameters.
     QApplication app(argc, argv);
     setupAppInfo(&app);
     app.setQuitOnLastWindowClosed(false);
