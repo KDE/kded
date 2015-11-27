@@ -672,6 +672,7 @@ void KBuildsycocaAdaptor::enableTestMode()
 static void setupAppInfo(QCoreApplication *app)
 {
     app->setApplicationName("kded5");
+    app->setApplicationDisplayName("KDE Daemon");
     app->setOrganizationDomain("kde.org");
     app->setApplicationVersion(KDED_VERSION_STRING);
 }
@@ -684,7 +685,6 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     qunsetenv("SESSION_MANAGER");
 
     QApplication app(argc, argv);
-    app.setApplicationDisplayName("KDE Daemon");
     setupAppInfo(&app);
     app.setQuitOnLastWindowClosed(false);
 
