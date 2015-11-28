@@ -669,7 +669,7 @@ void KBuildsycocaAdaptor::enableTestMode()
     QStandardPaths::enableTestMode(true);
 }
 
-static void setupAppInfo(QCoreApplication *app)
+static void setupAppInfo(QApplication *app)
 {
     app->setApplicationName("kded5");
     app->setApplicationDisplayName("KDE Daemon");
