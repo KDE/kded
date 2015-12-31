@@ -52,7 +52,6 @@ public:
 
     void noDemandLoad(const QString &obj); // Don't load obj on demand
 
-    KDEDModule *loadModule(const QString &obj, bool onDemand);
     QStringList loadedModules();
     bool unloadModule(const QString &obj);
     //bool isWindowRegistered(qlonglong windowId) const;
@@ -109,6 +108,8 @@ public:
     void setModuleAutoloading(const QString &module, bool autoload);
 
 public Q_SLOTS:
+    KDEDModule *loadModule(const QString &obj, bool onDemand);
+
     /**
      * Loads / unloads modules according to config
      */

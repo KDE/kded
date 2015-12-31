@@ -140,11 +140,10 @@ void Kded::messageFilter(const QDBusMessage &message)
         return;
     }
 
-    KDEDModule *module = self()->loadModule(obj, true);
-    if (!module) {
-        qCWarning(KDED) << "Failed to load module for " << obj;
-    }
-    Q_UNUSED(module);
+    // messageFilter runs in a secondary thread since Qt 5.6, so we use invokeMethod
+    // to load the module in the main thread. But we need to block so that the object
+    // can then process the message.
+    QMetaObject::invokeMethod(self(), "loadModule", Qt::BlockingQueuedConnection, Q_ARG(QString, obj), Q_ARG(bool, true));
 }
 
 static int phaseForModule(const KPluginMetaData &module)
