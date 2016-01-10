@@ -34,6 +34,7 @@
 #include <QApplication>
 
 #include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusServiceWatcher>
 #include <QDBusPendingCall>
@@ -710,6 +711,21 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     }
 
     KDBusService service(KDBusService::Unique);
+
+    QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
+    // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
+    // so that the calling code is independent from the physical "location" of the service.
+    const QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
+    foreach (const KPluginMetaData &metaData, plugins) {
+        const QString serviceName = metaData.rawData().value(QStringLiteral("X-KDE-DBus-ServiceName")).toString();
+        if (serviceName.isEmpty()) {
+            qCWarning(KDED) << "No X-KDE-DBus-ServiceName found in" << metaData.fileName();
+            continue;
+        }
+        if (!bus->registerService(serviceName)) {
+            qCWarning(KDED) << "Couldn't register name" << serviceName << "with DBUS - another process owns it already!";
+        }
+    }
 
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     KConfigGroup cg(config, "General");
