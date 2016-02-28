@@ -146,19 +146,19 @@ void Kded::messageFilter(const QDBusMessage &message)
 
 static int phaseForModule(const KPluginMetaData &module)
 {
-    const QVariant phasev = module.rawData().value("X-KDE-Kded-phase").toVariant();
+    const QVariant phasev = module.rawData().value(QStringLiteral("X-KDE-Kded-phase")).toVariant();
     return phasev.isValid() ? phasev.toInt() : 2;
 }
 
 QVector<KPluginMetaData> Kded::availableModules() const
 {
-    QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins("kf5/kded");
+    QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
     QSet<QString> moduleIds;
     foreach (const KPluginMetaData &md, plugins) {
         moduleIds.insert(md.pluginId());
     }
     // also search for old .desktop based kded modules
-    KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query("KDEDModule"));
+    KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query(QStringLiteral("KDEDModule")));
     foreach (const KPluginInfo &info, oldStylePlugins) {
         if (moduleIds.contains(info.pluginName())) {
             qCWarning(KDED).nospace() << "kded module " << info.pluginName() << " has already been found using "
@@ -287,7 +287,7 @@ void Kded::setModuleAutoloading(const QString &obj, bool autoload)
     if (!module.isValid()) {
         return;
     }
-    KConfigGroup cg(config, QString("Module-").append(module.pluginId()));
+    KConfigGroup cg(config, QStringLiteral("Module-").append(module.pluginId()));
     cg.writeEntry("autoload", autoload);
     cg.sync();
 }
@@ -304,7 +304,7 @@ bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
     }
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
     bool autoload = module.rawData().value(QStringLiteral("X-KDE-Kded-autoload")).toVariant().toBool();
-    KConfigGroup cg(config, QString("Module-").append(module.pluginId()));
+    KConfigGroup cg(config, QStringLiteral("Module-").append(module.pluginId()));
     autoload = cg.readEntry("autoload", autoload);
     return autoload;
 }
@@ -612,7 +612,7 @@ KUpdateD::KUpdateD()
     QObject::connect(m_pDirWatch, &KDirWatch::dirty,
                      this, &KUpdateD::slotNewUpdateFile);
 
-    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "kconf_update", QStandardPaths::LocateDirectory);
+    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("kconf_update"), QStandardPaths::LocateDirectory);
     for (QStringList::ConstIterator it = dirs.begin();
             it != dirs.end();
             ++it) {
@@ -668,10 +668,10 @@ void KBuildsycocaAdaptor::enableTestMode()
 
 static void setupAppInfo(QApplication *app)
 {
-    app->setApplicationName("kded5");
-    app->setApplicationDisplayName("KDE Daemon");
-    app->setOrganizationDomain("kde.org");
-    app->setApplicationVersion(KDED_VERSION_STRING);
+    app->setApplicationName(QStringLiteral("kded5"));
+    app->setApplicationDisplayName(QStringLiteral("KDE Daemon"));
+    app->setOrganizationDomain(QStringLiteral("kde.org"));
+    app->setApplicationVersion(QStringLiteral(KDED_VERSION_STRING));
 }
 
 extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
