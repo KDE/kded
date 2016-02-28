@@ -192,7 +192,7 @@ static KPluginMetaData findModule(const QString &id)
 void Kded::initModules()
 {
     m_dontLoad.clear();
-    bool kde_running = !qgetenv("KDE_FULL_SESSION").isEmpty();
+    bool kde_running = !qEnvironmentVariableIsEmpty("KDE_FULL_SESSION");
     if (kde_running) {
 #ifndef Q_OS_WIN
         // not the same user like the one running the session (most likely we're run via sudo or something)
@@ -276,7 +276,7 @@ void Kded::loadSecondPhase()
 
 void Kded::noDemandLoad(const QString &obj)
 {
-    m_dontLoad.insert(obj.toLatin1(), this);
+    m_dontLoad.insert(obj, this);
 }
 
 void Kded::setModuleAutoloading(const QString &obj, bool autoload)
@@ -332,7 +332,7 @@ bool Kded::isModuleLoadedOnDemand(const KPluginMetaData &module) const
 KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
 {
     // Make sure this method is only called with valid module names.
-    if (obj.contains('/')) {
+    if (obj.contains(QLatin1Char('/'))) {
         qCWarning(KDED) << "attempting to load invalid kded module name:" << obj;
         return nullptr;
     }
@@ -373,7 +373,7 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
         kdedModule = factory->create<KDEDModule>(this);
     } else {
         // TODO: remove this fallback code, the kded modules should all be fixed instead
-        KPluginLoader loader2("kded_" + module.fileName());
+        KPluginLoader loader2(QStringLiteral("kded_") + module.fileName());
         factory = loader2.factory();
         if (factory) {
             qCWarning(KDED).nospace() << "found kded module " << moduleId
@@ -618,8 +618,8 @@ KUpdateD::KUpdateD()
             ++it) {
         QString path = *it;
         Q_ASSERT(path != QDir::homePath());
-        if (path[path.length() - 1] != '/') {
-            path += '/';
+        if (path[path.length() - 1] != QLatin1Char('/')) {
+            path += QLatin1Char('/');
         }
 
         if (!m_pDirWatch->contains(path)) {
