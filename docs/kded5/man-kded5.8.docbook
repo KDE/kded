@@ -132,7 +132,7 @@
 
 <refsect1>
 <title>Bugs</title>
-<para>There are probably tons of bugs. Use <ulink url="http://bugs.kde.org">KDE's bugtracker</ulink> to report them.</para>
+<para>Please use <ulink url="http://bugs.kde.org">KDE's bugtracker</ulink> to report bugs.</para>
 </refsect1>
 
 </refentry>
