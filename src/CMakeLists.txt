@@ -3,12 +3,7 @@ set(kded_KDEINIT_SRCS kded.cpp kdedadaptor.cpp
 )
 
 kf5_add_kdeinit_executable(kded5 ${kded_KDEINIT_SRCS})
-
-if (APPLE)
-    set_target_properties(kded5 PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.template)
-    set_target_properties(kded5 PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kded.kded5")
-    set_target_properties(kded5 PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Daemon")
-endif ()
+ecm_mark_nongui_executable(kded5)
 
 target_link_libraries(kdeinit_kded5
     Qt5::Widgets # QApplication
@@ -17,6 +12,9 @@ target_link_libraries(kdeinit_kded5
     KF5::DBusAddons # Needed for kdedmodule.h
     KF5::Crash # Sets it as autostart
 )
+if(APPLE)
+    target_link_libraries(kdeinit_kded5 "-framework CoreFoundation")
+endif()
 target_compile_definitions(kdeinit_kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )

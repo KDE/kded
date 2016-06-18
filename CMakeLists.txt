@@ -29,6 +29,7 @@ find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
+include(ECMMarkNonGuiExecutable)
 
 ecm_setup_version(
   ${KF5_VERSION}
