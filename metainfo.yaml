@@ -3,7 +3,7 @@ description: Extensible deamon for providing system level services
 tier: 3
 type: solution
 platforms:
-    - Linux
+    - name: Linux
 portingAid: false
 deprecated: false
 release: true
