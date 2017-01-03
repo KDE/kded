@@ -27,7 +27,7 @@ find_package(KF5Init ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
 
-include(ECMPackageConfigHelpers)
+include(CMakePackageConfigHelpers)
 include(ECMSetupVersion)
 include(ECMMarkNonGuiExecutable)
 
@@ -53,7 +53,7 @@ add_subdirectory(src)
 # Create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KDED")
 
-ecm_configure_package_config_file(
+configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KDEDConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfig.cmake"
   PATH_VARS KDE_INSTALL_DBUSINTERFACEDIR
