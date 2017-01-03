@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(KDED)
+set(KF5_VERSION "5.30.0") # handled by release scripts
+set(KF5_DEP_VERSION "5.29.0") # handled by release scripts
+project(KDED VERSION ${KF5_VERSION})
 
 include(FeatureSummary)
 find_package(ECM 5.29.0  NO_MODULE)
@@ -16,8 +18,6 @@ include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
-set(KF5_VERSION "5.30.0") # handled by release scripts
-set(KF5_DEP_VERSION "5.29.0") # handled by release scripts
 find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Crash ${KF5_DEP_VERSION} REQUIRED)
@@ -32,7 +32,7 @@ include(ECMSetupVersion)
 include(ECMMarkNonGuiExecutable)
 
 ecm_setup_version(
-  ${KF5_VERSION}
+  PROJECT
   VARIABLE_PREFIX KDED
   VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/kded_version.h"
   PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfigVersion.cmake"
