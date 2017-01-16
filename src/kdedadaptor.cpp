@@ -41,7 +41,7 @@ bool KdedAdaptor::isModuleLoadedOnDemand(const QString &module)
 
 bool KdedAdaptor::loadModule(const QString &module)
 {
-    return Kded::self()->loadModule(module, false) != 0;
+    return Kded::self()->loadModule(module, false) != nullptr;
 }
 
 bool KdedAdaptor::unloadModule(const QString &module)

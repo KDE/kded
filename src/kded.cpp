@@ -61,7 +61,7 @@ Q_LOGGING_CATEGORY(KDED, "kf5.kded", QtWarningMsg)
 Q_LOGGING_CATEGORY(KDED, "kf5.kded")
 #endif
 
-Kded *Kded::_self = 0;
+Kded *Kded::_self = nullptr;
 
 static bool delayedCheck;
 static bool bCheckSycoca;
@@ -76,11 +76,11 @@ extern QDBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
 static void runKonfUpdate()
 {
     KToolInvocation::kdeinitExecWait(QStringLiteral(KCONF_UPDATE_EXE),
-            QStringList(), 0, 0, "0" /*no startup notification*/);
+            QStringList(), nullptr, nullptr, "0" /*no startup notification*/);
 }
 
 Kded::Kded()
-    : m_pDirWatch(0)
+    : m_pDirWatch(nullptr)
     , m_pTimer(new QTimer(this))
     , m_needDelayedCheck(false)
 {
@@ -107,7 +107,7 @@ Kded::Kded()
 
 Kded::~Kded()
 {
-    _self = 0;
+    _self = nullptr;
     m_pTimer->stop();
     delete m_pTimer;
     delete m_pDirWatch;
@@ -141,7 +141,7 @@ void Kded::messageFilter(const QDBusMessage &message)
         return;
     }
 
-    if (self()->m_dontLoad.value(obj, 0)) {
+    if (self()->m_dontLoad.value(obj, nullptr)) {
         return;
     }
 
@@ -347,7 +347,7 @@ KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
         qCWarning(KDED) << "attempting to load invalid kded module name:" << obj;
         return nullptr;
     }
-    KDEDModule *module = m_modules.value(obj, 0);
+    KDEDModule *module = m_modules.value(obj, nullptr);
     if (module) {
         return module;
     }
@@ -361,7 +361,7 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
         return nullptr;
     }
     const QString moduleId = module.pluginId();
-    KDEDModule *oldModule = m_modules.value(moduleId, 0);
+    KDEDModule *oldModule = m_modules.value(moduleId, nullptr);
     if (oldModule) {
         qCDebug(KDED) << "kded module" << moduleId << "is already loaded.";
         return oldModule;
@@ -409,7 +409,7 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
 
 bool Kded::unloadModule(const QString &obj)
 {
-    KDEDModule *module = m_modules.value(obj, 0);
+    KDEDModule *module = m_modules.value(obj, nullptr);
     if (!module) {
         return false;
     }
