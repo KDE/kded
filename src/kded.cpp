@@ -231,6 +231,9 @@ void Kded::initModules()
     foreach (const KPluginMetaData &module, kdedModules) {
         // Should the service load on startup?
         const bool autoload = isModuleAutoloaded(module);
+        if (!platformSupportsModule(module)) {
+            continue;
+        }
 
         // see ksmserver's README for description of the phases
         bool prevent_autoload = false;
@@ -318,6 +321,13 @@ bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
     KConfigGroup cg(config, QStringLiteral("Module-").append(module.pluginId()));
     autoload = cg.readEntry("autoload", autoload);
     return autoload;
+}
+
+bool Kded::platformSupportsModule(const KPluginMetaData &module) const
+{
+    const QStringList supportedPlatforms = KPluginMetaData::readStringList(module.rawData(), QStringLiteral("X-KDE-OnlyShowOnQtPlatforms"));
+
+    return supportedPlatforms.isEmpty() || supportedPlatforms.contains(qApp->platformName());
 }
 
 bool Kded::isModuleLoadedOnDemand(const QString &obj) const

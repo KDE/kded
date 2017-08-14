@@ -85,6 +85,13 @@ public:
 
     //@{
     /**
+     * Check if a module is supported on the current QPA
+     */
+    bool platformSupportsModule(const KPluginMetaData &module) const;
+    //@}
+
+    //@{
+    /**
      * Check if a module should be loaded on demand
      *
      * @param module the name of the desktop file for the module, without the .desktop extension
