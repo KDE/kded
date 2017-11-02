@@ -37,7 +37,6 @@
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusServiceWatcher>
-#include <QDBusPendingCall>
 
 #include <KDBusService>
 #include <kconfiggroup.h>
@@ -777,27 +776,7 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
         (void) new KUpdateD;    // Watch for updates
     }
 
-//NOTE: We are going to change how KDE starts and this certanly doesn't fit on the new design.
-#ifdef Q_OS_LINUX
-    // Tell KSplash that KDED has started
-    QDBusMessage ksplashProgressMessage = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KSplash"),
-                                          QStringLiteral("/KSplash"),
-                                          QStringLiteral("org.kde.KSplash"),
-                                          QStringLiteral("setStage"));
-    ksplashProgressMessage.setArguments(QList<QVariant>() << QStringLiteral("kded"));
-    QDBusConnection::sessionBus().asyncCall(ksplashProgressMessage);
-#endif
-
     runKonfUpdate(); // Run it once.
-
-#ifdef Q_OS_LINUX
-    ksplashProgressMessage = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KSplash"),
-                             QStringLiteral("/KSplash"),
-                             QStringLiteral("org.kde.KSplash"),
-                             QStringLiteral("setStage"));
-    ksplashProgressMessage.setArguments(QList<QVariant>() << QStringLiteral("confupdate"));
-    QDBusConnection::sessionBus().asyncCall(ksplashProgressMessage);
-#endif
 
     int result = app.exec(); // keep running
 
