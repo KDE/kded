@@ -53,12 +53,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(KDED)
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
-// logging category for this framework, default: log stuff >= warning
 Q_LOGGING_CATEGORY(KDED, "kf5.kded", QtWarningMsg)
-#else
-Q_LOGGING_CATEGORY(KDED, "kf5.kded")
-#endif
 
 Kded *Kded::_self = nullptr;
 
