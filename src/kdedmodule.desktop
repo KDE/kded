@@ -107,3 +107,5 @@ Type=QString
 Type=bool
 [PropertyDef::X-KDE-Kded-load-on-demand]
 Type=bool
+[PropertyDef::X-KDE-Kded-phase]
+Type=int
