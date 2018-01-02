@@ -533,7 +533,7 @@ void Kded::recreate(bool initial)
         recreateDone();
         if (delayedCheck) {
             // do a proper ksycoca check after a delay
-            QTimer::singleShot(60000, this, SLOT(runDelayedCheck()));
+            QTimer::singleShot(60000, this, &Kded::runDelayedCheck);
             m_needDelayedCheck = true;
             delayedCheck = false;
         } else {
