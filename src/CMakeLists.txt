@@ -31,9 +31,6 @@ install(TARGETS kded5 EXPORT KDEDTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS} )
 qt5_generate_dbus_interface( kdedadaptor.h org.kde.kded5.xml )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
-configure_file(org.kde.kded5.service.in
-               ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.service)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.service
-        DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
+kdbusaddons_generate_dbus_service_file(kded5 org.kde.kded5 ${KDE_INSTALL_FULL_BINDIR})
 
 install( FILES kdedmodule.desktop DESTINATION  ${KDE_INSTALL_KSERVICETYPES5DIR} )
