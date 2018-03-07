@@ -109,3 +109,6 @@ Type=bool
 Type=bool
 [PropertyDef::X-KDE-Kded-phase]
 Type=int
+# the list of ids of QPAs the module supports, if empty list or not set all are supported
+[PropertyDef::X-KDE-OnlyShowOnQtPlatforms]
+Type=QStringList
