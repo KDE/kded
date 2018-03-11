@@ -27,10 +27,10 @@
 
 #include <QDebug>
 #include <QLoggingCategory>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QTimer>
-#include <QtCore/QCommandLineParser>
+#include <QDir>
+#include <QFile>
+#include <QTimer>
+#include <QCommandLineParser>
 #include <QApplication>
 
 #include <QDBusConnection>

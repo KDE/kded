@@ -20,11 +20,11 @@
 #ifndef KDED_H
 #define KDED_H
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QTimer>
-#include <QtCore/QHash>
-#include <QtCore/QSet>
+#include <QObject>
+#include <QString>
+#include <QTimer>
+#include <QHash>
+#include <QSet>
 
 #include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
