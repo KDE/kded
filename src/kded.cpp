@@ -689,6 +689,33 @@ static void setupAppInfo(QApplication *app)
     app->setApplicationVersion(QStringLiteral(KDED_VERSION_STRING));
 }
 
+static bool detectPlatform(int argc, char **argv)
+{
+    if (qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
+        return false;
+    }
+    for (int i = 0; i < argc; i++) {
+        if (qstrcmp(argv[i], "-platform") == 0 ||
+                qstrcmp(argv[i], "--platform") == 0 ||
+                QByteArray(argv[i]).startsWith("-platform=") ||
+                QByteArray(argv[i]).startsWith("--platform=")) {
+            return false;
+        }
+    }
+    const QByteArray sessionType = qgetenv("XDG_SESSION_TYPE");
+    if (sessionType.isEmpty()) {
+        return false;
+    }
+    if (qstrcmp(sessionType, "wayland") == 0) {
+        qputenv("QT_QPA_PLATFORM", "wayland");
+        return true;
+    } else if (qstrcmp(sessionType, "x11") == 0) {
+        qputenv("QT_QPA_PLATFORM", "xcb");
+        return true;
+    }
+    return false;
+}
+
 extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
 {
 #ifdef Q_OS_OSX
@@ -710,11 +737,16 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     // WABA: Make sure not to enable session management.
     qunsetenv("SESSION_MANAGER");
 
+    const bool unsetQpa = detectPlatform(argc, argv);
+
     // In older versions, QApplication creation was postponed until after
     // testing for --check, in which case, only a QCoreApplication was created.
     // Since that option is no longer used at startup, we removed that speed
     // optimization for code clarity and easier support of standard parameters.
     QApplication app(argc, argv);
+    if (unsetQpa) {
+        qunsetenv("QT_QPA_PLATFORM");
+    }
     setupAppInfo(&app);
     app.setQuitOnLastWindowClosed(false);
 
