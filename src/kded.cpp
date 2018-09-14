@@ -676,9 +676,9 @@ bool KBuildsycocaAdaptor::isTestModeEnabled()
 }
 
 // KF6: remove
-void KBuildsycocaAdaptor::enableTestMode()
+void KBuildsycocaAdaptor::setTestModeEnabled()
 {
-    QStandardPaths::enableTestMode(true);
+    QStandardPaths::setTestModeEnabled(true);
 }
 
 static void setupAppInfo(QApplication *app)

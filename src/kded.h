@@ -230,7 +230,7 @@ public:
 public Q_SLOTS:
     void recreate();
     bool isTestModeEnabled();
-    void enableTestMode();
+    void setTestModeEnabled();
 };
 
 class KUpdateD : public QObject

@@ -47,6 +47,11 @@ if (KF5DocTools_FOUND)
     endif()
     add_subdirectory(docs)
 endif()
+add_definitions(-DQT_NO_CAST_FROM_ASCII)
+add_definitions(-DQT_NO_CAST_TO_ASCII)
+add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
+add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
+add_definitions(-DQT_USE_QSTRINGBUILDER)
 
 add_subdirectory(src)
 
