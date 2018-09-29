@@ -773,7 +773,6 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     foreach (const KPluginMetaData &metaData, plugins) {
         const QString serviceName = metaData.rawData().value(QStringLiteral("X-KDE-DBus-ServiceName")).toString();
         if (serviceName.isEmpty()) {
-            qCWarning(KDED) << "No X-KDE-DBus-ServiceName found in" << metaData.fileName();
             continue;
         }
         if (!bus->registerService(serviceName)) {
