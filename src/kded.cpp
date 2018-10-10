@@ -218,7 +218,7 @@ void Kded::initModules()
     // If kded is restarted by its crashhandled or by hand,
     // then there will be no second phase autoload, so load
     // these modules now, if in a KDE session.
-    const bool loadPhase2Now = (kde_running && qgetenv("KDED_STARTED_BY_KDEINIT").toInt() == 0);
+    const bool loadPhase2Now = (kde_running && qEnvironmentVariableIntValue("KDED_STARTED_BY_KDEINIT") == 0);
 
     // Preload kded modules.
     const QVector<KPluginMetaData> kdedModules = availableModules();
