@@ -73,5 +73,6 @@ install(EXPORT
   FILE KDEDTargets.cmake
   NAMESPACE KF5::
 )
+install(FILES kded.categories DESTINATION ${KDE_INSTALL_CONFDIR})
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)
