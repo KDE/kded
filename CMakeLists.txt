@@ -40,7 +40,7 @@ ecm_setup_version(
 
 # We don't install kded_version.h, it's only useful internally
 # (given that this framework produces no library)
-
+#add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
 if (KF5DocTools_FOUND)
     if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
         kdoctools_install(po)
