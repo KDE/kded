@@ -152,12 +152,12 @@ QVector<KPluginMetaData> Kded::availableModules() const
 {
     QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
     QSet<QString> moduleIds;
-    foreach (const KPluginMetaData &md, plugins) {
+    for (const KPluginMetaData &md : qAsConst(plugins)) {
         moduleIds.insert(md.pluginId());
     }
     // also search for old .desktop based kded modules
-    KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query(QStringLiteral("KDEDModule")));
-    foreach (const KPluginInfo &info, oldStylePlugins) {
+    const KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query(QStringLiteral("KDEDModule")));
+    for (const KPluginInfo &info : oldStylePlugins) {
         if (moduleIds.contains(info.pluginName())) {
             qCWarning(KDED).nospace() << "kded module " << info.pluginName() << " has already been found using "
                 "JSON metadata, please don't install the now unneeded .desktop file (" << info.entryPath() << ").";
@@ -222,7 +222,7 @@ void Kded::initModules()
 
     // Preload kded modules.
     const QVector<KPluginMetaData> kdedModules = availableModules();
-    foreach (const KPluginMetaData &module, kdedModules) {
+    for (const KPluginMetaData &module : kdedModules) {
         // Should the service load on startup?
         const bool autoload = isModuleAutoloaded(module);
         if (!platformSupportsModule(module)) {
@@ -272,8 +272,8 @@ void Kded::loadSecondPhase()
 {
     qCDebug(KDED) << "Loading second phase autoload";
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    QVector<KPluginMetaData> kdedModules = availableModules();
-    foreach (const KPluginMetaData &module, kdedModules) {
+    const QVector<KPluginMetaData> kdedModules = availableModules();
+    for (const KPluginMetaData &module : kdedModules) {
         const bool autoload = isModuleAutoloaded(module);
         if (autoload && phaseForModule(module) == 2) {
             qCDebug(KDED) << "2nd phase: loading" << module.pluginId();
@@ -446,7 +446,7 @@ void Kded::slotApplicationRemoved(const QString &name)
             it != windowIds.end(); ++it) {
         qlonglong windowId = *it;
         m_globalWindowIdList.remove(windowId);
-        foreach (KDEDModule *module, m_modules) {
+        for (KDEDModule *module : qAsConst(m_modules)) {
             emit module->windowUnregistered(windowId);
         }
     }
@@ -585,7 +585,7 @@ void Kded::registerWindowId(qlonglong windowId, const QString &sender)
     windowIds.append(windowId);
     m_windowIdList.insert(sender, windowIds);
 
-    foreach (KDEDModule *module, m_modules) {
+    for (KDEDModule *module : qAsConst(m_modules)) {
         qCDebug(KDED) << module->moduleName();
         emit module->windowRegistered(windowId);
     }
@@ -605,7 +605,7 @@ void Kded::unregisterWindowId(qlonglong windowId, const QString &sender)
         }
     }
 
-    foreach (KDEDModule *module, m_modules) {
+    for (KDEDModule *module : qAsConst(m_modules)) {
         qCDebug(KDED) << module->moduleName();
         emit module->windowUnregistered(windowId);
     }
@@ -770,7 +770,7 @@ extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
     // so that the calling code is independent from the physical "location" of the service.
     const QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
-    foreach (const KPluginMetaData &metaData, plugins) {
+    for (const KPluginMetaData &metaData : plugins) {
         const QString serviceName = metaData.rawData().value(QStringLiteral("X-KDE-DBus-ServiceName")).toString();
         if (serviceName.isEmpty()) {
             continue;
