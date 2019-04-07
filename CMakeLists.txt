@@ -75,5 +75,6 @@ install(EXPORT
   NAMESPACE KF5::
 )
 install(FILES kded.categories DESTINATION ${KDE_INSTALL_CONFDIR})
+install(FILES org.kde.kded5.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)
