@@ -25,17 +25,14 @@
 
 #include <qplatformdefs.h>
 
-#include <QDebug>
 #include <QLoggingCategory>
 #include <QDir>
-#include <QFile>
 #include <QTimer>
 #include <QCommandLineParser>
 #include <QApplication>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
-#include <QDBusInterface>
 #include <QDBusServiceWatcher>
 
 #include <KDBusService>

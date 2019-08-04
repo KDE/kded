@@ -26,7 +26,6 @@
 #include <QHash>
 #include <QSet>
 
-#include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
 
 #include <ksycoca.h>
