@@ -1,11 +1,11 @@
-set(kded_KDEINIT_SRCS kded.cpp kdedadaptor.cpp
+set(kded_SRCS kded.cpp kdedadaptor.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml # just so that it gets generated
 )
 
-kf5_add_kdeinit_executable(kded5 ${kded_KDEINIT_SRCS})
+add_executable(kded5 ${kded_SRCS})
 ecm_mark_nongui_executable(kded5)
 
-target_link_libraries(kdeinit_kded5
+target_link_libraries(kded5
     Qt5::Widgets # QApplication
     KF5::Service # Needed for ksycoca.h
     KF5::CoreAddons # Needed for KDirWatch
@@ -13,18 +13,12 @@ target_link_libraries(kdeinit_kded5
     KF5::Crash # Sets it as autostart
 )
 if(APPLE)
-    target_link_libraries(kdeinit_kded5 "-framework CoreFoundation")
+    target_link_libraries(kded5 "-framework CoreFoundation")
 endif()
-target_compile_definitions(kdeinit_kded5 PRIVATE
-    KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
-)
 target_compile_definitions(kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )
 
-install(TARGETS kdeinit_kded5 EXPORT KDEDTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
-
-target_link_libraries( kded5 kdeinit_kded5)
 install(TARGETS kded5 ${KF5_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 

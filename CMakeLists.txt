@@ -23,7 +23,6 @@ find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Crash ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5DBusAddons ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5DocTools ${KF5_DEP_VERSION})
-find_package(KF5Init ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
 
@@ -69,12 +68,6 @@ install(FILES
   COMPONENT Devel
 )
 
-install(EXPORT
-  KDEDTargets
-  DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-  FILE KDEDTargets.cmake
-  NAMESPACE KF5::
-)
 install(FILES kded.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 install(FILES org.kde.kded5.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 

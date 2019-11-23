@@ -713,7 +713,7 @@ static bool detectPlatform(int argc, char **argv)
     return false;
 }
 
-extern "C" Q_DECL_EXPORT int kdemain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 #ifdef Q_OS_OSX
     CFBundleRef mainBundle = CFBundleGetMainBundle();
