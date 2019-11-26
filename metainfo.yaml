@@ -8,9 +8,6 @@ platforms:
 portingAid: false
 deprecated: false
 release: true
-framework-dependencies:
-    # kded depends on CMake macros provided by kinit
-    - KInit
 cmakename: KDED
 
 public_lib: true
