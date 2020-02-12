@@ -27,6 +27,7 @@ find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
 
 
 include(CMakePackageConfigHelpers)
+include(ECMQtDeclareLoggingCategory)
 include(ECMSetupVersion)
 include(ECMMarkNonGuiExecutable)
 
@@ -68,7 +69,6 @@ install(FILES
   COMPONENT Devel
 )
 
-install(FILES kded.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 install(FILES org.kde.kded5.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -2,6 +2,14 @@ set(kded_SRCS kded.cpp kdedadaptor.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml # just so that it gets generated
 )
 
+ecm_qt_export_logging_category(
+    IDENTIFIER KDED
+    CATEGORY_NAME kf5.kded
+    DEFAULT_SEVERITY Warning
+    DESCRIPTION "KDED"
+    EXPORT KDED
+)
+
 add_executable(kded5 ${kded_SRCS})
 ecm_mark_nongui_executable(kded5)
 
@@ -28,3 +36,9 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml DESTINATION ${KDE_IN
 kdbusaddons_generate_dbus_service_file(kded5 org.kde.kded5 ${KDE_INSTALL_FULL_BINDIR})
 
 install( FILES kdedmodule.desktop DESTINATION  ${KDE_INSTALL_KSERVICETYPES5DIR} )
+
+ecm_qt_install_logging_categories(
+    EXPORT KDED
+    FILE kded.categories
+    DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+)
