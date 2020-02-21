@@ -1,0 +1,6 @@
+[Unit]
+Description=KDE Daemon
+
+[Service]
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/kded5
+BusName=org.kde.kded5
