@@ -751,6 +751,8 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption(QCommandLineOption(QStringLiteral("check"), QStringLiteral("Check cache validity")));
+    QCommandLineOption replaceOption({QStringLiteral("replace")}, QStringLiteral("Replace an existing instance"));
+    parser.addOption(replaceOption);
     parser.process(app);
 
     // Parse command line before checking D-Bus
@@ -761,7 +763,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    KDBusService service(KDBusService::Unique);
+    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)

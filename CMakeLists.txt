@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(KF5_VERSION "5.68.0") # handled by release scripts
-set(KF5_DEP_VERSION "5.67.0") # handled by release scripts
+set(KF5_VERSION "5.70.0") # handled by release scripts
+set(KF5_DEP_VERSION "5.69.0") # handled by release scripts
 project(KDED VERSION ${KF5_VERSION})
 
 include(FeatureSummary)
-find_package(ECM 5.67.0  NO_MODULE)
+find_package(ECM 5.69.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://commits.kde.org/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -41,7 +41,7 @@ ecm_setup_version(
 # We don't install kded_version.h, it's only useful internally
 # (given that this framework produces no library)
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054300)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054400)
 add_definitions(-DQT_NO_FOREACH)
 if (KF5DocTools_FOUND)
     if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
