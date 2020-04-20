@@ -70,6 +70,7 @@ public:
     void unregisterWindowId(qlonglong windowId, const QString &sender);
     //@}
     void recreate(bool initial);
+    // TODO KF6 remove
     void loadSecondPhase();
 
     //@{
