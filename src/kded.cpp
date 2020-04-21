@@ -211,12 +211,6 @@ void Kded::initModules()
         }
     }
 
-    // There will be a "phase 2" only if we're in the KDE startup.
-    // If kded is restarted by its crashhandled or by hand,
-    // then there will be no second phase autoload, so load
-    // these modules now, if in a KDE session.
-    const bool loadPhase2Now = (kde_running && qEnvironmentVariableIntValue("KDED_STARTED_BY_KDEINIT") == 0);
-
     // Preload kded modules.
     const QVector<KPluginMetaData> kdedModules = availableModules();
     for (const KPluginMetaData &module : kdedModules) {
@@ -238,7 +232,7 @@ void Kded::initModules()
             break;
         case 2: // autoload delayed, only in KDE
         default:
-            if (!loadPhase2Now) {
+            if (!kde_running) {
                 prevent_autoload = true;
             }
             break;
@@ -267,16 +261,7 @@ void Kded::initModules()
 
 void Kded::loadSecondPhase()
 {
-    qCDebug(KDED) << "Loading second phase autoload";
-    KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    const QVector<KPluginMetaData> kdedModules = availableModules();
-    for (const KPluginMetaData &module : kdedModules) {
-        const bool autoload = isModuleAutoloaded(module);
-        if (autoload && phaseForModule(module) == 2) {
-            qCDebug(KDED) << "2nd phase: loading" << module.pluginId();
-            loadModule(module, false);
-        }
-    }
+    qCDebug(KDED) << "Second phase autoload is deprecated";
 }
 
 void Kded::noDemandLoad(const QString &obj)
