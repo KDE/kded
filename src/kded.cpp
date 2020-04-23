@@ -30,6 +30,7 @@
 #include <QTimer>
 #include <QCommandLineParser>
 #include <QApplication>
+#include <QProcess>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -40,7 +41,6 @@
 #include <ksharedconfig.h>
 #include <KDirWatch>
 #include <KServiceTypeTrader>
-#include <KToolInvocation>
 #include <KPluginInfo>
 #include <KPluginMetaData>
 
@@ -66,8 +66,9 @@ extern QDBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
 
 static void runKonfUpdate()
 {
-    KToolInvocation::kdeinitExecWait(QStringLiteral(KCONF_UPDATE_EXE),
-            QStringList(), nullptr, nullptr, "0" /*no startup notification*/);
+    QProcess kconfUpdate;
+    kconfUpdate.start(QStringLiteral(KCONF_UPDATE_EXE));
+    kconfUpdate.waitForFinished();
 }
 
 Kded::Kded()
