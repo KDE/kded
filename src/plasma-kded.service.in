@@ -1,0 +1,7 @@
+[Unit]
+Description=KDE Daemon
+
+[Service]
+ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/kded5
+BusName=org.kde.kded5
+Slice=session.slice
