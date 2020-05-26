@@ -153,8 +153,13 @@ QVector<KPluginMetaData> Kded::availableModules() const
     for (const KPluginMetaData &md : qAsConst(plugins)) {
         moduleIds.insert(md.pluginId());
     }
+#if KSERVICE_BUILD_DEPRECATED_SINCE(5, 0)
     // also search for old .desktop based kded modules
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
     const KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query(QStringLiteral("KDEDModule")));
+QT_WARNING_POP
     for (const KPluginInfo &info : oldStylePlugins) {
         if (moduleIds.contains(info.pluginName())) {
             qCWarning(KDED).nospace() << "kded module " << info.pluginName() << " has already been found using "
@@ -165,6 +170,7 @@ QVector<KPluginMetaData> Kded::availableModules() const
             plugins.append(info.toMetaData());
         }
     }
+#endif
     return plugins;
 }
 
@@ -174,13 +180,19 @@ static KPluginMetaData findModule(const QString &id)
     if (module.isValid()) {
         return module;
     }
+#if KSERVICE_BUILD_DEPRECATED_SINCE(5, 0)
     // TODO KF6: remove the .desktop fallback code
     KService::Ptr oldStyleModule = KService::serviceByDesktopPath(QStringLiteral("kded/") + id + QStringLiteral(".desktop"));
     if (oldStyleModule) {
         qCDebug(KDED).nospace() << "kded module " << oldStyleModule->desktopEntryName()
             << " still uses .desktop files (" << oldStyleModule->entryPath() << "). Please port it to JSON metadata.";
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
         return KPluginInfo(oldStyleModule).toMetaData();
+QT_WARNING_POP
     }
+#endif
     qCWarning(KDED) << "could not find kded module with id" << id;
     return KPluginMetaData();
 }
