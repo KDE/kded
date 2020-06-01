@@ -738,6 +738,9 @@ int main(int argc, char *argv[])
     // testing for --check, in which case, only a QCoreApplication was created.
     // Since that option is no longer used at startup, we removed that speed
     // optimization for code clarity and easier support of standard parameters.
+    
+    // Fixes blurry icons with Fractional scaling
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication app(argc, argv);
     if (unsetQpa) {
         qunsetenv("QT_QPA_PLATFORM");
