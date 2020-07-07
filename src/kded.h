@@ -29,7 +29,7 @@
 #include <QDBusAbstractAdaptor>
 
 #include <ksycoca.h>
-#include <kdedmodule.h>
+#include <KDEDModule>
 
 class QDBusMessage;
 class QDBusServiceWatcher;

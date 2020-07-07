@@ -21,7 +21,7 @@
 #include "kdedadaptor.h"
 #include "kded_version.h"
 
-#include <kcrash.h>
+#include <KCrash>
 
 #include <qplatformdefs.h>
 
@@ -37,8 +37,8 @@
 #include <QDBusServiceWatcher>
 
 #include <KDBusService>
-#include <kconfiggroup.h>
-#include <ksharedconfig.h>
+#include <KConfigGroup>
+#include <KSharedConfig>
 #include <KDirWatch>
 #include <KServiceTypeTrader>
 #include <KPluginInfo>
