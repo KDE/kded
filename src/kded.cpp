@@ -50,7 +50,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(KDED)
 
-Q_LOGGING_CATEGORY(KDED, "kf5.kded", QtWarningMsg)
+Q_LOGGING_CATEGORY(KDED, "kf.kded", QtWarningMsg)
 
 Kded *Kded::_self = nullptr;
 

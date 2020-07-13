@@ -4,7 +4,8 @@ set(kded_SRCS kded.cpp kdedadaptor.cpp
 
 ecm_qt_export_logging_category(
     IDENTIFIER KDED
-    CATEGORY_NAME kf5.kded
+    CATEGORY_NAME kf.kded
+    OLD_CATEGORY_NAMES kf5.kded
     DEFAULT_SEVERITY Warning
     DESCRIPTION "KDED"
     EXPORT KDED
