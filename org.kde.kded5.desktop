@@ -1,6 +1,7 @@
 [Desktop Entry]
-#This .desktop file is never shown in a menu, hence no real Name or Exec
+#This .desktop file is never shown in a menu, hence no Exec
 #it's here mostly so wayland can get an icon on popups
+Name=KDED
 Type=Service
 Icon=kde-frameworks
 NoDisplay=true
