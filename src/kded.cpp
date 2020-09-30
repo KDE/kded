@@ -56,7 +56,7 @@ extern QDBUS_EXPORT void qDBusAddSpyHook(void (*)(const QDBusMessage &));
 static void runKonfUpdate()
 {
     QProcess kconfUpdate;
-    kconfUpdate.start(QStringLiteral(KCONF_UPDATE_EXE));
+    kconfUpdate.start(QStringLiteral(KCONF_UPDATE_EXE), QStringList());
     kconfUpdate.waitForFinished();
 }
 
