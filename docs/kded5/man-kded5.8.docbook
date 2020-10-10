@@ -53,7 +53,7 @@
 <refsect1>
 <title>Description</title>
 
-<para><command>kded5</command> consolidates several small services in one process.  These are mostly D-Bus services provided by KDED modules, but it also manages sycoca (a binary cache of servicetypes, mimetypes and services used by KService) and KConfig update scripts as needed.</para>
+<para><command>kded5</command> consolidates several small services in one process. These are mostly &DBus; services provided by KDED modules, but it also manages sycoca (a binary cache of servicetypes, mimetypes and services used by KService) and KConfig update scripts as needed.</para>
 
 <para>For sycoca, it monitors the directories containing .desktop files. When a file is added/removed, it waits 5 seconds (in case of a series of updates), and then launches <command>kbuildsycoca5</command> to update the sycoca.</para>
 
@@ -61,7 +61,7 @@
 
 <para>Those tasks are also run when <command>kded5</command> is started to ensure that the user configuration is up to date.</para>
 
-<para>You do not normally need to run <command>kded5</command> directly; Plasma desktop sessions run it automatically, and it is started on demand when an application attempts to use a D-Bus interface provided by it or one of its modules.</para>
+<para>You do not normally need to run <command>kded5</command> directly; &plasma; desktop sessions run it automatically, and it is started on demand when an application attempts to use a &DBus; interface provided by it or one of its modules.</para>
 
 </refsect1>
 
@@ -86,9 +86,9 @@
 <refsect1>
 <title>Configuration</title>
 
-<para><command>kded5</command> can be configured with the <filename>kded5rc</filename> ini-style configuration file.  On Unix systems, this can be found at <filename><varname>$XDG_CONFIG_HOME</varname>/kded5rc</filename>; if <varname>$XDG_CONFIG_HOME</varname> is not set, this defaults to <filename>~/.config/kded5rc</filename>.</para>
+<para><command>kded5</command> can be configured with the <filename>kded5rc</filename> ini-style configuration file. On &UNIX; systems, this can be found at <filename><varname>$XDG_CONFIG_HOME</varname>/kded5rc</filename>; if <varname>$XDG_CONFIG_HOME</varname> is not set, this defaults to <filename>~/.config/kded5rc</filename>.</para>
 
-<para>Configuration file entries are read on-demand, so changes can be made while <command>kded5</command> is running.  However, all the current configuration options only really affect the startup behaviour of <command>kded5</command>.</para>
+<para>Configuration file entries are read on-demand, so changes can be made while <command>kded5</command> is running. However, all the current configuration options only really affect the startup behaviour of <command>kded5</command>.</para>
 
 <para>The <option>[General]</option> section has the following options:
 <variablelist>
@@ -104,7 +104,7 @@
 </varlistentry>
 <varlistentry>
 <term><option>CheckFileStamps</option></term>
-<listitem><para>Whether to check file timestamps when performing the initial sycoca update (default: <constant>true</constant>).  See the documentation for <command>kbuildsycoca5</command> for more details.</para>
+<listitem><para>Whether to check file timestamps when performing the initial sycoca update (default: <constant>true</constant>). See the documentation for <command>kbuildsycoca5</command> for more details.</para>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -115,7 +115,7 @@
 </variablelist>
 </para>
 
-<para>Each module also has a <option>[Module-<replaceable>name</replaceable>]</option> section in <filename>kded5rc</filename>, where <replaceable>name</replaceable> is the name of the module's desktop file without the <filename>.desktop</filename> extension.  This contains an <option>autoload</option> option that specifies whether the module should be automatically loaded when <command>kded5</command> is started (default: <constant>false</constant>).  Note that this setting can also be changed via <command>kded5</command>'s D-Bus interface.</para>
+<para>Each module also has a <option>[Module-<replaceable>name</replaceable>]</option> section in <filename>kded5rc</filename>, where <replaceable>name</replaceable> is the name of the module's desktop file without the <filename>.desktop</filename> extension. This contains an <option>autoload</option> option that specifies whether the module should be automatically loaded when <command>kded5</command> is started (default: <constant>false</constant>). Note that this setting can also be changed via <command>kded5</command>'s &DBus; interface.</para>
 </refsect1>
 
 
@@ -132,7 +132,7 @@
 
 <refsect1>
 <title>Bugs</title>
-<para>Please use <ulink url="http://bugs.kde.org">KDE's bugtracker</ulink> to report bugs.</para>
+<para>Please use <ulink url="https://bugs.kde.org">&kde;'s bugtracker</ulink> to report bugs.</para>
 </refsect1>
 
 </refentry>
