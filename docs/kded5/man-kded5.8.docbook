@@ -53,11 +53,11 @@
 <refsect1>
 <title>Description</title>
 
-<para><command>kded5</command> consolidates several small services in one process. These are mostly &DBus; services provided by KDED modules, but it also manages sycoca (a binary cache of servicetypes, mimetypes and services used by KService) and KConfig update scripts as needed.</para>
+<para><command>kded5</command> consolidates several small services in one process. These are mostly &DBus; services provided by KDED modules, but it also manages sycoca (a binary cache of servicetypes, &MIME; types and services used by KService) and KConfig update scripts as needed.</para>
 
 <para>For sycoca, it monitors the directories containing .desktop files. When a file is added/removed, it waits 5 seconds (in case of a series of updates), and then launches <command>kbuildsycoca5</command> to update the sycoca.</para>
 
-<para>For KConfig, it checks newly-installed update files, i.e. the *.upd files used to update configuration files of users when the configuration file formats changes, and runs the KConfig update utility to perform the updates.</para>
+<para>For KConfig, it checks newly-installed update files, &ie; the *.upd files used to update configuration files of users when the configuration file formats changes, and runs the KConfig update utility to perform the updates.</para>
 
 <para>Those tasks are also run when <command>kded5</command> is started to ensure that the user configuration is up to date.</para>
 
