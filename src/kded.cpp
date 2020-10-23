@@ -16,7 +16,6 @@
 
 #include <QLoggingCategory>
 #include <QDir>
-#include <QTimer>
 #include <QCommandLineParser>
 #include <QApplication>
 #include <QProcess>
