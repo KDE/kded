@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Russian "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>Руководство пользователя kded5</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Сопровождающий</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Первоначальный автор</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>22 марта 2014 г.</date>
+<releaseinfo
+>Frameworks 5.0</releaseinfo>
+<productname
+>KDE Frameworks</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded5</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded5</command
+></refname>
+<refpurpose
+>Демон &kde; &mdash; программа, автоматически обновляющая кэш системной конфигурации &kde; (Sycoca).</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Обзор</title>
+
+<cmdsynopsis
+><command
+>kded5</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Описание</title>
+
+<para
+><command
+>kded5</command
+> включает в себя несколько небольших служб. В основном это службы D-Bus, предоставляемые модулями KDED. Кроме того, KDED занимается обновлением кэша Sycoca (двоичный кэш типов служб, типов MIME и служб, используемых компонентом KService из KDE Frameworks) и запуском сценариев обновления конфигурационных файлов KConfig.</para>
+
+<para
+>Для обновления кэша Sycoca данный демон отслеживает содержимое каталогов с файлами .desktop. Если добавляется или удаляется файл, после 5-секундной задержки (на случай множественных обновлений файла) запускается программа <command
+>kbuildsycoca5</command
+>, которая обновит кэш Sycoca.</para>
+
+<para
+>Для обновления конфигурационных файлов KConfig, демон KDED принимает новые файлы *.upd, используемые для обновления пользовательских конфигурационных файлов при изменениях в их форматах, и запускает утилиту обновления KConfig.</para>
+
+<para
+>Упомянутые действия также выполняются при запуске <command
+>kded5</command
+>, чтобы удостовериться в том, что конфигурационные файлы обновлены.</para>
+
+<para
+>Обычно не требуется запускать <command
+>kded5</command
+> напрямую: он будет запущен автоматически при начале сеанса Plasma, либо при запуске приложения, которое пытается использовать интерфейс D-Bus к KDED или к одному из его модулей.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Параметры</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Обновить кэш Sycoca и выйти. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Конфигурационный файл</title>
+
+<para
+><command
+>kded5</command
+> можно настроить в файле <filename
+>kded5rc</filename
+>, содержащем параметры в стиле INI. На UNIX-подобных операционных системах этот файл расположен в <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>; если переменная <varname
+>$XDG_CONFIG_HOME</varname
+> не установлена, то в качестве имени файла выбирается <filename
+>~/.config/kded5rc</filename
+>.</para>
+
+<para
+>Записи в конфигурационном файле читаются по мере необходимости, поэтому файл можно редактировать, в том числе при запущенном <command
+>kded5</command
+>. Однако, все имеющиеся на данный момент параметры влияют только в момент запуска <command
+>kded5</command
+>.</para>
+
+<para
+>Раздел <option
+>[General]</option
+> содержит следующие параметры: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>Нужно ли обновить кэш Sycoca при запуске (значение по умолчанию: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>Нужно ли обновить конфигурационные файлы на основе KConfig при запуске (значение по умолчанию: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckFileStamps</option
+></term>
+<listitem
+><para
+>Нужно ли учитывать даты изменения файлов при первичном обновлении кэша Sycoca (значение по умолчанию: <constant
+>true</constant
+>). Подробнее читайте в документации на <command
+>kbuildsycoca5</command
+>.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>Нужно ли отложить начало первичного обновления кэша Sycoca примерно на минуту после запуска (значение по умолчанию: <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Для каждого модуля в <filename
+>kded5rc</filename
+> есть раздел <option
+>[Module-<replaceable
+>имя</replaceable
+>]</option
+>, где <replaceable
+>имя</replaceable
+> &mdash; имя файла .desktop соответствующего модуля, без расширения <filename
+>.desktop</filename
+>. Такие разделы содержат параметр <option
+>autoload</option
+>, который указывает на необходимость загрузки модуля при запуске <command
+>kded5</command
+> (значение по умолчанию: <constant
+>false</constant
+>). Этот параметр может быть изменён через интерфейс D-Bus к <command
+>kded5</command
+>.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Смотрите также</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Ошибки</title>
+<para
+>Используйте <ulink url="http://bugs.kde.org"
+>bugs.kde.org</ulink
+> для отправки сообщений об ошибках.</para>
+</refsect1>
+
+</refentry>
