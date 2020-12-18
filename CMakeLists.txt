@@ -11,7 +11,7 @@ feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKA
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-set(REQUIRED_QT_VERSION 5.13.0)
+set(REQUIRED_QT_VERSION 5.14.0)
 find_package(Qt5 "${REQUIRED_QT_VERSION}" CONFIG REQUIRED DBus Widgets)
 
 include(KDEInstallDirs)
@@ -40,7 +40,7 @@ ecm_setup_version(
 
 # We don't install kded_version.h, it's only useful internally
 # (given that this framework produces no library)
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054B00)
 add_definitions(-DQT_NO_FOREACH)
 if (KF5DocTools_FOUND)
