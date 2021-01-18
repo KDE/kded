@@ -430,7 +430,7 @@ void Kded::slotApplicationRemoved(const QString &name)
         qlonglong windowId = *it;
         m_globalWindowIdList.remove(windowId);
         for (KDEDModule *module : qAsConst(m_modules)) {
-            emit module->windowUnregistered(windowId);
+            Q_EMIT module->windowUnregistered(windowId);
         }
     }
     m_windowIdList.remove(name);
@@ -570,7 +570,7 @@ void Kded::registerWindowId(qlonglong windowId, const QString &sender)
 
     for (KDEDModule *module : qAsConst(m_modules)) {
         qCDebug(KDED) << module->moduleName();
-        emit module->windowRegistered(windowId);
+        Q_EMIT module->windowRegistered(windowId);
     }
 }
 
@@ -590,7 +590,7 @@ void Kded::unregisterWindowId(qlonglong windowId, const QString &sender)
 
     for (KDEDModule *module : qAsConst(m_modules)) {
         qCDebug(KDED) << module->moduleName();
-        emit module->windowUnregistered(windowId);
+        Q_EMIT module->windowUnregistered(windowId);
     }
 }
 
