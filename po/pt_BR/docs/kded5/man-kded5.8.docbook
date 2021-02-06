@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Brazilian-Portuguese "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>Manual do Usuário do kded5</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Mantenedor</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Autor original</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>22/03/2014</date>
+<releaseinfo
+>Frameworks 5.0</releaseinfo>
+<productname
+>KDE Frameworks</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded5</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded5</command
+></refname>
+<refpurpose
+>Servidor do &kde; - dispara as atualizações da base de dados Sycoca quando for necessário.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Sintaxe</title>
+
+<cmdsynopsis
+><command
+>kded5</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Descrição</title>
+
+<para
+>O <command
+>kded5</command
+> consolida diversos pequenos serviços em um único processo. Normalmente, são serviços D-Bus fornecidos por módulos do KDED, mas também gerencia o sycoca (um cache binário dos tipos de serviços, tipos MIME e serviços usados pelo KService), assim como os scripts de atualização do KConfig que forem necessários.</para>
+
+<para
+>No caso do sycoca, ele monitora as pastas que contêm arquivos '.desktop'. Quando for adicionado/removido um arquivo, ele espera cerca de 5 segundos (para o caso de ser uma série de atualizações) e depois executa o <command
+>kbuildsycoca5</command
+> para atualizar o sycoca.</para>
+
+<para
+>No caso do KConfig, ele verifica os arquivos de atualização recém instalados, isto é, os arquivos *.upd usados para atualizar os arquivos de configuração dos usuários quando os formatos dos arquivos de configuração mudarem e executa o utilitário KConfig para efetuar as alterações.</para>
+
+<para
+>Essas tarefas também são executadas quando o <command
+>kded5</command
+> for iniciado para garantir que a configuração do usuário esteja atualizada.</para>
+
+<para
+>Você normalmente não precisará executar o <command
+>kded5</command
+> diretamente. As sessões do ambiente de trabalho Plasma executam-no automaticamente e também por solicitação, quando um aplicativo tentar usar uma interface de D-Bus oferecida por ele ou um dos seus módulos.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Opções</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Verifica o banco de dados sycoca, atualizando-o se necessário, e depois finaliza. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Configuração</title>
+
+<para
+>O <command
+>kded5</command
+> pode ser configurado com o arquivo de configuração <filename
+>kded5rc</filename
+>, no estilo 'ini'. Em sistemas Unix, este pode ser encontrado em <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>; se <varname
+>$XDG_CONFIG_HOME</varname
+> não estiver definido, o valor será por padrão <filename
+>~/.config/kded5rc</filename
+>.</para>
+
+<para
+>Os itens do arquivo de configuração são lidos por solicitação e só poderá efetuar as alterações enquanto o <command
+>kded5</command
+> estiver em execução. No entanto, todas as opções de configuração atuais só afetam realmente o comportamento inicial do <command
+>kded5</command
+>.</para>
+
+<para
+>A seção <option
+>[General]</option
+> tem as seguintes opções: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>Se deve atualizar o sycoca na inicialização (padrão: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>Se deve efetuar as atualizações restantes do KConfig na inicialização (padrão: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckFileStamps</option
+></term>
+<listitem
+><para
+>Se deve verificar a data/hora dos arquivos ao efetuar a atualização inicial do sycoca (padrão: <constant
+>true</constant
+>). Consulte a documentação do <command
+>kbuildsycoca5</command
+> para obter mais detalhes.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>Se deve atrasar a atualização inicial do sycoca por até um minuto após a inicialização (padrão: <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Cada módulo terá também uma seção <option
+>[Module-<replaceable
+>nome</replaceable
+>]</option
+> no arquivo <filename
+>kded5rc</filename
+>, onde <replaceable
+>nome</replaceable
+> é o nome do arquivo 'desktop' do módulo, sem a extensão <filename
+>.desktop</filename
+>. Esta contém uma opção <option
+>autoload</option
+> que define se o módulo deverá ser carregado automaticamente quando o <command
+>kded5</command
+> for iniciado (padrão: <constant
+>false</constant
+>). Lembre-se de que esta definição também pode ser alterada através da interface D-Bus do <command
+>kded5</command
+>.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Veja também</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Problemas</title>
+<para
+>Use o <ulink url="http://bugs.kde.org"
+>sistema de gerenciamento de erros do KDE</ulink
+> para relatar erros.</para>
+</refsect1>
+
+</refentry>
