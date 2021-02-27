@@ -7,30 +7,30 @@
 */
 
 #include "kded.h"
-#include "kdedadaptor.h"
 #include "kded_version.h"
+#include "kdedadaptor.h"
 
 #include <KCrash>
 
 #include <qplatformdefs.h>
 
-#include <QLoggingCategory>
-#include <QDir>
-#include <QCommandLineParser>
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QDir>
+#include <QLoggingCategory>
 #include <QProcess>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 
-#include <KDBusService>
 #include <KConfigGroup>
-#include <KSharedConfig>
+#include <KDBusService>
 #include <KDirWatch>
-#include <KServiceTypeTrader>
 #include <KPluginInfo>
 #include <KPluginMetaData>
+#include <KServiceTypeTrader>
+#include <KSharedConfig>
 
 #ifdef Q_OS_OSX
 #include <CoreFoundation/CoreFoundation.h>
@@ -69,8 +69,7 @@ Kded::Kded()
     m_serviceWatcher = new QDBusServiceWatcher(this);
     m_serviceWatcher->setConnection(QDBusConnection::sessionBus());
     m_serviceWatcher->setWatchMode(QDBusServiceWatcher::WatchForUnregistration);
-    QObject::connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered,
-                     this, &Kded::slotApplicationRemoved);
+    QObject::connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &Kded::slotApplicationRemoved);
 
     new KBuildsycocaAdaptor(this);
     new KdedAdaptor(this);
@@ -82,7 +81,7 @@ Kded::Kded()
     qDBusAddSpyHook(messageFilter);
 
     m_pTimer->setSingleShot(true);
-    connect(m_pTimer, &QTimer::timeout, this, static_cast<void(Kded::*)()>(&Kded::recreate));
+    connect(m_pTimer, &QTimer::timeout, this, static_cast<void (Kded::*)()>(&Kded::recreate));
 }
 
 Kded::~Kded()
@@ -92,15 +91,12 @@ Kded::~Kded()
     delete m_pTimer;
     delete m_pDirWatch;
 
-    for (QHash<QString, KDEDModule *>::const_iterator
-            it(m_modules.constBegin()), itEnd(m_modules.constEnd());
-            it != itEnd; ++it) {
+    for (QHash<QString, KDEDModule *>::const_iterator it(m_modules.constBegin()), itEnd(m_modules.constEnd()); it != itEnd; ++it) {
         KDEDModule *module(it.value());
 
         // first disconnect otherwise slotKDEDModuleRemoved() is called
         // and changes m_modules while we're iterating over it
-        disconnect(module, &KDEDModule::moduleDeleted,
-                   this, &Kded::slotKDEDModuleRemoved);
+        disconnect(module, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
 
         delete module;
     }
@@ -143,18 +139,20 @@ QVector<KPluginMetaData> Kded::availableModules() const
     }
 #if KSERVICE_BUILD_DEPRECATED_SINCE(5, 0)
     // also search for old .desktop based kded modules
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
-QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+    QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
     const KPluginInfo::List oldStylePlugins = KPluginInfo::fromServices(KServiceTypeTrader::self()->query(QStringLiteral("KDEDModule")));
-QT_WARNING_POP
+    QT_WARNING_POP
     for (const KPluginInfo &info : oldStylePlugins) {
         if (moduleIds.contains(info.pluginName())) {
-            qCWarning(KDED).nospace() << "kded module " << info.pluginName() << " has already been found using "
-                "JSON metadata, please don't install the now unneeded .desktop file (" << info.entryPath() << ").";
+            qCWarning(KDED).nospace() << "kded module " << info.pluginName()
+                                      << " has already been found using "
+                                         "JSON metadata, please don't install the now unneeded .desktop file ("
+                                      << info.entryPath() << ").";
         } else {
-            qCDebug(KDED).nospace() << "kded module " << info.pluginName() << " still uses .desktop files ("
-                << info.entryPath() << "). Please port it to JSON metadata.";
+            qCDebug(KDED).nospace() << "kded module " << info.pluginName() << " still uses .desktop files (" << info.entryPath()
+                                    << "). Please port it to JSON metadata.";
             plugins.append(info.toMetaData());
         }
     }
@@ -172,13 +170,13 @@ static KPluginMetaData findModule(const QString &id)
     // TODO KF6: remove the .desktop fallback code
     KService::Ptr oldStyleModule = KService::serviceByDesktopPath(QStringLiteral("kded/") + id + QStringLiteral(".desktop"));
     if (oldStyleModule) {
-        qCDebug(KDED).nospace() << "kded module " << oldStyleModule->desktopEntryName()
-            << " still uses .desktop files (" << oldStyleModule->entryPath() << "). Please port it to JSON metadata.";
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
-QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+        qCDebug(KDED).nospace() << "kded module " << oldStyleModule->desktopEntryName() << " still uses .desktop files (" << oldStyleModule->entryPath()
+                                << "). Please port it to JSON metadata.";
+        QT_WARNING_PUSH
+        QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+        QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
         return KPluginInfo(oldStyleModule).toMetaData();
-QT_WARNING_POP
+        QT_WARNING_POP
     }
 #endif
     qCWarning(KDED) << "could not find kded module with id" << id;
@@ -204,7 +202,7 @@ void Kded::initModules()
             kde_running = false;
         }
 #endif
-        //TODO: Change 5 to KDED_VERSION_MAJOR the moment KF5 are stable
+        // TODO: Change 5 to KDED_VERSION_MAJOR the moment KF5 are stable
         // not the same kde version as the current desktop
         const QByteArray kdeSession = qgetenv("KDE_SESSION_VERSION");
         if (kdeSession.toInt() != 5) {
@@ -374,19 +372,18 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
         KPluginLoader loader2(QStringLiteral("kded_") + module.fileName());
         factory = loader2.factory();
         if (factory) {
-            qCWarning(KDED).nospace() << "found kded module " << moduleId
-                << " by prepending 'kded_' to the library path, please fix your metadata.";
+            qCWarning(KDED).nospace() << "found kded module " << moduleId << " by prepending 'kded_' to the library path, please fix your metadata.";
             kdedModule = factory->create<KDEDModule>(this);
         } else {
-            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":"
-                << loader.errorString() << " (library path was:" << module.fileName() << ")";
+            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":" << loader.errorString() << " (library path was:" << module.fileName()
+                                      << ")";
         }
     }
 
     if (kdedModule) {
         kdedModule->setModuleName(moduleId);
         m_modules.insert(moduleId, kdedModule);
-        //m_libs.insert(moduleId, lib);
+        // m_libs.insert(moduleId, lib);
         connect(kdedModule, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
         qCDebug(KDED) << "Successfully loaded module" << moduleId;
         return kdedModule;
@@ -425,8 +422,7 @@ void Kded::slotApplicationRemoved(const QString &name)
 #endif
     m_serviceWatcher->removeWatchedService(name);
     const QList<qlonglong> windowIds = m_windowIdList.value(name);
-    for (QList<qlonglong>::ConstIterator it = windowIds.begin();
-            it != windowIds.end(); ++it) {
+    for (QList<qlonglong>::ConstIterator it = windowIds.begin(); it != windowIds.end(); ++it) {
         qlonglong windowId = *it;
         m_globalWindowIdList.remove(windowId);
         for (KDEDModule *module : qAsConst(m_modules)) {
@@ -445,17 +441,12 @@ void Kded::updateDirWatch()
     delete m_pDirWatch;
     m_pDirWatch = new KDirWatch;
 
-    QObject::connect(m_pDirWatch, &KDirWatch::dirty,
-                     this, &Kded::update);
-    QObject::connect(m_pDirWatch, &KDirWatch::created,
-                     this, &Kded::update);
-    QObject::connect(m_pDirWatch, &KDirWatch::deleted,
-                     this, &Kded::dirDeleted);
+    QObject::connect(m_pDirWatch, &KDirWatch::dirty, this, &Kded::update);
+    QObject::connect(m_pDirWatch, &KDirWatch::created, this, &Kded::update);
+    QObject::connect(m_pDirWatch, &KDirWatch::deleted, this, &Kded::dirDeleted);
 
     // For each resource
-    for (QStringList::ConstIterator it = m_allResourceDirs.constBegin();
-            it != m_allResourceDirs.constEnd();
-            ++it) {
+    for (QStringList::ConstIterator it = m_allResourceDirs.constBegin(); it != m_allResourceDirs.constEnd(); ++it) {
         readDirectory(*it);
     }
 }
@@ -474,9 +465,7 @@ void Kded::updateResourceList()
 
     const QStringList dirs = KSycoca::self()->allResourceDirs();
     // For each resource
-    for (QStringList::ConstIterator it = dirs.begin();
-            it != dirs.end();
-            ++it) {
+    for (QStringList::ConstIterator it = dirs.begin(); it != dirs.end(); ++it) {
         if (!m_allResourceDirs.contains(*it)) {
             m_allResourceDirs.append(*it);
             readDirectory(*it);
@@ -508,7 +497,7 @@ void Kded::recreate(bool initial)
         recreateDone();
     } else {
         if (!delayedCheck) {
-            updateDirWatch();    // this would search all the directories
+            updateDirWatch(); // this would search all the directories
         }
         if (bCheckSycoca) {
             KSycoca::self()->ensureCacheValid();
@@ -549,12 +538,12 @@ void Kded::readDirectory(const QString &_path)
         path += QLatin1Char('/');
     }
 
-    if (m_pDirWatch->contains(path)) {   // Already seen this one?
+    if (m_pDirWatch->contains(path)) { // Already seen this one?
         return;
     }
 
     Q_ASSERT(path != QDir::homePath());
-    m_pDirWatch->addDir(path, KDirWatch::WatchFiles | KDirWatch::WatchSubDirs);       // add watch on this dir
+    m_pDirWatch->addDir(path, KDirWatch::WatchFiles | KDirWatch::WatchSubDirs); // add watch on this dir
 }
 
 void Kded::registerWindowId(qlonglong windowId, const QString &sender)
@@ -607,13 +596,10 @@ KUpdateD::KUpdateD()
     m_pTimer = new QTimer(this);
     m_pTimer->setSingleShot(true);
     connect(m_pTimer, &QTimer::timeout, this, &KUpdateD::runKonfUpdate);
-    QObject::connect(m_pDirWatch, &KDirWatch::dirty,
-                     this, &KUpdateD::slotNewUpdateFile);
+    QObject::connect(m_pDirWatch, &KDirWatch::dirty, this, &KUpdateD::slotNewUpdateFile);
 
     const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("kconf_update"), QStandardPaths::LocateDirectory);
-    for (QStringList::ConstIterator it = dirs.begin();
-            it != dirs.end();
-            ++it) {
+    for (QStringList::ConstIterator it = dirs.begin(); it != dirs.end(); ++it) {
         QString path = *it;
         Q_ASSERT(path != QDir::homePath());
         if (path[path.length() - 1] != QLatin1Char('/')) {
@@ -678,10 +664,8 @@ static bool detectPlatform(int argc, char **argv)
         return false;
     }
     for (int i = 0; i < argc; i++) {
-        if (qstrcmp(argv[i], "-platform") == 0 ||
-                qstrcmp(argv[i], "--platform") == 0 ||
-                QByteArray(argv[i]).startsWith("-platform=") ||
-                QByteArray(argv[i]).startsWith("--platform=")) {
+        if (qstrcmp(argv[i], "-platform") == 0 || qstrcmp(argv[i], "--platform") == 0 || QByteArray(argv[i]).startsWith("-platform=")
+            || QByteArray(argv[i]).startsWith("--platform=")) {
             return false;
         }
     }
@@ -706,7 +690,7 @@ int main(int argc, char *argv[])
     if (mainBundle) {
         // get the application's Info Dictionary. For app bundles this would live in the bundle's Info.plist,
         // for regular executables it is obtained in another way.
-        CFMutableDictionaryRef infoDict = (CFMutableDictionaryRef) CFBundleGetInfoDictionary(mainBundle);
+        CFMutableDictionaryRef infoDict = (CFMutableDictionaryRef)CFBundleGetInfoDictionary(mainBundle);
         if (infoDict) {
             // Add or set the "LSUIElement" key with/to value "1". This can simply be a CFString.
             CFDictionarySetValue(infoDict, CFSTR("LSUIElement"), CFSTR("1"));
@@ -715,7 +699,7 @@ int main(int argc, char *argv[])
         }
     }
 #endif
-    //options.add("check", qi18n("Check Sycoca database only once"));
+    // options.add("check", qi18n("Check Sycoca database only once"));
 
     // WABA: Make sure not to enable session management.
     qunsetenv("SESSION_MANAGER");
@@ -726,7 +710,7 @@ int main(int argc, char *argv[])
     // testing for --check, in which case, only a QCoreApplication was created.
     // Since that option is no longer used at startup, we removed that speed
     // optimization for code clarity and easier support of standard parameters.
-    
+
     // Fixes blurry icons with Fractional scaling
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication app(argc, argv);
@@ -787,7 +771,7 @@ int main(int argc, char *argv[])
     kded->recreate(true); // initial
 
     if (bCheckUpdates) {
-        (void) new KUpdateD;    // Watch for updates
+        (void)new KUpdateD; // Watch for updates
     }
 
     runKonfUpdate(); // Run it once.
@@ -798,4 +782,3 @@ int main(int argc, char *argv[])
 
     return result;
 }
-

@@ -12,7 +12,7 @@
 #include <QDBusAbstractAdaptor>
 class QDBusMessage;
 
-class KdedAdaptor: public QDBusAbstractAdaptor
+class KdedAdaptor : public QDBusAbstractAdaptor
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.kded5")
@@ -23,7 +23,7 @@ public Q_SLOTS:
     bool loadModule(const QString &obj);
     QStringList loadedModules();
     bool unloadModule(const QString &obj);
-    //bool isWindowRegistered(qlonglong windowId) const;
+    // bool isWindowRegistered(qlonglong windowId) const;
     void registerWindowId(qlonglong windowId, const QDBusMessage &);
     void unregisterWindowId(qlonglong windowId, const QDBusMessage &);
     void reconfigure();

@@ -9,16 +9,16 @@
 #ifndef KDED_H
 #define KDED_H
 
+#include <QHash>
 #include <QObject>
+#include <QSet>
 #include <QString>
 #include <QTimer>
-#include <QHash>
-#include <QSet>
 
 #include <QDBusAbstractAdaptor>
 
-#include <ksycoca.h>
 #include <KDEDModule>
+#include <ksycoca.h>
 
 class QDBusMessage;
 class QDBusServiceWatcher;
@@ -42,7 +42,7 @@ public:
 
     QStringList loadedModules();
     bool unloadModule(const QString &obj);
-    //bool isWindowRegistered(qlonglong windowId) const;
+    // bool isWindowRegistered(qlonglong windowId) const;
     /**
      * Applications can register/unregister their windows with kded modules.
      * This allows kpasswdserver and kcookiejar to delete authentication
@@ -195,12 +195,12 @@ protected:
     QTimer *m_pTimer;
 
     QHash<QString, KDEDModule *> m_modules;
-    //QHash<QString,KLibrary *> m_libs;
+    // QHash<QString,KLibrary *> m_libs;
     QHash<QString, QObject *> m_dontLoad;
 
-    //window id tracking, with a QDBusServiceWatcher to remove them as needed
+    // window id tracking, with a QDBusServiceWatcher to remove them as needed
     QDBusServiceWatcher *m_serviceWatcher;
-    QHash<QString, QList<qlonglong> > m_windowIdList;
+    QHash<QString, QList<qlonglong>> m_windowIdList;
     QSet<long> m_globalWindowIdList;
 
     QStringList m_allResourceDirs;
@@ -209,7 +209,7 @@ protected:
     static Kded *_self;
 };
 
-class KBuildsycocaAdaptor: public QDBusAbstractAdaptor
+class KBuildsycocaAdaptor : public QDBusAbstractAdaptor
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.kbuildsycoca")

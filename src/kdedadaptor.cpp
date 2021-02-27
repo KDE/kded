@@ -72,4 +72,3 @@ void KdedAdaptor::quit()
 {
     QCoreApplication::instance()->quit();
 }
-
