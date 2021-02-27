@@ -664,8 +664,11 @@ static bool detectPlatform(int argc, char **argv)
         return false;
     }
     for (int i = 0; i < argc; i++) {
-        if (qstrcmp(argv[i], "-platform") == 0 || qstrcmp(argv[i], "--platform") == 0 || QByteArray(argv[i]).startsWith("-platform=")
-            || QByteArray(argv[i]).startsWith("--platform=")) {
+        /* clang-format off */
+        if (qstrcmp(argv[i], "-platform") == 0
+            || qstrcmp(argv[i], "--platform") == 0
+            || QByteArray(argv[i]).startsWith("-platform=")
+            || QByteArray(argv[i]).startsWith("--platform=")) { /* clang-format on */
             return false;
         }
     }
