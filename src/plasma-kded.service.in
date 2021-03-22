@@ -1,5 +1,6 @@
 [Unit]
 Description=KDE Daemon
+PartOf=graphical-session.target
 
 [Service]
 ExecStart=@KDE_INSTALL_FULL_BINDIR@/kded5
