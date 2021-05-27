@@ -1,4 +1,8 @@
-set(kded_SRCS kded.cpp kdedadaptor.cpp
+add_executable(kded5)
+
+target_sources(kded5 PRIVATE
+    kded.cpp
+    kdedadaptor.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml # just so that it gets generated
 )
 
@@ -11,7 +15,6 @@ ecm_qt_export_logging_category(
     EXPORT KDED
 )
 
-add_executable(kded5 ${kded_SRCS})
 ecm_mark_nongui_executable(kded5)
 
 target_link_libraries(kded5
