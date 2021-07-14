@@ -1,5 +1,5 @@
 maintainer: dfaure
-description: Extensible deamon for providing system level services
+description: Extensible daemon for providing system level services
 tier: 3
 type: solution
 platforms:
