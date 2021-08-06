@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % German "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>kded5-Benutzerhandbuch</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Betreuer</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Ursprünglicher Autor</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>2014-03-22</date>
+<releaseinfo
+>Frameworks 5.0</releaseinfo>
+<productname
+>KDE Frameworks</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded5</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded5</command
+></refname>
+<refpurpose
+>&kde;-Dienst: Löst Aktualisierungen der Sycoca-Datenbank aus, wenn erforderlich</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Übersicht</title>
+
+<cmdsynopsis
+><command
+>kded5</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Beschreibung</title>
+
+<para
+><command
+>kded5</command
+> fasst mehrere kleine Dienste in einem Prozess zusammen. Dies sind vor allem &DBus;-Dienste von KDED-Modulen, aber verwaltet auch die Sycoca-Datenbank, einen binären Zwischenspeicher von Diensttypen, &MIME;-Typen und Diensten, die von KService benutzt werden., sowie von Aktualisierungs-Skripten für KConfig, falls nötig.</para>
+
+<para
+>Es überwacht die Ordner mit .desktop-Dateien für die Systemdatenbank mit den Einstellungen. Wenn eine neue Datei hinzugefügt oder eine vorhandene entfernt wird, wartet es 5 Sekunden (falls noch mehr Änderungen vorgenommen werden), und startet anschließend <command
+>kbuildsycoca5</command
+> um die Systemdatenbank mit den Einstellungen zu aktualisieren.</para>
+
+<para
+>Es überprüft neu installierte Aktualisierungsdateien, &ie; *upd-Dateien, die verwendet werden, um bei Änderung des Formats von Einrichtungsdateien die Einrichtungsdateien der Benutzer zu aktualisieren. Es benutzt das Aktualisierungsprogramm KConfig, um diese Aktualisierungen durchzuführen.</para>
+
+<para
+>Diese Aufgaben werden auch bei jedem Start von <command
+>kded5</command
+> durchgeführt, damit ist sichergestellt, dass die Benutzereinstellungen immer aktuell sind.</para>
+
+<para
+>Normalerweise müssen Sie <command
+>kded5</command
+> nicht direkt ausführen. In &plasma;-Sitzungen wird es automatisch ausgeführt und immer dann gestartet, wenn eine Anwendung eine &DBus;-Schnittstelle direkt oder durch eines seiner Module benutzt.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Optionen</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Überprüft die Sycoca-Datenbank, aktualisiert sie wenn nötig und beendet sich dann. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Einrichtung</title>
+
+<para
+><command
+>kded5</command
+> kann mit der Einrichtungsdatei <filename
+>kded5rc</filename
+> im „ini“-Stil eingestellt werden. Auf &UNIX;-Systemen finden Sie diese Datei in <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>, wenn <varname
+>$XDG_CONFIG_HOME</varname
+> nicht festgelegt ist, wird als Voreinstellung <filename
+>~/.config/kded5rc</filename
+> benutzt.</para>
+
+<para
+>Einträge in der Einrichtungsdatei werden auf Anforderung gelesen, daher können Änderungen vorgenommen werden, während <command
+>kded5</command
+> ausgeführt wird. Alle aktuellen Einrichtungs-Optionen beeinflussen jedoch nur das Startverhalten von <command
+>kded5</command
+>.</para>
+
+<para
+>Im Abschnitt <option
+>[General]</option
+> gibt es folgende Einstellungen: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>Ob die Sycoca-Datenbank beim Start aktualisiert wird, Voreinstellung ist <constant
+>true</constant
+>.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>Ob ausstehende KConfig-Aktualisierungen beim Start durchgeführt werden. Voreinstellung ist <constant
+>true</constant
+>.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckFileStamps</option
+></term>
+<listitem
+><para
+>Ob die Zeitstempel der Dateien beim Ausführen der ursprünglichen Aktualisierung von „sycoca“ überprüft werden, Voreinstellung ist <constant
+>true</constant
+>, In der Dokumentation zu <command
+>kbuildsycoca5</command
+> finden Sie weitere Details.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>Ob das Ausführen der ursprünglichen Aktualisierung von „sycoca“ etwa eine Minute nach dem Start verzögert wird. Voreinstellung ist <constant
+>false</constant
+>.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Jedes Modul hat einen Abschnitt <option
+>[Module-<replaceable
+>name</replaceable
+>]</option
+> in der Datei <filename
+>kded5rc</filename
+>, dabei ist <replaceable
+>name</replaceable
+> der Name der Desktop-Datei des Moduls ohne die Erweiterung <filename
+>.desktop</filename
+>. Dieser Abschnitt enthält eine Option <option
+>autoload</option
+>, die festlegt, ob das Modul automatisch beim Starten von <command
+>kded5</command
+> geladen wird. Voreinstellung ist <constant
+>false</constant
+> Beachten Sie, dass diese Einstellung über die &DBus;-Schnittstelle von <command
+>kded5</command
+> geändert werden kann.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Siehe auch</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Fehler</title>
+<para
+>Bitte berichten Sie Fehler im <ulink url="https://bugs.kde.org"
+>Fehlerverfolgungssystem von &kde;</ulink
+>.</para>
+</refsect1>
+
+</refentry>
