@@ -134,7 +134,7 @@ QVector<KPluginMetaData> Kded::availableModules() const
 {
     QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
     QSet<QString> moduleIds;
-    for (const KPluginMetaData &md : qAsConst(plugins)) {
+    for (const KPluginMetaData &md : std::as_const(plugins)) {
         moduleIds.insert(md.pluginId());
     }
 #if KSERVICE_BUILD_DEPRECATED_SINCE(5, 0)
@@ -425,7 +425,7 @@ void Kded::slotApplicationRemoved(const QString &name)
     for (QList<qlonglong>::ConstIterator it = windowIds.begin(); it != windowIds.end(); ++it) {
         qlonglong windowId = *it;
         m_globalWindowIdList.remove(windowId);
-        for (KDEDModule *module : qAsConst(m_modules)) {
+        for (KDEDModule *module : std::as_const(m_modules)) {
             Q_EMIT module->windowUnregistered(windowId);
         }
     }
@@ -557,7 +557,7 @@ void Kded::registerWindowId(qlonglong windowId, const QString &sender)
     windowIds.append(windowId);
     m_windowIdList.insert(sender, windowIds);
 
-    for (KDEDModule *module : qAsConst(m_modules)) {
+    for (KDEDModule *module : std::as_const(m_modules)) {
         qCDebug(KDED) << module->moduleName();
         Q_EMIT module->windowRegistered(windowId);
     }
@@ -577,7 +577,7 @@ void Kded::unregisterWindowId(qlonglong windowId, const QString &sender)
         }
     }
 
-    for (KDEDModule *module : qAsConst(m_modules)) {
+    for (KDEDModule *module : std::as_const(m_modules)) {
         qCDebug(KDED) << module->moduleName();
         Q_EMIT module->windowUnregistered(windowId);
     }
