@@ -1,0 +1,15 @@
+Dependencies:
+- 'on': ['Linux', 'FreeBSD']
+  'require':
+    'frameworks/extra-cmake-modules': '@same'
+    'frameworks/ki18n' : '@same'
+    'frameworks/kcoreaddons' : '@same'
+    'frameworks/kdbusaddons' : '@same'
+    'frameworks/kservice' : '@same'
+    'frameworks/kwindowsystem' : '@same'
+    'frameworks/kcrash' : '@same'
+    'frameworks/kinit' : '@same'
+    'frameworks/kdoctools' : '@same'
+
+Options:
+  test-before-installing: True
