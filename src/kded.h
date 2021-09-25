@@ -185,7 +185,7 @@ protected:
      * changed.
      * Slower polling for remote file systems is now done in KDirWatch (JW).
      */
-    KDirWatch *m_pDirWatch;
+    KDirWatch *m_pDirWatch = nullptr;
 
     /**
      * When a desktop file is updated, a timer is started (5 sec)
@@ -239,7 +239,7 @@ private:
      * changed.
      * Slower polling for remote file systems is now done in KDirWatch (JW).
      */
-    KDirWatch *m_pDirWatch;
+    KDirWatch *m_pDirWatch = nullptr;
 
     /**
      * When a desktop file is updated, a timer is started (5 sec)

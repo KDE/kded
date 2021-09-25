@@ -36,6 +36,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#include <memory>
+
 Q_DECLARE_LOGGING_CATEGORY(KDED)
 
 Q_LOGGING_CATEGORY(KDED, "kf.kded", QtWarningMsg)
@@ -60,7 +62,7 @@ static void runKonfUpdate()
 }
 
 Kded::Kded()
-    : m_pDirWatch(nullptr)
+    : m_pDirWatch(new KDirWatch(this))
     , m_pTimer(new QTimer(this))
     , m_needDelayedCheck(false)
 {
@@ -88,10 +90,8 @@ Kded::~Kded()
 {
     _self = nullptr;
     m_pTimer->stop();
-    delete m_pTimer;
-    delete m_pDirWatch;
 
-    for (QHash<QString, KDEDModule *>::const_iterator it(m_modules.constBegin()), itEnd(m_modules.constEnd()); it != itEnd; ++it) {
+    for (auto it = m_modules.cbegin(); it != m_modules.cend(); ++it) {
         KDEDModule *module(it.value());
 
         // first disconnect otherwise slotKDEDModuleRemoved() is called
@@ -411,11 +411,10 @@ void Kded::slotApplicationRemoved(const QString &name)
 #endif
     m_serviceWatcher->removeWatchedService(name);
     const QList<qlonglong> windowIds = m_windowIdList.value(name);
-    for (QList<qlonglong>::ConstIterator it = windowIds.begin(); it != windowIds.end(); ++it) {
-        qlonglong windowId = *it;
-        m_globalWindowIdList.remove(windowId);
+    for (const auto id : windowIds) {
+        m_globalWindowIdList.remove(id);
         for (KDEDModule *module : std::as_const(m_modules)) {
-            Q_EMIT module->windowUnregistered(windowId);
+            Q_EMIT module->windowUnregistered(id);
         }
     }
     m_windowIdList.remove(name);
@@ -428,15 +427,15 @@ void Kded::updateDirWatch()
     }
 
     delete m_pDirWatch;
-    m_pDirWatch = new KDirWatch;
+    m_pDirWatch = new KDirWatch(this);
 
     QObject::connect(m_pDirWatch, &KDirWatch::dirty, this, &Kded::update);
     QObject::connect(m_pDirWatch, &KDirWatch::created, this, &Kded::update);
     QObject::connect(m_pDirWatch, &KDirWatch::deleted, this, &Kded::dirDeleted);
 
     // For each resource
-    for (QStringList::ConstIterator it = m_allResourceDirs.constBegin(); it != m_allResourceDirs.constEnd(); ++it) {
-        readDirectory(*it);
+    for (const QString &dir : std::as_const(m_allResourceDirs)) {
+        readDirectory(dir);
     }
 }
 
@@ -454,10 +453,10 @@ void Kded::updateResourceList()
 
     const QStringList dirs = KSycoca::self()->allResourceDirs();
     // For each resource
-    for (QStringList::ConstIterator it = dirs.begin(); it != dirs.end(); ++it) {
-        if (!m_allResourceDirs.contains(*it)) {
-            m_allResourceDirs.append(*it);
-            readDirectory(*it);
+    for (const auto &dir : dirs) {
+        if (!m_allResourceDirs.contains(dir)) {
+            m_allResourceDirs.append(dir);
+            readDirectory(dir);
         }
     }
 }
@@ -587,11 +586,10 @@ KUpdateD::KUpdateD()
     connect(m_pTimer, &QTimer::timeout, this, &KUpdateD::runKonfUpdate);
     QObject::connect(m_pDirWatch, &KDirWatch::dirty, this, &KUpdateD::slotNewUpdateFile);
 
-    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("kconf_update"), QStandardPaths::LocateDirectory);
-    for (QStringList::ConstIterator it = dirs.begin(); it != dirs.end(); ++it) {
-        QString path = *it;
+    QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("kconf_update"), QStandardPaths::LocateDirectory);
+    for (auto &path : dirs) {
         Q_ASSERT(path != QDir::homePath());
-        if (path[path.length() - 1] != QLatin1Char('/')) {
+        if (!path.endsWith(QLatin1Char('/'))) {
             path += QLatin1Char('/');
         }
 
@@ -758,7 +756,7 @@ int main(int argc, char *argv[])
 
     KCrash::setFlags(KCrash::AutoRestart);
 
-    Kded *kded = new Kded();
+    std::unique_ptr<Kded> kded = std::make_unique<Kded>();
 
     kded->recreate(true); // initial
 
@@ -768,9 +766,5 @@ int main(int argc, char *argv[])
 
     runKonfUpdate(); // Run it once.
 
-    int result = app.exec(); // keep running
-
-    delete kded;
-
-    return result;
+    return app.exec(); // keep running
 }
