@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Swedish "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>kded5 användarhandbok</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Underhåll</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Ursprunglig upphovsman</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>2014-03-22</date>
+<releaseinfo
+>Ramverk 5.0</releaseinfo>
+<productname
+>KDE Ramverk</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded5</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded5</command
+></refname>
+<refpurpose
+>&kde; demon - utlöser uppdateringar av Sycoca-databasen vid behov.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Översikt</title>
+
+<cmdsynopsis
+><command
+>kded5</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Beskrivning</title>
+
+<para
+><command
+>kded5</command
+> sammanför flera små tjänster i en process. De är i huvudsak &DBus; tjänster som tillhandahålls av KDED-moduler, men systemkonfigurationscachen sycoca (en binärcache av tjänsttyper, &MIME;-typer, och tjänster som används av KService) samt KConfig-uppdateringsskript hanteras också efter behov.</para>
+
+<para
+>För systemkonfigurationscachen sycoca övervakar den katalogerna som innehåller .desktop-filer. När en fil läggs till eller tas bort, väntar den 5 sekunder (i händelse av en serie uppdateringar), och startar därefter <command
+>kbuildsycoca5</command
+> för att uppdatera systemkonfigurationscachen.</para>
+
+<para
+>För KConfig kontrollerar den nyligen installerade uppdateringsfiler, dvs. filer vid namn *.upd som används för att uppdatera användarnas inställningsfiler när filernas format ändras, och startar KConfig-uppdateringsverktyget för att utföra uppdateringarna.</para>
+
+<para
+>Dessa aktiviteter utförs också alltid när <command
+>kded5</command
+> startar för att försäkra att användarens inställningar är aktuella.</para>
+
+<para
+>Normalt behöver man inte köra <command
+>kded5</command
+> direkt: &plasma;-skrivbordssessionen kör det automatiskt, och det startas vid behov när ett program försöker använda ett &DBus; gränssnitt som tillhandahålls av det eller av en av dess moduler.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Väljare</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Kontrollera sycoca-databasen, uppdatera den vid behov, och avsluta. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Inställning</title>
+
+<para
+><command
+>kded5</command
+> kan anpassas med inställningsfilen <filename
+>kded5rc</filename
+> som använder ini-stil. På &UNIX;-system, finns den i <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>. Om <varname
+>$XDG_CONFIG_HOME</varname
+> inte är definierad, är standardvärdet <filename
+>~/.config/kded5rc</filename
+>.</para>
+
+<para
+>Poster i inställningsfilen läses vid behov, alltså kan ändringar göras medan <command
+>kded5</command
+> kör. Dock påverkar alla nuvarande inställningsalternativ bara startbeteendet hos <command
+>kded5</command
+>.</para>
+
+<para
+>Sektionen <option
+>[General]</option
+> har följande alternativ: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>Om sycoca ska uppdateras vid start (normalvärde <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>Om utestående KConfig-uppdateringar ska utföras vid start (normalvärde <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckFileStamps</option
+></term>
+<listitem
+><para
+>Om filernas tidsstämplar ska kontrolleras när den initiala uppdateringen av sycoca utförs (normalvärde <constant
+>true</constant
+>). Se dokumentationen för <command
+>kbuildsycoca5</command
+> för mer information.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>Om den initiala uppdateringen av sycoca ska fördröjas till ungefär en minut efter start (normalvärde <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Varje modul har också en sektion <option
+>[Module-<replaceable
+>namn</replaceable
+>]</option
+> i <filename
+>kded5rc</filename
+>, där <replaceable
+>namn</replaceable
+> är namnet på modulens skrivbordsfil utan filändelsen <filename
+>.desktop</filename
+>. Den innehåller alternativet <option
+>autoload</option
+> som anger om modulen ska laddas automatiskt när <command
+>kded5</command
+> startas (normalvärde <constant
+>false</constant
+>). Observera att inställningen också kan ändras via &DBus; gränssnittet i <command
+>kded5</command
+>.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Se också</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Fel</title>
+<para
+>Använd <ulink url="https://bugs.kde.org"
+>&kde;:s felspårningssystem</ulink
+> för att rapportera fel.</para>
+</refsect1>
+
+</refentry>
