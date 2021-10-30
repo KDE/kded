@@ -126,8 +126,7 @@ void Kded::messageFilter(const QDBusMessage &message)
 
 static int phaseForModule(const KPluginMetaData &module)
 {
-    const QVariant phasev = module.rawData().value(QStringLiteral("X-KDE-Kded-phase")).toVariant();
-    return phasev.isValid() ? phasev.toInt() : 2;
+    return module.value(QStringLiteral("X-KDE-Kded-phase"), 2);
 }
 
 QVector<KPluginMetaData> Kded::availableModules() const
@@ -292,7 +291,7 @@ bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
         return false;
     }
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    bool autoload = module.rawData().value(QStringLiteral("X-KDE-Kded-autoload")).toVariant().toBool();
+    bool autoload = module.value(QStringLiteral("X-KDE-Kded-autoload"), false);
     KConfigGroup cg(config, QStringLiteral("Module-").append(module.pluginId()));
     autoload = cg.readEntry("autoload", autoload);
     return autoload;
@@ -300,7 +299,7 @@ bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
 
 bool Kded::platformSupportsModule(const KPluginMetaData &module) const
 {
-    const QStringList supportedPlatforms = KPluginMetaData::readStringList(module.rawData(), QStringLiteral("X-KDE-OnlyShowOnQtPlatforms"));
+    const QStringList supportedPlatforms = module.value(QStringLiteral("X-KDE-OnlyShowOnQtPlatforms"), QStringList());
 
     return supportedPlatforms.isEmpty() || supportedPlatforms.contains(qApp->platformName());
 }
@@ -316,13 +315,7 @@ bool Kded::isModuleLoadedOnDemand(const KPluginMetaData &module) const
         return false;
     }
     KSharedConfig::Ptr config = KSharedConfig::openConfig();
-    bool loadOnDemand = true;
-    // use toVariant() since it could be string or bool in the json and QJsonObject does not convert
-    QVariant p = module.rawData().value(QStringLiteral("X-KDE-Kded-load-on-demand")).toVariant();
-    if (p.isValid() && (p.toBool() == false)) {
-        loadOnDemand = false;
-    }
-    return loadOnDemand;
+    return module.value(QStringLiteral("X-KDE-Kded-load-on-demand"), true);
 }
 
 KDEDModule *Kded::loadModule(const QString &obj, bool onDemand)
@@ -353,9 +346,7 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
     }
 
     if (onDemand) {
-        // use toVariant() since it could be string or bool in the json and QJsonObject does not convert
-        QVariant p = module.rawData().value(QStringLiteral("X-KDE-Kded-load-on-demand")).toVariant();
-        if (p.isValid() && (p.toBool() == false)) {
+        if (!module.value(QStringLiteral("X-KDE-Kded-load-on-demand"), true)) {
             noDemandLoad(moduleId);
             return nullptr;
         }
@@ -746,7 +737,7 @@ int main(int argc, char *argv[])
     // so that the calling code is independent from the physical "location" of the service.
     const QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
     for (const KPluginMetaData &metaData : plugins) {
-        const QString serviceName = metaData.rawData().value(QStringLiteral("X-KDE-DBus-ServiceName")).toString();
+        const QString serviceName = metaData.value(QStringLiteral("X-KDE-DBus-ServiceName"));
         if (serviceName.isEmpty()) {
             continue;
         }
