@@ -30,7 +30,7 @@ class Kded : public QObject
     Q_OBJECT
 public:
     Kded();
-    virtual ~Kded();
+    ~Kded() override;
 
     static Kded *self()
     {
@@ -227,7 +227,7 @@ class KUpdateD : public QObject
     Q_OBJECT
 public:
     KUpdateD();
-    ~KUpdateD();
+    ~KUpdateD() override;
 
 public Q_SLOTS:
     void runKonfUpdate();
