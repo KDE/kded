@@ -42,7 +42,7 @@ ecm_setup_version(
 # We don't install kded_version.h, it's only useful internally
 # (given that this framework produces no library)
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055100)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055700)
 if (KF5DocTools_FOUND)
     kdoctools_install(po)
     add_subdirectory(docs)
