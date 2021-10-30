@@ -131,7 +131,7 @@ static int phaseForModule(const KPluginMetaData &module)
 
 QVector<KPluginMetaData> Kded::availableModules() const
 {
-    QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
+    QVector<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf5/kded"));
     QSet<QString> moduleIds;
     for (const KPluginMetaData &md : std::as_const(plugins)) {
         moduleIds.insert(md.pluginId());
@@ -354,20 +354,18 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
 
     KDEDModule *kdedModule = nullptr;
 
-    KPluginLoader loader(module.fileName());
-    KPluginFactory *factory = loader.factory();
-    if (factory) {
-        kdedModule = factory->create<KDEDModule>(this);
+    auto factoryResult = KPluginFactory::loadFactory(module);
+    if (factoryResult) {
+        kdedModule = factoryResult.plugin->create<KDEDModule>(this);
     } else {
         // TODO: remove this fallback code, the kded modules should all be fixed instead
-        KPluginLoader loader2(QStringLiteral("kded_") + module.fileName());
-        factory = loader2.factory();
-        if (factory) {
+        factoryResult = KPluginFactory::loadFactory(KPluginMetaData(QStringLiteral("kded_") + module.fileName()));
+        if (factoryResult) {
             qCWarning(KDED).nospace() << "found kded module " << moduleId << " by prepending 'kded_' to the library path, please fix your metadata.";
-            kdedModule = factory->create<KDEDModule>(this);
+            kdedModule = factoryResult.plugin->create<KDEDModule>(this);
         } else {
-            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":" << loader.errorString() << " (library path was:" << module.fileName()
-                                      << ")";
+            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":" << factoryResult.errorText
+                                      << " (library path was:" << module.fileName() << ")";
         }
     }
 
@@ -735,7 +733,7 @@ int main(int argc, char *argv[])
     QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
     // so that the calling code is independent from the physical "location" of the service.
-    const QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("kf5/kded"));
+    const QVector<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf5/kded"));
     for (const KPluginMetaData &metaData : plugins) {
         const QString serviceName = metaData.value(QStringLiteral("X-KDE-DBus-ServiceName"));
         if (serviceName.isEmpty()) {
