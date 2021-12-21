@@ -18,7 +18,7 @@ ecm_qt_export_logging_category(
 ecm_mark_nongui_executable(kded5)
 
 target_link_libraries(kded5
-    Qt5::Widgets # QApplication
+    Qt${QT_MAJOR_VERSION}::Widgets # QApplication
     KF5::Service # Needed for ksycoca.h
     KF5::CoreAddons # Needed for KDirWatch
     KF5::DBusAddons # Needed for kdedmodule.h
@@ -43,7 +43,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml DESTINATION ${KDE_IN
 
 kdbusaddons_generate_dbus_service_file(kded5 org.kde.kded5 ${KDE_INSTALL_FULL_BINDIR})
 
-install( FILES kdedmodule.desktop DESTINATION  ${KDE_INSTALL_KSERVICETYPES5DIR} )
+install( FILES kdedmodule.desktop DESTINATION  ${KDE_INSTALL_KSERVICETYPESDIR} )
 
 ecm_qt_install_logging_categories(
     EXPORT KDED
