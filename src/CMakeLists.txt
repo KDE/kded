@@ -36,7 +36,7 @@ install(TARGETS kded5 ${KF5_INSTALL_TARGETS_DEFAULT_ARGS} )
 configure_file(plasma-kded.service.in
                ${CMAKE_CURRENT_BINARY_DIR}/plasma-kded.service @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/plasma-kded.service
-        DESTINATION ${SYSTEMD_USER_UNIT_INSTALL_DIR})
+        DESTINATION ${KDE_INSTALL_SYSTEMDUSERUNITDIR})
 
 qt_generate_dbus_interface( kdedadaptor.h org.kde.kded5.xml )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
