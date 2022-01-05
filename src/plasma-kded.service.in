@@ -1,6 +1,7 @@
 [Unit]
 Description=KDE Daemon
 PartOf=graphical-session.target
+After=plasma-kcminit.service
 
 [Service]
 ExecStart=@KDE_INSTALL_FULL_BINDIR@/kded5
