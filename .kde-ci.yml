@@ -6,9 +6,7 @@ Dependencies:
     'frameworks/kcoreaddons' : '@same'
     'frameworks/kdbusaddons' : '@same'
     'frameworks/kservice' : '@same'
-    'frameworks/kwindowsystem' : '@same'
     'frameworks/kcrash' : '@same'
-    'frameworks/kinit' : '@same'
     'frameworks/kdoctools' : '@same'
 
 Options:
