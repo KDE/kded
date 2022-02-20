@@ -40,6 +40,7 @@ Name[uk]=KDED
 Name[vi]=KDED
 Name[x-test]=xxKDEDxx
 Name[zh_CN]=KDED
+Name[zh_TW]=KDED
 Type=Service
 Icon=kde-frameworks
 NoDisplay=true
