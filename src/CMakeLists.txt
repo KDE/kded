@@ -23,6 +23,7 @@ target_link_libraries(kded5
     KF5::CoreAddons # Needed for KDirWatch
     KF5::DBusAddons # Needed for kdedmodule.h
     KF5::Crash # Sets it as autostart
+    KF5::ConfigCore
 )
 if(APPLE)
     target_link_libraries(kded5 "-framework CoreFoundation")

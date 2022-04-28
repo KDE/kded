@@ -27,6 +27,7 @@
 #include <KConfigGroup>
 #include <KDBusService>
 #include <KDirWatch>
+#include <KPluginFactory>
 #include <KPluginInfo>
 #include <KPluginMetaData>
 #include <KServiceTypeTrader>
