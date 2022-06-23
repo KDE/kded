@@ -517,7 +517,7 @@ void Kded::dirDeleted(const QString &path)
 
 void Kded::update(const QString &)
 {
-    m_pTimer->start(10000);
+    m_pTimer->start(1000);
 }
 
 void Kded::readDirectory(const QString &_path)
