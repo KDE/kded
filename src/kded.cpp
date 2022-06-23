@@ -438,6 +438,14 @@ void Kded::updateDirWatch()
     for (const QString &dir : std::as_const(m_allResourceDirs)) {
         readDirectory(dir);
     }
+
+    QStringList dataDirs = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+    for (auto &dir : dataDirs) {
+        dir += QLatin1String("/icons");
+        if (!m_pDirWatch->contains(dir)) {
+            m_pDirWatch->addDir(dir, KDirWatch::WatchDirOnly);
+        }
+    }
 }
 
 void Kded::updateResourceList()
@@ -515,9 +523,16 @@ void Kded::dirDeleted(const QString &path)
     update(path);
 }
 
-void Kded::update(const QString &)
+void Kded::update(const QString &path)
 {
-    m_pTimer->start(1000);
+    if (path.endsWith(QLatin1String("/icons"))) {
+        // If the dir was created or updated there could be new folders to merge into the active theme(s)
+        QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/KIconLoader"), QStringLiteral("org.kde.KIconLoader"), QStringLiteral("iconChanged"));
+        message << 0;
+        QDBusConnection::sessionBus().send(message);
+    } else {
+        m_pTimer->start(1000);
+    }
 }
 
 void Kded::readDirectory(const QString &_path)
