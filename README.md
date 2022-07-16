@@ -28,7 +28,7 @@ Some of these tasks are built in, others are started on demand.
 ### Configuration of built in tasks.
 
 The built in tasks have some configuration options that can be changed by
-editing the kdedrc configuration file. Changes need to be made with a text-
+editing the kdedrc configuration file. Changes need to be made with a text
 editor, there is no GUI available. All options are listed under the [General]
 group:
 
@@ -38,18 +38,18 @@ and has a default of 5000 (5 seconds).
 
 **CheckSycoca**: This option can be used to disable checking for new software.
 ksycoca will still be built when kded starts up and when applications
-explicitly request a rebuild of the ksycoca database. The user can 
+explicitly request a rebuild of the ksycoca database. The user can
 also manually rebuild ksycoca by running the kbuildsycoca program.
-The default value of this option is "true". Checking can be disabled by 
+The default value of this option is "true". Checking can be disabled by
 setting this option to "false".
 
 **CheckUpdates**: This option can be used to disable checking for update files.
 kconf\_update will still be run when kded starts up.
-The default value of this option is "true". Checking can be disabled by 
+The default value of this option is "true". Checking can be disabled by
 setting this option to "false".
 
 **CheckHostname**: This option can be used to disable checking for hostname
-changes. The default value of this option is "true". Checking can be 
+changes. The default value of this option is "true". Checking can be
 disabled by setting this option to "false".
 
 Example kdedrc file with default values:
@@ -70,15 +70,15 @@ filesystem is checked for new software or update files. The time is specified
 in milliseconds and has a default of 500 (0.5 seconds).
 
 **NFSPollInterval**: This can be used to adjust the time interval at which remote
-filesystems, such as NFS or Samba, are ebing checked for new software or 
+filesystems, such as NFS or Samba, are ebing checked for new software or
 update files. The time is specified in milliseconds and has a default of 5000
 (5 seconds).
 
 The above options are not used when FAM is used to watch for changes in the
-filesystem, or when DNOTIFY is used. Specifying larger intervals may reduce 
+filesystem, or when DNOTIFY is used. Specifying larger intervals may reduce
 the CPU load and/or network traffic. Shorter intervals are not recommended.
 
-Please note that in previous versions of KDE these options where listed in 
+Please note that in previous versions of KDE these options where listed in
 the kderc file.
 
 Example kdeglobals fragment:
@@ -89,10 +89,9 @@ Example kdeglobals fragment:
 
 ### KDED modules
 
-Some things can be greatly simplified if they can be coordinated from a 
-central place. KDED has support for modules that will be demand-loaded 
+Some things can be greatly simplified if they can be coordinated from a
+central place. KDED has support for modules that will be demand-loaded
 whenever an application attempts to make DBus call to the module.
 This can be useful for central administration tasks.
 
 See docs/HOWTO.
-

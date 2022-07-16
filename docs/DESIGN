@@ -1,7 +1,7 @@
 kded
 ====
 
-kded is responsible for creating the sycoca file, i.e. the binary 
+kded is responsible for creating the sycoca file, i.e. the binary
 cache of servicetypes, mimetypes, and services for a particular user.
 
 It uses KDirWatch to monitor the directories containing .desktop files.
@@ -14,7 +14,7 @@ kbuildsycoca recreates the sycoca file by:
 * creating all objects in memory
 * saving everything in the sycoca file (see below for ksycoca internals)
 * clearing all memory
-* notifying the applications that use ksycoca by a DBUS signal emitted to 
+* notifying the applications that use ksycoca by a DBUS signal emitted to
 the ksycoca object (KSycoca::notifyDatabaseChanged()).
 
 Format of the sycoca database file
