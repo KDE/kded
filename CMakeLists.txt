@@ -45,7 +45,7 @@ ecm_setup_version(
 
 ecm_set_disabled_deprecation_versions(
     QT 5.15.2
-    KF 5.95.0
+    KF 5.97.0
     KSERVICE 5.89 # We need KServiceTypeTrader for compatibility plugin loading
 )
 
