@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Portuguese "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>Manual de Utilizador do kded5</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Manutenção</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Autor original</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>2014-03-22</date>
+<releaseinfo
+>Plataformas 5.0</releaseinfo>
+<productname
+>Plataformas do KDE</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded5</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded5</command
+></refname>
+<refpurpose
+>servidor do &kde; - despoleta as actualizações da base de dados Sycoca quando for necessário.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Sintaxe</title>
+
+<cmdsynopsis
+><command
+>kded5</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Descrição</title>
+
+<para
+>O <command
+>kded5</command
+> consolida diversos serviços pequenos num único processo. Estes são normalmente serviços de D-Bus oferecidos por módulos do KDED, mas também faz a gestão do 'sycoca' (uma 'cache' binária dos tipos de serviços, tipos MIME e serviços usados pelo KService), assim como os programas de actualização do KConfig que forem necessários.</para>
+
+<para
+>No caso do 'sycoca', este vigia as pastas que contêm ficheiros '.desktop'. Quando for adicionado/removido um ficheiro, ele espera alguns 5 segundos (para o caso de ser uma série de actualizações) e invoca depois o <command
+>kbuildsycoca5</command
+>.</para>
+
+<para
+>Verifica os ficheiros de actualizações acabados de instalar, i.e., os ficheiros *.upd que são usados para actualizar os ficheiros de configuração dos utilizadores quando os formato dos ficheiros de configuração mudam. O utilitário de actualização do KConfig é lançado para efectuar as actualizações.</para>
+
+<para
+>Estas tarefas também são sempre efectuadas no arranque do <command
+>kded5</command
+> para garantir que a configuração do utilizador está actualizada.</para>
+
+<para
+>Não terá normalmente de executar o <command
+>kded5</command
+> directamente; as sessões do ambiente de trabalho do Plasma executam-no automaticamente, e é também iniciado a pedido quando uma aplicação tentar usar uma interface de D-Bus oferecida por ele ou um dos seus módulos.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Opções</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Verifica a base de dados 'sycoca', actualizando-a se necessário, e sai. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Configuração</title>
+
+<para
+>O <command
+>kded5</command
+> pode ser configurado com o ficheiro de configuração <filename
+>kded5rc</filename
+>, do estilo 'ini'. Nos sistemas UNIX, este pode ser encontrado em <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>; se o <varname
+>$XDG_CONFIG_HOME</varname
+> não estiver definido, este valor será por omissão <filename
+>~/.config/kded5rc</filename
+>.</para>
+
+<para
+>Os itens do ficheiro de configuração são lidos a pedido, pelo que poderá efectuar as alterações enquanto o <command
+>kded5</command
+> está em execução. Contudo, todas as opções de configuração actuais só afectam realmente o comportamento inicial do <command
+>kded5</command
+>.</para>
+
+<para
+>A secção <option
+>[General]</option
+> tem as seguintes opções: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>Se deve actualizar o 'sycoca' no arranque (por omissão: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>Se deve efectuar as actualizações restantes do KConfig no arranque (por omissão: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckFileStamps</option
+></term>
+<listitem
+><para
+>Se deve verificar a data/hora dos ficheiros ao efectuar a actualização inicial do 'sycoca' (por omissão: <constant
+>true</constant
+>). Veja a documentação do <command
+>kbuildsycoca5</command
+> para obter mais detalhes.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>Se deve atrasar a actualização inicial do 'sycoca' até cerca de um minuto após o arranque (por omissão: <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Cada módulo terá também uma secção <option
+>[Module-<replaceable
+>nome</replaceable
+>]</option
+> no ficheiro <filename
+>kded5rc</filename
+>, onde o <replaceable
+>nome</replaceable
+> é o nome do ficheiro 'desktop' do módulo, sem a extensão <filename
+>.desktop</filename
+>. Esta contém uma opção <option
+>autoload</option
+> que define se o módulo deverá ser carregado automaticamente quando o <command
+>kded5</command
+> é iniciado (por omissão: <constant
+>false</constant
+>). Lembre-se que esta definição também poderá ser alterada através da interface de D-Bus do <command
+>kded5</command
+>.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Veja Também</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit5</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Problemas</title>
+<para
+>Existem provavelmente diversos erros. Use o <ulink url="http://bugs.kde.org"
+>sistema de gestão de erros do KDE</ulink
+> para os comunicar.</para>
+</refsect1>
+
+</refentry>
