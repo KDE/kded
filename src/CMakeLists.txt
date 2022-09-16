@@ -32,7 +32,7 @@ target_compile_definitions(kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )
 
-install(TARGETS kded5 ${KF5_INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS kded5 ${KF_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 configure_file(plasma-kded.service.in
                ${CMAKE_CURRENT_BINARY_DIR}/plasma-kded.service @ONLY)
