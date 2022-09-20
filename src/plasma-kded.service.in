@@ -5,5 +5,6 @@ After=plasma-kcminit.service
 
 [Service]
 ExecStart=@KDE_INSTALL_FULL_BINDIR@/kded5
+Restart=on-failure
 BusName=org.kde.kded5
 Slice=session.slice
