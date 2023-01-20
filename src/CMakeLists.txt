@@ -19,17 +19,17 @@ ecm_mark_nongui_executable(kded5)
 
 target_link_libraries(kded5
     Qt${QT_MAJOR_VERSION}::Widgets # QApplication
-    KF5::Service # Needed for ksycoca.h
-    KF5::CoreAddons # Needed for KDirWatch
-    KF5::DBusAddons # Needed for kdedmodule.h
-    KF5::Crash # Sets it as autostart
-    KF5::ConfigCore
+    KF6::Service # Needed for ksycoca.h
+    KF6::CoreAddons # Needed for KDirWatch
+    KF6::DBusAddons # Needed for kdedmodule.h
+    KF6::Crash # Sets it as autostart
+    KF6::ConfigCore
 )
 if(APPLE)
     target_link_libraries(kded5 "-framework CoreFoundation")
 endif()
 target_compile_definitions(kded5 PRIVATE
-    KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
+    KCONF_UPDATE_EXE="$<TARGET_FILE:KF6::kconf_update>"
 )
 
 install(TARGETS kded5 ${KF_INSTALL_TARGETS_DEFAULT_ARGS} )
