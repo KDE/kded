@@ -29,7 +29,7 @@ if(APPLE)
     target_link_libraries(kded5 "-framework CoreFoundation")
 endif()
 target_compile_definitions(kded5 PRIVATE
-    KCONF_UPDATE_EXE="$<TARGET_FILE:KF6::kconf_update>"
+    KCONF_UPDATE_EXE="$<TARGET_FILE:KF5::kconf_update>"
 )
 
 install(TARGETS kded5 ${KF_INSTALL_TARGETS_DEFAULT_ARGS} )
