@@ -44,10 +44,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded5.xml DESTINATION ${KDE_IN
 
 kdbusaddons_generate_dbus_service_file(kded5 org.kde.kded5 ${KDE_INSTALL_FULL_BINDIR})
 
-if(QT_MAJOR_VERSION EQUAL "5")
-    install( FILES kdedmodule.desktop DESTINATION  ${KDE_INSTALL_KSERVICETYPESDIR} )
-endif()
-
 ecm_qt_install_logging_categories(
     EXPORT KDED
     FILE kded.categories
