@@ -19,7 +19,7 @@ include(KDECMakeSettings)
 include(KDEGitCommitHooks)
 include(ECMDeprecationSettings)
 
-find_package(Qt${QT_MAJOR_VERSION} "${REQUIRED_QT_VERSION}" CONFIG REQUIRED DBus Widgets)
+find_package(Qt6 "${REQUIRED_QT_VERSION}" CONFIG REQUIRED DBus Widgets)
 find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)
 find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 find_package(KF6Crash ${KF_DEP_VERSION} REQUIRED)
@@ -44,8 +44,8 @@ ecm_setup_version(
 # (given that this framework produces no library)
 
 ecm_set_disabled_deprecation_versions(
-    QT 5.15.2
-    KF 5.97.0
+    QT 6.4
+    KF 5.240.0
 )
 
 if (KF6DocTools_FOUND)

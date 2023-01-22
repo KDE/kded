@@ -18,7 +18,7 @@ ecm_qt_export_logging_category(
 ecm_mark_nongui_executable(kded5)
 
 target_link_libraries(kded5
-    Qt${QT_MAJOR_VERSION}::Widgets # QApplication
+    Qt6::Widgets # QApplication
     KF6::Service # Needed for ksycoca.h
     KF6::CoreAddons # Needed for KDirWatch
     KF6::DBusAddons # Needed for kdedmodule.h
