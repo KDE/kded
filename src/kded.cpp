@@ -525,7 +525,7 @@ void Kded::dirDeleted(const QString &path)
 
 void Kded::update(const QString &path)
 {
-    if (path.endsWith(QLatin1String("/icons"))) {
+    if (path.endsWith(QLatin1String("/icons")) && m_pDirWatch->contains(path)) {
         // If the dir was created or updated there could be new folders to merge into the active theme(s)
         QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/KIconLoader"), QStringLiteral("org.kde.KIconLoader"), QStringLiteral("iconChanged"));
         message << 0;
