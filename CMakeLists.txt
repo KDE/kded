@@ -37,7 +37,7 @@ ecm_setup_version(
   PROJECT
   VARIABLE_PREFIX KDED
   VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/kded_version.h"
-  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfigVersion.cmake"
+  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6KDEDConfigVersion.cmake"
   SOVERSION 6)
 
 # We don't install kded_version.h, it's only useful internally
@@ -56,18 +56,18 @@ endif()
 add_subdirectory(src)
 
 # Create a Config.cmake and a ConfigVersion.cmake file and install them
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KDED")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6KDED")
 
 configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/KDEDConfig.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfig.cmake"
+  "${CMAKE_CURRENT_SOURCE_DIR}/KF6KDEDConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6KDEDConfig.cmake"
   PATH_VARS KDE_INSTALL_DBUSINTERFACEDIR
   INSTALL_DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
 )
 
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfig.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/KDEDConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6KDEDConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6KDEDConfigVersion.cmake"
   DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
   COMPONENT Devel
 )
