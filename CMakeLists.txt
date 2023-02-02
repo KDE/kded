@@ -72,7 +72,7 @@ install(FILES
   COMPONENT Devel
 )
 
-install(FILES org.kde.kded5.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES org.kde.kded6.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

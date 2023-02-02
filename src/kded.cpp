@@ -602,7 +602,7 @@ void KBuildsycocaAdaptor::setTestModeEnabled()
 
 static void setupAppInfo(QApplication *app)
 {
-    app->setApplicationName(QStringLiteral("kded5"));
+    app->setApplicationName(QStringLiteral("kded6"));
     app->setOrganizationDomain(QStringLiteral("kde.org"));
     app->setApplicationVersion(QStringLiteral(KDED_VERSION_STRING));
 }

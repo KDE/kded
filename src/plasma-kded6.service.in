@@ -1,9 +1,9 @@
 [Unit]
-Description=KDE Daemon
+Description=KDE Daemon 6
 PartOf=graphical-session.target
 After=plasma-kcminit.service
 
 [Service]
-ExecStart=@KDE_INSTALL_FULL_BINDIR@/kded5
-BusName=org.kde.kded5
+ExecStart=@KDE_INSTALL_FULL_BINDIR@/kded6
+BusName=org.kde.kded6
 Slice=session.slice
