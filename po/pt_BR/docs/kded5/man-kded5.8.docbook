@@ -63,7 +63,7 @@
 >kded5</command
 ></refname>
 <refpurpose
->Servidor do &kde; - dispara as atualizações da base de dados Sycoca quando for necessário.</refpurpose>
+>Servidor do &kde; - dispara as atualizações do banco de dados Sycoca quando for necessário.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
@@ -85,7 +85,7 @@
 <para
 >O <command
 >kded5</command
-> consolida diversos pequenos serviços em um único processo. Normalmente, são serviços D-Bus fornecidos por módulos do KDED, mas também gerencia o sycoca (um cache binário dos tipos de serviços, tipos MIME e serviços usados pelo KService), assim como os scripts de atualização do KConfig que forem necessários.</para>
+> consolida diversos pequenos serviços em um único processo. Normalmente, são serviços &DBus; fornecidos por módulos do KDED, mas também gerencia o sycoca (um cache binário dos tipos de serviços, tipos &MIME; e serviços usados pelo KService), assim como os scripts de atualização do KConfig que forem necessários.</para>
 
 <para
 >No caso do sycoca, ele monitora as pastas que contêm arquivos '.desktop'. Quando for adicionado/removido um arquivo, ele espera cerca de 5 segundos (para o caso de ser uma série de atualizações) e depois executa o <command
@@ -93,7 +93,7 @@
 > para atualizar o sycoca.</para>
 
 <para
->No caso do KConfig, ele verifica os arquivos de atualização recém instalados, isto é, os arquivos *.upd usados para atualizar os arquivos de configuração dos usuários quando os formatos dos arquivos de configuração mudarem e executa o utilitário KConfig para efetuar as alterações.</para>
+>No caso do KConfig, ele verifica os arquivos de atualização recém instalados, &ie;, os arquivos *.upd usados para atualizar os arquivos de configuração dos usuários quando os formatos dos arquivos de configuração mudarem e executa o utilitário KConfig para efetuar as alterações.</para>
 
 <para
 >Essas tarefas também são executadas quando o <command
@@ -103,7 +103,7 @@
 <para
 >Você normalmente não precisará executar o <command
 >kded5</command
-> diretamente. As sessões do ambiente de trabalho Plasma executam-no automaticamente e também por solicitação, quando um aplicativo tentar usar uma interface de D-Bus oferecida por ele ou um dos seus módulos.</para>
+> diretamente. As sessões do ambiente de trabalho &plasma; executam-no automaticamente e também por solicitação, quando um aplicativo tentar usar uma interface de &DBus; oferecida por ele ou um dos seus módulos.</para>
 
 </refsect1>
 
@@ -138,7 +138,7 @@
 >kded5</command
 > pode ser configurado com o arquivo de configuração <filename
 >kded5rc</filename
->, no estilo 'ini'. Em sistemas Unix, este pode ser encontrado em <filename
+>, no estilo 'ini'. Em sistemas &UNIX;, este pode ser encontrado em <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
 >/kded5rc</filename
@@ -229,7 +229,7 @@
 >kded5</command
 > for iniciado (padrão: <constant
 >false</constant
->). Lembre-se de que esta definição também pode ser alterada através da interface D-Bus do <command
+>). Lembre-se de que esta definição também pode ser alterada através da interface &DBus; do <command
 >kded5</command
 >.</para>
 </refsect1>
@@ -261,8 +261,8 @@
 <title
 >Problemas</title>
 <para
->Use o <ulink url="http://bugs.kde.org"
->sistema de gerenciamento de erros do KDE</ulink
+>Use o <ulink url="https://bugs.kde.org"
+>sistema de gerenciamento de erros do &kde;</ulink
 > para relatar erros.</para>
 </refsect1>
 
