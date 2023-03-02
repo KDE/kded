@@ -688,6 +688,7 @@ int main(int argc, char *argv[])
     }
     setupAppInfo(&app);
     app.setQuitOnLastWindowClosed(false);
+    app.setQuitLockEnabled(false);
 
     QCommandLineParser parser;
     parser.addHelpOption();
