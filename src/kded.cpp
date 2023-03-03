@@ -128,9 +128,9 @@ static int phaseForModule(const KPluginMetaData &module)
     return module.value(QStringLiteral("X-KDE-Kded-phase"), 2);
 }
 
-QVector<KPluginMetaData> Kded::availableModules() const
+QList<KPluginMetaData> Kded::availableModules() const
 {
-    QVector<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
+    QList<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
     QSet<QString> moduleIds;
     for (const KPluginMetaData &md : std::as_const(plugins)) {
         moduleIds.insert(md.pluginId());
@@ -176,7 +176,7 @@ void Kded::initModules()
     }
 
     // Preload kded modules.
-    const QVector<KPluginMetaData> kdedModules = availableModules();
+    const QList<KPluginMetaData> kdedModules = availableModules();
     for (const KPluginMetaData &module : kdedModules) {
         // Should the service load on startup?
         const bool autoload = isModuleAutoloaded(module);
@@ -711,7 +711,7 @@ int main(int argc, char *argv[])
     QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
     // so that the calling code is independent from the physical "location" of the service.
-    const QVector<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
+    const QList<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
     for (const KPluginMetaData &metaData : plugins) {
         const QString serviceName = metaData.value(QStringLiteral("X-KDE-DBus-ServiceName"));
         if (serviceName.isEmpty()) {

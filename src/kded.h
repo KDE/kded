@@ -179,7 +179,7 @@ protected:
 
     KDEDModule *loadModule(const KPluginMetaData &module, bool onDemand);
 
-    QVector<KPluginMetaData> availableModules() const;
+    QList<KPluginMetaData> availableModules() const;
     /**
      * Pointer to the dirwatch class which tells us, when some directories
      * changed.
