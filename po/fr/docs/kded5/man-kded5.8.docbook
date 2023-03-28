@@ -103,7 +103,7 @@
 <para
 >Vous ne devriez pas avoir besoin normalement d'exécuter <command
 >kded5</command
-> directement. Les sessions de bureaux &plasma;  le démarrent automatiquement. Il est démarré à la demande quand une application tente d'utiliser son interface &DBus; ou via un de ses modules.</para>
+> directement. Les sessions de bureaux &plasma; le démarrent automatiquement. Il est démarré à la demande quand une application tente d'utiliser son interface &DBus; ou via un de ses modules.</para>
 
 </refsect1>
 
@@ -136,7 +136,7 @@
 <para
 >La commande <command
 >kded5</command
-> peut être configurée  avec le fichier de configuration <filename
+> peut être configurée avec le fichier de configuration <filename
 >kded5rc</filename
 > ini-style. Sur les systèmes « UNIX », ceci peut être trouvé dans <filename
 ><varname
