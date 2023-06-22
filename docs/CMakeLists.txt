@@ -1,1 +1,1 @@
-add_subdirectory(kded5)
+add_subdirectory(kded6)
