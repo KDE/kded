@@ -217,7 +217,7 @@ void Kded::noDemandLoad(const QString &obj)
 
 void Kded::setModuleAutoloading(const QString &obj, bool autoload)
 {
-    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     // Ensure the service exists.
     KPluginMetaData module = findModule(obj);
     if (!module.isValid()) {
@@ -238,7 +238,7 @@ bool Kded::isModuleAutoloaded(const KPluginMetaData &module) const
     if (!module.isValid()) {
         return false;
     }
-    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     bool autoload = module.value(QStringLiteral("X-KDE-Kded-autoload"), false);
     KConfigGroup cg(config, QStringLiteral("Module-").append(module.pluginId()));
     autoload = cg.readEntry("autoload", autoload);
@@ -262,7 +262,7 @@ bool Kded::isModuleLoadedOnDemand(const KPluginMetaData &module) const
     if (!module.isValid()) {
         return false;
     }
-    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     return module.value(QStringLiteral("X-KDE-Kded-load-on-demand"), true);
 }
 
@@ -689,7 +689,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    KSharedConfig::Ptr config = KSharedConfig::openConfig();
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     KConfigGroup cg(config, "General");
 
     bCheckSycoca = cg.readEntry("CheckSycoca", true);

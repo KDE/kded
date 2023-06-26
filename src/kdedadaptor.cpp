@@ -58,7 +58,7 @@ QStringList KdedAdaptor::loadedModules()
 
 void KdedAdaptor::reconfigure()
 {
-    KSharedConfig::openConfig()->reparseConfiguration();
+    KSharedConfig::openConfig(QStringLiteral("kded5rc"))->reparseConfiguration();
     Kded::self()->initModules();
 }
 
