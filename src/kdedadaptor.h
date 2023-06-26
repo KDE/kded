@@ -27,8 +27,6 @@ public Q_SLOTS:
     void registerWindowId(qlonglong windowId, const QDBusMessage &);
     void unregisterWindowId(qlonglong windowId, const QDBusMessage &);
     void reconfigure();
-    // TODO KF6 remove
-    void loadSecondPhase();
     void quit();
 
     /**

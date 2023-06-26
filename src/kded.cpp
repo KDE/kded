@@ -210,11 +210,6 @@ void Kded::initModules()
     }
 }
 
-void Kded::loadSecondPhase()
-{
-    qCDebug(KDED) << "Second phase autoload is deprecated";
-}
-
 void Kded::noDemandLoad(const QString &obj)
 {
     m_dontLoad.insert(obj, this);

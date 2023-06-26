@@ -60,12 +60,6 @@ void KdedAdaptor::reconfigure()
 {
     KSharedConfig::openConfig()->reparseConfiguration();
     Kded::self()->initModules();
-    Kded::self()->loadSecondPhase();
-}
-
-void KdedAdaptor::loadSecondPhase()
-{
-    Kded::self()->loadSecondPhase();
 }
 
 void KdedAdaptor::quit()
