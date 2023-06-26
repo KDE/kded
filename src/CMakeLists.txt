@@ -25,9 +25,7 @@ target_link_libraries(kded5
     KF6::Crash # Sets it as autostart
     KF6::ConfigCore
 )
-if(APPLE)
-    target_link_libraries(kded5 "-framework CoreFoundation")
-endif()
+
 target_compile_definitions(kded5 PRIVATE
     KCONF_UPDATE_EXE="$<TARGET_FILE:KF6::kconf_update>"
 )

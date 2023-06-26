@@ -31,10 +31,6 @@
 #include <KPluginMetaData>
 #include <KSharedConfig>
 
-#ifdef Q_OS_OSX
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 #include <memory>
 
 Q_DECLARE_LOGGING_CATEGORY(KDED)
@@ -151,22 +147,14 @@ static KPluginMetaData findModule(const QString &id)
 void Kded::initModules()
 {
     m_dontLoad.clear();
-#ifdef Q_OS_OSX
-    // it seems there is no reason to honour KDE_FULL_SESSION on OS X even if it's set for some reason.
-    // That way kdeinit5 is always auto-started if required (and the kded is as good a candidate
-    // for starting this service as any other application).
-    bool kde_running = false;
-#else
+
     bool kde_running = !qEnvironmentVariableIsEmpty("KDE_FULL_SESSION");
-#endif
     if (kde_running) {
-#ifndef Q_OS_WIN
         // not the same user like the one running the session (most likely we're run via sudo or something)
         const QByteArray sessionUID = qgetenv("KDE_SESSION_UID");
         if (!sessionUID.isEmpty() && uid_t(sessionUID.toInt()) != getuid()) {
             kde_running = false;
         }
-#endif
         // not the same kde version as the current desktop
         const QByteArray kdeSession = qgetenv("KDE_SESSION_VERSION");
         if (kdeSession.toInt() != 6) {
@@ -654,20 +642,6 @@ static bool detectPlatform(int argc, char **argv)
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_OS_OSX
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    if (mainBundle) {
-        // get the application's Info Dictionary. For app bundles this would live in the bundle's Info.plist,
-        // for regular executables it is obtained in another way.
-        CFMutableDictionaryRef infoDict = (CFMutableDictionaryRef)CFBundleGetInfoDictionary(mainBundle);
-        if (infoDict) {
-            // Add or set the "LSUIElement" key with/to value "1". This can simply be a CFString.
-            CFDictionarySetValue(infoDict, CFSTR("LSUIElement"), CFSTR("1"));
-            // That's it. We're now considered as an "agent" by the window server, and thus will have
-            // neither menubar nor presence in the Dock or App Switcher.
-        }
-    }
-#endif
     // options.add("check", qi18n("Check Sycoca database only once"));
 
     // WABA: Make sure not to enable session management.
@@ -727,10 +701,8 @@ int main(int argc, char *argv[])
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
     delayedCheck = cg.readEntry("DelayedCheck", false);
 
-#ifndef Q_OS_WIN
     signal(SIGTERM, sighandler);
     signal(SIGHUP, sighandler);
-#endif
 
     KCrash::setFlags(KCrash::AutoRestart);
 
