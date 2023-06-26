@@ -68,7 +68,6 @@ Kded::Kded()
     m_serviceWatcher->setWatchMode(QDBusServiceWatcher::WatchForUnregistration);
     QObject::connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &Kded::slotApplicationRemoved);
 
-    new KBuildsycocaAdaptor(this);
     new KdedAdaptor(this);
 
     QDBusConnection session = QDBusConnection::sessionBus();
@@ -576,28 +575,6 @@ void KUpdateD::slotNewUpdateFile(const QString &dirty)
     Q_UNUSED(dirty);
     qCDebug(KDED) << dirty;
     m_pTimer->start(500);
-}
-
-KBuildsycocaAdaptor::KBuildsycocaAdaptor(QObject *parent)
-    : QDBusAbstractAdaptor(parent)
-{
-}
-
-void KBuildsycocaAdaptor::recreate()
-{
-    Kded::self()->recreate();
-}
-
-// KF6: remove
-bool KBuildsycocaAdaptor::isTestModeEnabled()
-{
-    return QStandardPaths::isTestModeEnabled();
-}
-
-// KF6: remove
-void KBuildsycocaAdaptor::setTestModeEnabled()
-{
-    QStandardPaths::setTestModeEnabled(true);
 }
 
 static void setupAppInfo(QApplication *app)

@@ -207,19 +207,6 @@ protected:
     static Kded *_self;
 };
 
-class KBuildsycocaAdaptor : public QDBusAbstractAdaptor
-{
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.kbuildsycoca")
-public:
-    KBuildsycocaAdaptor(QObject *parent);
-
-public Q_SLOTS:
-    void recreate();
-    bool isTestModeEnabled();
-    void setTestModeEnabled();
-};
-
 class KUpdateD : public QObject
 {
     Q_OBJECT
