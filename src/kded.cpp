@@ -713,3 +713,5 @@ int main(int argc, char *argv[])
 
     return app.exec(); // keep running
 }
+
+#include "moc_kded.cpp"
