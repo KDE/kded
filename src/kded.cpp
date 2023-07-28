@@ -7,6 +7,7 @@
 */
 
 #include "kded.h"
+#include "kded_debug.h"
 #include "kded_version.h"
 #include "kdedadaptor.h"
 
@@ -32,10 +33,6 @@
 #include <KSharedConfig>
 
 #include <memory>
-
-Q_DECLARE_LOGGING_CATEGORY(KDED)
-
-Q_LOGGING_CATEGORY(KDED, "kf.kded", QtWarningMsg)
 
 Kded *Kded::_self = nullptr;
 

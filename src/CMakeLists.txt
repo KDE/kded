@@ -6,7 +6,9 @@ target_sources(kded6 PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kded6.xml # just so that it gets generated
 )
 
-ecm_qt_export_logging_category(
+ecm_qt_declare_logging_category(
+    kded6
+    HEADER kded_debug.h
     IDENTIFIER KDED
     CATEGORY_NAME kf.kded
     OLD_CATEGORY_NAMES kf5.kded

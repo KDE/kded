@@ -74,6 +74,12 @@ install(FILES
 
 install(FILES org.kde.kded6.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
+ecm_qt_install_logging_categories(
+        EXPORT KDED
+        FILE kded.categories
+        DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+        )
+
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
