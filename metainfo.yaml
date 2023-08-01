@@ -1,4 +1,4 @@
-maintainer: dfaure
+maintainer:
 description: Extensible daemon for providing system level services
 tier: 3
 type: solution
