@@ -71,8 +71,6 @@ Kded::Kded()
     session.registerObject(QStringLiteral("/kbuildsycoca"), this);
     session.registerObject(QStringLiteral("/kded"), this);
 
-    qDBusAddSpyHook(messageFilter);
-
     m_pTimer->setSingleShot(true);
     connect(m_pTimer, &QTimer::timeout, this, static_cast<void (Kded::*)()>(&Kded::recreate));
 }
@@ -646,6 +644,12 @@ int main(int argc, char *argv[])
         runKonfUpdate();
         return 0;
     }
+
+    // Qt now has DBus in another thread, so we need to handle any messages
+    // between the service registration and our paths existing
+    // This means adding the spy now, so any received message gets
+    // posted to the main thread
+    qDBusAddSpyHook(Kded::messageFilter);
 
     QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
