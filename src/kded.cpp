@@ -647,8 +647,6 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
-
     QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     // Also register as all the names we should respond to (org.kde.kcookiejar, org.kde.khotkeys etc.)
     // so that the calling code is independent from the physical "location" of the service.
@@ -658,10 +656,12 @@ int main(int argc, char *argv[])
         if (serviceName.isEmpty()) {
             continue;
         }
-        if (!bus->registerService(serviceName)) {
+        // register them queued as an old kded could be running at this point
+        if (!bus->registerService(serviceName, QDBusConnectionInterface::QueueService)) {
             qCWarning(KDED) << "Couldn't register name" << serviceName << "with DBUS - another process owns it already!";
         }
     }
+    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     KConfigGroup cg(config, "General");
