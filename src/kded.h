@@ -134,11 +134,6 @@ public Q_SLOTS:
      */
     void slotApplicationRemoved(const QString &);
 
-    /**
-     * A KDEDModule is about to get destroyed.
-     */
-    void slotKDEDModuleRemoved(KDEDModule *);
-
 protected Q_SLOTS:
 
     /**

@@ -81,14 +81,9 @@ Kded::~Kded()
     m_pTimer->stop();
 
     for (auto it = m_modules.cbegin(); it != m_modules.cend(); ++it) {
-        KDEDModule *module(it.value());
-
-        // first disconnect otherwise slotKDEDModuleRemoved() is called
-        // and changes m_modules while we're iterating over it
-        disconnect(module, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
-
-        delete module;
+        delete *it;
     }
+    m_modules.clear();
 }
 
 // on-demand module loading
@@ -308,7 +303,6 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
         kdedModule->setModuleName(moduleId);
         m_modules.insert(moduleId, kdedModule);
         // m_libs.insert(moduleId, lib);
-        connect(kdedModule, &KDEDModule::moduleDeleted, this, &Kded::slotKDEDModuleRemoved);
         qCDebug(KDED) << "Successfully loaded module" << moduleId;
         return kdedModule;
     }
@@ -330,11 +324,6 @@ bool Kded::unloadModule(const QString &obj)
 QStringList Kded::loadedModules()
 {
     return m_modules.keys();
-}
-
-void Kded::slotKDEDModuleRemoved(KDEDModule *module)
-{
-    m_modules.remove(module->moduleName());
 }
 
 void Kded::slotApplicationRemoved(const QString &name)
