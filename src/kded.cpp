@@ -300,15 +300,8 @@ KDEDModule *Kded::loadModule(const KPluginMetaData &module, bool onDemand)
     if (factoryResult) {
         kdedModule = factoryResult.plugin->create<KDEDModule>(this);
     } else {
-        // TODO: remove this fallback code, the kded modules should all be fixed instead
-        factoryResult = KPluginFactory::loadFactory(KPluginMetaData(QStringLiteral("kded_") + module.fileName()));
-        if (factoryResult) {
-            qCWarning(KDED).nospace() << "found kded module " << moduleId << " by prepending 'kded_' to the library path, please fix your metadata.";
-            kdedModule = factoryResult.plugin->create<KDEDModule>(this);
-        } else {
-            qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":" << factoryResult.errorText
-                                      << " (library path was:" << module.fileName() << ")";
-        }
+        qCWarning(KDED).nospace() << "Could not load kded module " << moduleId << ":" << factoryResult.errorText << " (library path was:" << module.fileName()
+                                  << ")";
     }
 
     if (kdedModule) {
