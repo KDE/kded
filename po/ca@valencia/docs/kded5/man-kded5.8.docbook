@@ -85,7 +85,7 @@
 <para
 ><command
 >kded5</command
-> consolida una sèrie de petits serveis en un sol procés. Es tracta principalment de serveis de &DBus; proporcionats pels mòduls de KDED, però també gestiona «sycoca» (un cau binari dels tipus de servei, els tipus &MIME; i els serveis utilitzats per KService) i els scripts d'actualització de KConfig, segons siga necessari.</para>
+> consolida una sèrie de serveis petits en un sol procés. Es tracta principalment de serveis de &DBus; proporcionats pels mòduls de KDED, però també gestiona «sycoca» (un cau binari dels tipus de servei, els tipus &MIME; i els serveis utilitzats per KService) i els scripts d'actualització de KConfig, segons siga necessari.</para>
 
 <para
 >Per a «sycoca», efectuarà un seguiment dels directoris que contenen fitxers .desktop. Quan s'afig o elimina un fitxer, espera 5 segons (en el cas d'una sèrie d'actualitzacions) i, a continuació, inicia <command
@@ -219,7 +219,7 @@
 >[Module-<replaceable
 >nom</replaceable
 >]</option
-> en el <filename
+> en <filename
 >kded5rc</filename
 >, on el <replaceable
 >nom</replaceable
