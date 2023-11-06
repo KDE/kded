@@ -650,7 +650,7 @@ int main(int argc, char *argv[])
     KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
-    KConfigGroup cg(config, "General");
+    KConfigGroup cg(config, QStringLiteral("General"));
 
     bCheckSycoca = cg.readEntry("CheckSycoca", true);
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
