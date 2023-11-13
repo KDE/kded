@@ -103,7 +103,7 @@
 <para
 >Normalde <command
 >kded6</command
-> komutunu doğrudan çalıştırmanız gerekmez; &plasma; masaüstü oturumu otomatik olarak çalıştırır ve bir uygulama onun tarafından sağlanan bir &DBus; arayüzünü veya modüllerinden birini çağırdığında başlatılır.</para>
+> komutunu doğrudan çalıştırmanız gerekmez; &plasma; masaüstü oturumu kendiliğinden çalıştırır ve bir uygulama onun tarafından sağlanan bir &DBus; arayüzünü veya modüllerinden birini çağırdığında başlatılır.</para>
 
 </refsect1>
 
@@ -225,7 +225,7 @@
 >.desktop</filename
 > uzantısı olmadan adıdır. Bu modülün <command
 >kded6</command
-> başlatıldığında otomatik olarak yüklenip yüklenmemesi gerektiğini belirten bir <option
+> başlatıldığında kendiliğinden yüklenip yüklenmemesi gerektiğini belirten bir <option
 >autoload</option
 > seçeneği içerir (öntanımlı: <constant
 >false</constant
