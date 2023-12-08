@@ -166,7 +166,7 @@
 ></term>
 <listitem
 ><para
->Mise à jour ou non de « sycoca » au démarrage (default : <constant
+>Mise à jour ou non de « sycoca » au démarrage (Par défaut : <constant
 >true</constant
 >).</para>
 </listitem>
@@ -178,7 +178,7 @@
 ></term>
 <listitem
 ><para
->Réaliser ou non une mise à jour en suspens de « KConfig » au démarrage (default : <constant
+>Réaliser ou non une mise à jour en suspens de « KConfig » au démarrage (Par défaut : <constant
 >true</constant
 >).</para>
 </listitem>
@@ -190,7 +190,7 @@
 ></term>
 <listitem
 ><para
->Vérifier ou non les marqueurs d'horodatage lors de la réalisation de la mise à jour de « sycoca » (default : <constant
+>Vérifier ou non les marqueurs d'horodatage lors de la réalisation de la mise à jour de « sycoca » (Par défaut : <constant
 >true</constant
 >). Veuillez consulter la documentation de <command
 >kbuildsycoca5</command
@@ -204,7 +204,7 @@
 ></term>
 <listitem
 ><para
->Retarder ou non la mise à jour initiale de « sycoca » jusqu'à environ une minute après le démarrage (default : <constant
+>Retarder ou non la mise à jour initiale de « sycoca » jusqu'à environ une minute après le démarrage (Par défaut : <constant
 >false</constant
 >).</para>
 </listitem>
