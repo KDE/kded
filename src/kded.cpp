@@ -570,8 +570,8 @@ static bool detectPlatform(int argc, char **argv)
         /* clang-format off */
         if (qstrcmp(argv[i], "-platform") == 0
             || qstrcmp(argv[i], "--platform") == 0
-            || QByteArray(argv[i]).startsWith("-platform=")
-            || QByteArray(argv[i]).startsWith("--platform=")) { /* clang-format on */
+            || QByteArrayView(argv[i]).startsWith("-platform=")
+            || QByteArrayView(argv[i]).startsWith("--platform=")) { /* clang-format on */
             return false;
         }
     }
