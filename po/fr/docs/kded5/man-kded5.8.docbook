@@ -63,7 +63,7 @@
 >kded5</command
 ></refname>
 <refpurpose
->Démon &kde; - déclenche les mises à jour de la base de données Sycoca lorsque nécessaire.</refpurpose>
+>Démon &kde; - déclenche les mises à jour de la base de données « sycoca » lorsque nécessaire.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
