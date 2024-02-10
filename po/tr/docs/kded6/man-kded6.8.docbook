@@ -88,7 +88,7 @@
 >, tek süreçte birden çok küçük hizmeti birleştirir. Bunlar çoğunlukla KDED modülleri tarafından sağlanan &DBus; hizmetleridir; ancak gerekirse sycoca (hizmet türleri, &MIME; türleri ve KService tarafından kullanılan hizmetlerin ikili önbelleği) ve KConfig güncelleme betiklerini de yönetir.</para>
 
 <para
->Sycoca için, .desktop dosyalarını içeren dizinleri izler. Bir dosya eklendiğinde veya kaldırıldığında 5 saniye kadar bekler (bir güncelleme serisi durumunda), ardından sycoca'yı güncellemek için <command
+>Sycoca için, .desktop dosyalarını içeren dizinleri izler. Bir dosya eklendiğinde veya kaldırıldığında 5 saniye kadar bekler (bir güncelleme serisi durumunda), ardından sycoca’yı güncellemek için <command
 >kbuildsycoca6</command
 > komutunu başlatır.</para>
 
@@ -166,7 +166,7 @@
 ></term>
 <listitem
 ><para
->Sycoca'nın açılışta güncellenip güncellenmeyeceği (öntanımlı: <constant
+>Sycoca’nın açılışta güncellenip güncellenmeyeceği (öntanımlı: <constant
 >true</constant
 >).</para>
 </listitem>
