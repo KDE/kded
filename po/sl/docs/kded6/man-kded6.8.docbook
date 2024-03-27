@@ -1,0 +1,269 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Slovenian "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>kded6 Uporabniški priročnik</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>Vzdrževalec</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>Izvirni avtor</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>22.06.2023</date>
+<releaseinfo
+>Frameworks 6</releaseinfo>
+<productname
+>KDE Frameworks</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded6</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded6</command
+></refname>
+<refpurpose
+>&kde; daemon - po potrebi sproži posodobitve podatkovne zbirke Sycoca.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>Sinopsis</title>
+
+<cmdsynopsis
+><command
+>kded6</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>Opis</title>
+
+<para
+><command
+>kded6</command
+> združuje več majhnih storitev v enem procesu.To so večinoma storitve &DBus;, ki jih zagotavljajo moduli KDED, ampak tudiupravlja sycoca (binarni predpomnilnik vrst storitev, vrst &MIME; in storitev, ki jih uporablja KService) in KConfig po potrebi posodobi skripte.</para>
+
+<para
+>Za sycoca nadzoruje imenike, ki vsebujejo datoteke .desktop. Ko je datoteka dodana/odstranjena, počaka 5 sekund (v primeru niza posodobitev),in nato zažene <command
+>kbuildsycoca6</command
+> za posodobitev sycoca.</para>
+
+<para
+>Pri programu KConfig preveri novo nameščene datoteke posodobitev, &ie; datoteke *.upd, ki se uporabljajo za posodabljanje konfiguracijskih datotek uporabnikov, ko se spremenijo formati konfiguracijskih datotek, in za izvajanje posodobitev zažene pripomoček za posodabljanje programa KConfig.</para>
+
+<para
+>Ta opravila se izvajajo tudi, ko se zažene <command
+>kded6</command
+>, da se zagotovida je uporabniška konfiguracija posodobljena.</para>
+
+<para
+>Običajno vam <command
+>kded6</command
+> ni treba zaganjati neposredno; &plasma;namizne seje ga zaženejo samodejno in se zažene na zahtevo, ko aplikacija poskuša uporabiti &DBus; vmesnik, ki ga ponuja sam ali eden od njegovih modulov.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Možnosti</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>Preverite zbirko podatkov sycoca, jo po potrebi posodobite in zaključite. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Konfiguracija</title>
+
+<para
+><command
+>kded6</command
+> je mogoče konfigurirati z <filename
+>kded6rc</filename
+> konfiguracijska datoteka v slogu ini. Na sistemih &UNIX; je to mogoče najtina <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded6rc</filename
+>; če<varname
+>$XDG_CONFIG_HOME</varname
+> ni nastavljeno, to je privzeto<filename
+>~/.config/kded6rc</filename
+>.</para>
+
+<para
+>Vnosi v konfiguracijski datoteki se berejo na zahtevo, tako da je mogoče spreminjati med tem ko se <command
+>kded6</command
+> izvaja. Vendar pa vse trenutne možnosti konfiguracije resnično vplivajo le na obnašanje <command
+>kded6</command
+> ob zagonu.</para>
+
+<para
+>V razdelku <option
+>[Glavno]</option
+> so naslednje možnosti: <variablelist>
+<varlistentry>
+<term
+><option
+>PreveriSycoca</option
+></term>
+<listitem
+><para
+>Ali naj se ob zagonu posodobi sycoca (privzeto: <constant
+>resnično</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>PreveriPosodobitve</option
+></term>
+<listitem
+><para
+>Ali naj se ob zagonu izvedejo neplačane posodobitve KConfig (privzeto: <constant
+>resnično</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>PreveriŽigeDatoteke</option
+></term>
+<listitem
+><para
+>Ali se pri izvajanju začetne posodobitve sycoca preverijo časovni žigi datotek(privzeto: <constant
+>true</constant
+>). Oglejte si dokumentacijo za<command
+>kbuildsycoca6</command
+> za več podrobnosti.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>ZamaknjenoPreverjanje</option
+></term>
+<listitem
+><para
+>Ali naj se začetna posodobitev programa sycoca odloži na približno minuto po začetku (privzeto: <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>Vsak modul ima tudi <option
+>[Module-<replaceable
+>name</replaceable
+>]</option
+> v <filename
+>kded6rc</filename
+>, kjer je <replaceable
+>name</replaceable
+> ime datoteke namizja modula brez podaljška <filename
+>.desktop</filename
+>. To vsebuje <option
+>autoload</option
+> možnost, ki določa, ali naj se modul samodejno naloži, ko je <command
+>kded6</command
+> zagnan (privzeto: <constant
+>false</constant
+>). Upoštevajte, da lahko to nastavitev spremenite tudi prek <command
+>kded6</command
+> vmesnika &DBus;.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Poglejte tudi</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca6</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>, <citerefentry
+><refentrytitle
+>kdeinit6</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+> </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>Napake</title>
+<para
+>Prosim uporabite <ulink url="https://bugs.kde.org"
+>&kde;jev sledilnik napak </ulink
+> za prijavo napak.</para>
+</refsect1>
+
+</refentry>
