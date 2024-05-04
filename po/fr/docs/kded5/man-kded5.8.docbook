@@ -167,7 +167,7 @@
 <listitem
 ><para
 >Mise à jour ou non de « sycoca » au démarrage (Par défaut : <constant
->true</constant
+>True</constant
 >).</para>
 </listitem>
 </varlistentry>
@@ -179,7 +179,7 @@
 <listitem
 ><para
 >Réaliser ou non une mise à jour en suspens de « KConfig » au démarrage (Par défaut : <constant
->true</constant
+>True</constant
 >).</para>
 </listitem>
 </varlistentry>
@@ -191,7 +191,7 @@
 <listitem
 ><para
 >Vérifier ou non les marqueurs d'horodatage lors de la réalisation de la mise à jour de « sycoca » (Par défaut : <constant
->true</constant
+>True</constant
 >). Veuillez consulter la documentation de <command
 >kbuildsycoca5</command
 > pour plus de détails.</para>
@@ -205,7 +205,7 @@
 <listitem
 ><para
 >Retarder ou non la mise à jour initiale de « sycoca » jusqu'à environ une minute après le démarrage (Par défaut : <constant
->false</constant
+>False</constant
 >).</para>
 </listitem>
 </varlistentry>
@@ -227,8 +227,8 @@
 >autoload</option
 > spécifiant si le module doit être automatiquement chargé quand la commande <command
 >kded5</command
-> est démarrée (default : <constant
->false</constant
+> est démarrée (Par défaut : <constant
+>False</constant
 >). Veuillez noter que ce paramètre peut aussi être modifié par l'interface &DBus; par la commande <command
 >kded5</command
 >.</para>
