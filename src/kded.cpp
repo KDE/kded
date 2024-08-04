@@ -25,6 +25,7 @@
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 
+#include <KAboutData>
 #include <KConfigGroup>
 #include <KDBusService>
 #include <KDirWatch>
@@ -555,13 +556,6 @@ void KUpdateD::slotNewUpdateFile(const QString &dirty)
     m_pTimer->start(500);
 }
 
-static void setupAppInfo(QApplication *app)
-{
-    app->setApplicationName(QStringLiteral("kded6"));
-    app->setOrganizationDomain(QStringLiteral("kde.org"));
-    app->setApplicationVersion(QStringLiteral(KDED_VERSION_STRING));
-}
-
 static bool detectPlatform(int argc, char **argv)
 {
     if (qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
@@ -608,9 +602,12 @@ int main(int argc, char *argv[])
     if (unsetQpa) {
         qunsetenv("QT_QPA_PLATFORM");
     }
-    setupAppInfo(&app);
+
     app.setQuitOnLastWindowClosed(false);
     app.setQuitLockEnabled(false);
+
+    KAboutData about(QStringLiteral("kded6"), QString(), QStringLiteral(KDED_VERSION_STRING));
+    KAboutData::setApplicationData(about);
 
     KCrash::initialize();
 
