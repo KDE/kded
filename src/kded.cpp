@@ -612,6 +612,8 @@ int main(int argc, char *argv[])
     app.setQuitOnLastWindowClosed(false);
     app.setQuitLockEnabled(false);
 
+    KCrash::initialize();
+
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
