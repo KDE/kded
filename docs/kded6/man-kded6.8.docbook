@@ -86,7 +86,7 @@
 <refsect1>
 <title>Configuration</title>
 
-<para><command>kded6</command> can be configured with the <filename>kded6rc</filename> ini-style configuration file. On &UNIX; systems, this can be found at <filename><varname>$XDG_CONFIG_HOME</varname>/kded6rc</filename>; if <varname>$XDG_CONFIG_HOME</varname> is not set, this defaults to <filename>~/.config/kded6rc</filename>.</para>
+<para><command>kded6</command> can be configured with the <filename>kded5rc</filename> ini-style configuration file. On &UNIX; systems, this can be found at <filename><varname>$XDG_CONFIG_HOME</varname>/kded5rc</filename>; if <varname>$XDG_CONFIG_HOME</varname> is not set, this defaults to <filename>~/.config/kded5rc</filename>.</para>
 
 <para>Configuration file entries are read on-demand, so changes can be made while <command>kded6</command> is running. However, all the current configuration options only really affect the startup behaviour of <command>kded6</command>.</para>
 
@@ -115,7 +115,7 @@
 </variablelist>
 </para>
 
-<para>Each module also has a <option>[Module-<replaceable>name</replaceable>]</option> section in <filename>kded6rc</filename>, where <replaceable>name</replaceable> is the name of the module's desktop file without the <filename>.desktop</filename> extension. This contains an <option>autoload</option> option that specifies whether the module should be automatically loaded when <command>kded6</command> is started (default: <constant>false</constant>). Note that this setting can also be changed via <command>kded6</command>'s &DBus; interface.</para>
+<para>Each module also has a <option>[Module-<replaceable>name</replaceable>]</option> section in <filename>kded5rc</filename>, where <replaceable>name</replaceable> is the name of the module's desktop file without the <filename>.desktop</filename> extension. This contains an <option>autoload</option> option that specifies whether the module should be automatically loaded when <command>kded6</command> is started (default: <constant>false</constant>). Note that this setting can also be changed via <command>kded6</command>'s &DBus; interface.</para>
 </refsect1>
 
 
