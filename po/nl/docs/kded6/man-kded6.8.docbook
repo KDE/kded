@@ -137,7 +137,7 @@
 ><command
 >kded6</command
 > kan geconfigureerd worden met het configuratiebestand <filename
->kded6rc</filename
+>kded5rc</filename
 > in ini-stijl. Onder &UNIX;-systemen, is het te vinden in <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
@@ -145,7 +145,7 @@
 >; als <varname
 >$XDG_CONFIG_HOME</varname
 > niet is ingesteld, dan krijgt dit de standaard waarde <filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 >.</para>
 
 <para
@@ -218,7 +218,7 @@
 >naam</replaceable
 >]</option
 > in <filename
->kded6rc</filename
+>kded5rc</filename
 >, waar <replaceable
 >naam</replaceable
 > de naam is van het desktop-bestand van de module zonder de extensie <filename

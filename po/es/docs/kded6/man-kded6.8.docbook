@@ -137,15 +137,15 @@
 ><command
 >kded6</command
 > se puede configurar con el archivo de configuración de <filename
->kded6rc</filename
+>kded5rc</filename
 > ini-style. En los sistemas &UNIX;, se puede encontrar en <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
->/kded6rc</filename
+>/kded5rc</filename
 >; si no se le ha dado valor a <varname
 >$XDG_CONFIG_HOME</varname
 > su valor predeterminado es<filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 >.</para>
 
 <para
@@ -218,7 +218,7 @@
 >name</replaceable
 >]</option
 >en <filename
->kded6rc</filename
+>kded5rc</filename
 >, donde <replaceable
 >name</replaceable
 > es el nombre del archivo de escritorio sin la extensión <filename

@@ -139,15 +139,15 @@
 >El <command
 >kded6</command
 > es pot configurar amb el fitxer de configuració a l'estil ini <filename
->kded6rc</filename
+>kded5rc</filename
 >. Sobre els sistemes &UNIX;, el trobareu a <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
->/kded6rc</filename
+>/kded5rc</filename
 >. Si no s'ha establert <varname
 >$XDG_CONFIG_HOME</varname
 >, de manera predeterminada estarà a <filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 >.</para>
 
 <para
@@ -220,7 +220,7 @@
 >nom</replaceable
 >]</option
 > al <filename
->kded6rc</filename
+>kded5rc</filename
 >, on el <replaceable
 >nom</replaceable
 > és el nom del fitxer d'escriptori del mòdul sense l'extensió <filename
