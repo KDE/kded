@@ -141,15 +141,15 @@
 ><command
 >kded6</command
 > può essere configurato con il file di configurazione in stile ini <filename
->kded6rc</filename
+>kded5rc</filename
 >. Sui sistemi &UNIX;, questo si può trovare sotto <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
->/kded6rc</filename
+>/kded5rc</filename
 >; se <varname
 >$XDG_CONFIG_HOME</varname
 > non è impostata, il suo valore predefinito è <filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 >.</para>
 
 <para
@@ -222,7 +222,7 @@
 >nome</replaceable
 >]</option
 > in <filename
->kded6rc</filename
+>kded5rc</filename
 >, dove <replaceable
 >nome</replaceable
 > è il nome del file desktop del modulo senza l'estensione <literal role="extension"
