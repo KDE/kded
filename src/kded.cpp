@@ -556,50 +556,12 @@ void KUpdateD::slotNewUpdateFile(const QString &dirty)
     m_pTimer->start(500);
 }
 
-static bool detectPlatform(int argc, char **argv)
-{
-    if (qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
-        return false;
-    }
-    for (int i = 0; i < argc; i++) {
-        /* clang-format off */
-        if (qstrcmp(argv[i], "-platform") == 0
-            || qstrcmp(argv[i], "--platform") == 0
-            || QByteArrayView(argv[i]).startsWith("-platform=")
-            || QByteArrayView(argv[i]).startsWith("--platform=")) { /* clang-format on */
-            return false;
-        }
-    }
-    const QByteArray sessionType = qgetenv("XDG_SESSION_TYPE");
-    if (sessionType.isEmpty()) {
-        return false;
-    }
-    if (qstrcmp(sessionType.data(), "wayland") == 0) {
-        qputenv("QT_QPA_PLATFORM", "wayland");
-        return true;
-    } else if (qstrcmp(sessionType.data(), "x11") == 0) {
-        qputenv("QT_QPA_PLATFORM", "xcb");
-        return true;
-    }
-    return false;
-}
-
 int main(int argc, char *argv[])
 {
     // options.add("check", qi18n("Check Sycoca database only once"));
 
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
-    const bool unsetQpa = detectPlatform(argc, argv);
-
-    // In older versions, QApplication creation was postponed until after
-    // testing for --check, in which case, only a QCoreApplication was created.
-    // Since that option is no longer used at startup, we removed that speed
-    // optimization for code clarity and easier support of standard parameters.
-
     QApplication app(argc, argv);
-    if (unsetQpa) {
-        qunsetenv("QT_QPA_PLATFORM");
-    }
 
     app.setQuitOnLastWindowClosed(false);
     app.setQuitLockEnabled(false);
