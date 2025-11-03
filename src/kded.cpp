@@ -588,9 +588,7 @@ int main(int argc, char *argv[])
 {
     // options.add("check", qi18n("Check Sycoca database only once"));
 
-    // WABA: Make sure not to enable session management.
-    qunsetenv("SESSION_MANAGER");
-
+    QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
     const bool unsetQpa = detectPlatform(argc, argv);
 
     // In older versions, QApplication creation was postponed until after
