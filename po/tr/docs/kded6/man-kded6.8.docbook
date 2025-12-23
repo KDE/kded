@@ -40,7 +40,7 @@
 </author>
 
 <date
->2023-06-22</date>
+>2023‒06‒22</date>
 <releaseinfo
 >Frameworks 6</releaseinfo>
 <productname
@@ -88,7 +88,7 @@
 >, tek süreçte birden çok küçük hizmeti birleştirir. Bunlar çoğunlukla KDED modülleri tarafından sağlanan &DBus; hizmetleridir; ancak gerekirse sycoca (hizmet türleri, &MIME; türleri ve KService tarafından kullanılan hizmetlerin ikili önbelleği) ve KConfig güncelleme betiklerini de yönetir.</para>
 
 <para
->Sycoca için, .desktop dosyalarını içeren dizinleri izler. Bir dosya eklendiğinde veya kaldırıldığında 5 saniye kadar bekler (bir güncelleme serisi durumunda), ardından sycoca’yı güncellemek için <command
+>Sycoca için .desktop dosyalarını içeren dizinleri izler. Bir dosya eklendiğinde veya kaldırıldığında 5 saniye kadar bekler (bir güncelleme serisi durumunda), ardından sycoca’yı güncellemek için <command
 >kbuildsycoca6</command
 > komutunu başlatır.</para>
 
@@ -141,11 +141,11 @@
 > ini-biçemli yapılandırma dosyasıyla yapılandırılabilir. &UNIX; sistemlerde, bu <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
->/kded6rc</filename
+>/kded5rc</filename
 > konumunda bulunabilir; <varname
 >$XDG_CONFIG_HOME</varname
 > ayarlanmamışsa öntanımlı değer <filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 > olur.</para>
 
 <para
@@ -214,7 +214,7 @@
 
 <para
 >Her modül ayrıca <filename
->kded6rc</filename
+>kded5rc</filename
 > içinde bir <option
 >[Modül-<replaceable
 >ad</replaceable
@@ -262,7 +262,7 @@
 >Hatalar</title>
 <para
 >Hataları bildirmek için lütfen <ulink url="https://bugs.kde.org"
->&kde;'nin hata izleyicisini</ulink
+>&kde;’nin hata izleyicisini</ulink
 > kullanın.</para>
 </refsect1>
 
