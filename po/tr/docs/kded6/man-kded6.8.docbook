@@ -63,7 +63,7 @@
 >kded6</command
 ></refname>
 <refpurpose
->&kde; ardalan süreci, gerektiğinde Sycoca veritabanını günceller.</refpurpose>
+>&kde; ardalan süreci, gerektiğinde Sycoca veri tabanını günceller.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
@@ -121,7 +121,7 @@
 ></term>
 <listitem>
 <para
->sycoca veritabanını denetleyin, gerekliyse güncelleyin ve çıkın. </para>
+>sycoca veri tabanını denetleyin, gerekliyse güncelleyin ve çıkın. </para>
 </listitem>
 </varlistentry>
 </variablelist>
