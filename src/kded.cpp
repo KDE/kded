@@ -607,7 +607,6 @@ int main(int argc, char *argv[])
             qCWarning(KDED) << "Couldn't register name" << serviceName << "with DBUS - another process owns it already!";
         }
     }
-    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     KSharedConfig::Ptr config = KSharedConfig::openConfig(QStringLiteral("kded5rc"));
     KConfigGroup cg(config, QStringLiteral("General"));
@@ -630,6 +629,8 @@ int main(int argc, char *argv[])
     }
 
     runKonfUpdate(); // Run it once.
+
+    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     return app.exec(); // keep running
 }
