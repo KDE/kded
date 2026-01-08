@@ -138,14 +138,14 @@
 >kded6</command
 > peut être configurée avec le fichier de configuration <filename
 >kded6rc</filename
-> ini-style. Sur les systèmes &UNIX; ceci peut être trouvé dans <filename
+> dans le style « ini-style ». Sur les systèmes « UNIX », ce dernier peut être trouvé dans <filename
 ><varname
 >$XDG_CONFIG_HOME</varname
->/kded6rc</filename
->; si la variable <varname
+>/kded5rc</filename
+>. Si la variable <varname
 >$XDG_CONFIG_HOME</varname
 > n'est pas définie, la valeur par défaut est <filename
->~/.config/kded6rc</filename
+>~/.config/kded5rc</filename
 >.</para>
 
 <para
@@ -217,17 +217,17 @@
 >[Module-<replaceable
 >nom</replaceable
 >]</option
-> dans <filename
+> dans le fichier <filename
 >kded6rc</filename
 >, où le paramètre <replaceable
 >nom</replaceable
 > est le nom du fichier de module de bureau sans l'extension <filename
 >.desktop</filename
->. Ceci contient une option <option
+>. Ce dernier contient une option <option
 >autoload</option
 > spécifiant si le module doit être automatiquement chargé quand la commande <command
 >kded6</command
-> est démarrée (Par défaut : <constant
+> est lancée (Par défaut : <constant
 >False</constant
 >). Veuillez noter que ce paramètre peut aussi être modifié par l'interface &DBus; par la commande <command
 >kded6</command
