@@ -110,11 +110,6 @@ void Kded::messageFilter(const QDBusMessage &message)
     self()->loadModule(obj, true);
 }
 
-static int phaseForModule(const KPluginMetaData &module)
-{
-    return module.value(QStringLiteral("X-KDE-Kded-phase"), 2);
-}
-
 QList<KPluginMetaData> Kded::availableModules() const
 {
     QList<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
@@ -139,20 +134,6 @@ void Kded::initModules()
 {
     m_dontLoad.clear();
 
-    bool kde_running = !qEnvironmentVariableIsEmpty("KDE_FULL_SESSION");
-    if (kde_running) {
-        // not the same user like the one running the session (most likely we're run via sudo or something)
-        const QByteArray sessionUID = qgetenv("KDE_SESSION_UID");
-        if (!sessionUID.isEmpty() && uid_t(sessionUID.toInt()) != getuid()) {
-            kde_running = false;
-        }
-        // not the same kde version as the current desktop
-        const QByteArray kdeSession = qgetenv("KDE_SESSION_VERSION");
-        if (kdeSession.toInt() != 6) {
-            kde_running = false;
-        }
-    }
-
     // Preload kded modules.
     const QList<KPluginMetaData> kdedModules = availableModules();
     for (const KPluginMetaData &module : kdedModules) {
@@ -162,26 +143,8 @@ void Kded::initModules()
             continue;
         }
 
-        // see ksmserver's README for description of the phases
-        bool prevent_autoload = false;
-        switch (phaseForModule(module)) {
-        case 0: // always autoload
-            break;
-        case 1: // autoload only in KDE
-            if (!kde_running) {
-                prevent_autoload = true;
-            }
-            break;
-        case 2: // autoload delayed, only in KDE
-        default:
-            if (!kde_running) {
-                prevent_autoload = true;
-            }
-            break;
-        }
-
         // Load the module if necessary and allowed
-        if (autoload && !prevent_autoload) {
+        if (autoload) {
             if (!loadModule(module, false)) {
                 continue;
             }

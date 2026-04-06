@@ -92,8 +92,7 @@ public:
      * Configure whether a module should be loaded on startup
      *
      * If a module is set to be auto-loaded, it will be loaded at the start of a KDE
-     * session.  Depending on the phase it is set to load in, it may also be loaded
-     * when the first KDE application is run outside of a KDE session.
+     * session.
      *
      * @param module the name of the desktop file for the module, without the .desktop extension
      * @param autoload if @c true, the module will be loaded at startup,
