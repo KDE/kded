@@ -103,11 +103,6 @@
 </listitem>
 </varlistentry>
 <varlistentry>
-<term><option>CheckFileStamps</option></term>
-<listitem><para>Whether to check file timestamps when performing the initial sycoca update (default: <constant>true</constant>). See the documentation for <command>kbuildsycoca6</command> for more details.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
 <term><option>DelayedCheck</option></term>
 <listitem><para>Whether to delay the initial sycoca update until about a minute after starting (default: <constant>false</constant>).</para>
 </listitem>
@@ -124,7 +119,6 @@
 <title>See Also</title>
 <para>
 <citerefentry><refentrytitle>kbuildsycoca6</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
-<citerefentry><refentrytitle>kdeinit6</refentrytitle><manvolnum>8</manvolnum></citerefentry>
 </para>
 </refsect1>
 
