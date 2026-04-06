@@ -18,6 +18,7 @@ include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 include(KDEGitCommitHooks)
 include(ECMDeprecationSettings)
+include(ECMGenerateQDoc)
 
 find_package(Qt6 "${REQUIRED_QT_VERSION}" CONFIG REQUIRED DBus Widgets)
 find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)

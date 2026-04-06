@@ -49,3 +49,6 @@ ecm_qt_install_logging_categories(
     FILE kded.categories
     DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
 )
+
+add_library(KDEDDocumentation)
+ecm_generate_qdoc(KDEDDocumentation kded.qdocconf)

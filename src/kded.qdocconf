@@ -1,0 +1,30 @@
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = KDED
+description = KDE Daemon
+
+documentationinheaders = true
+
+headerdirs += .
+sourcedirs += .
+exampledirs += snippets
+
+outputformats = HTML
+
+depends += \
+    kde \
+    qtcore \
+    kcoreaddons \
+    kdbusaddons
+
+navigation.landingpage = "KDED"
+
+qhp.projects            = KDED
+
+qhp.KDED.file                = kded.qhp
+qhp.KDED.namespace           = org.kde.kded.$QT_VERSION_TAG
+qhp.KDED.virtualFolder       = kded
+qhp.KDED.indexTitle          = KDED
+qhp.KDED.indexRoot           =
+
+tagfile = kded.tags
