@@ -35,6 +35,8 @@
 
 #include <memory>
 
+using namespace Qt::Literals;
+
 Kded *Kded::_self = nullptr;
 
 static bool delayedCheck;
@@ -153,12 +155,18 @@ void Kded::initModules()
         }
     }
 
+    const QStringList wantedModules = qEnvironmentVariable("KDED_MODULES").split(u":"_s, Qt::SkipEmptyParts);
+
     // Preload kded modules.
     const QList<KPluginMetaData> kdedModules = availableModules();
     for (const KPluginMetaData &module : kdedModules) {
         // Should the service load on startup?
         const bool autoload = isModuleAutoloaded(module);
         if (!platformSupportsModule(module)) {
+            continue;
+        }
+
+        if (!wantedModules.isEmpty() && !wantedModules.contains(module.pluginId())) {
             continue;
         }
 
