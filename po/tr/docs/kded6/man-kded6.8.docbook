@@ -186,20 +186,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->İlk sycoca güncellemesini yaparken dosya zaman damgalarının denetlenip denetlenmeyeceği (öntanımlı: <constant
->true</constant
->). Ayrıntılar için <command
->kbuildsycoca6</command
-> belgelendirmesine göz atın.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -246,13 +232,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 

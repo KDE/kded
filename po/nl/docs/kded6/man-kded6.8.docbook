@@ -186,20 +186,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->Of datum-tijd van bestanden gecontroleerd moeten worden bij het uitvoeren van het initiële bijwerken van sycoca (standaard: <constant
->true</constant
->). Zie de documentatie voor <command
->kbuildsycoca6</command
-> voor meer details.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -246,13 +232,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 

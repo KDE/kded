@@ -186,20 +186,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->Визначає, чи слід виконувати перевірку часових позначок під час початкового оновлення sycoca (типове значення: <constant
->true</constant
->). Щоб дізнатися більше, зверніться до документації з <command
->kbuildsycoca6</command
->.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -246,13 +232,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 

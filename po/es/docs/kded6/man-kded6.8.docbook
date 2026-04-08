@@ -186,20 +186,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->Indica si se debe comprobar las marcas de tiempo del archivo cuando se realiza la actualización inicial de sycoca (de manera predeterminada: <constant
->true</constant
->). Consulte la documentación de <command
->kbuildsycoca6</command
-> para obtener más información.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -246,13 +232,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 

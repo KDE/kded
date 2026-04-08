@@ -188,20 +188,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->Per a comprovar les marques de temps dels fitxers en realitzar l'actualització inicial de «sycoca» (predeterminat: <constant
->true</constant
->). Per a més detalls, vegeu la documentació per a <command
->kbuildsycoca6</command
->.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -248,13 +234,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 
