@@ -12,7 +12,6 @@ ecm_qt_declare_logging_category(
     IDENTIFIER KDED
     CATEGORY_NAME kf.kded
     OLD_CATEGORY_NAMES kf5.kded
-    DEFAULT_SEVERITY Warning
     DESCRIPTION "KDED"
     EXPORT KDED
 )
