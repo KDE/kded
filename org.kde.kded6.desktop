@@ -55,3 +55,4 @@ Name[zh_TW]=KDED
 Type=Service
 Icon=kde-frameworks
 NoDisplay=true
+StartupNotify=false
