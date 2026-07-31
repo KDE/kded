@@ -85,7 +85,7 @@
 <para
 ><command
 >kded5</command
-> fasst mehrere kleine Dienste in einem Prozess zusammen. Dies sind vor allem &DBus;-Dienste von KDED-Modulen, aber verwaltet auch die Sycoca-Datenbank, einen binären Zwischenspeicher von Diensttypen, &MIME;-Typen und Diensten, die von KService benutzt werden., sowie von Aktualisierungs-Skripten für KConfig, falls nötig.</para>
+> fasst mehrere kleine Dienste in einem Prozess zusammen. Dies sind vor allem &DBus;-Dienste von KDED-Modulen, aber verwaltet auch die Sycoca-Datenbank, einen binären Zwischenspeicher von Diensttypen, &MIME;-Typen und Diensten, die von KService verwendet werden., sowie von Aktualisierungs-Skripten für KConfig, falls nötig.</para>
 
 <para
 >Es überwacht die Ordner mit .desktop-Dateien für die Systemdatenbank mit den Einstellungen. Wenn eine neue Datei hinzugefügt oder eine vorhandene entfernt wird, wartet es 5 Sekunden (falls noch mehr Änderungen vorgenommen werden), und startet anschließend <command
@@ -93,7 +93,7 @@
 > um die Systemdatenbank mit den Einstellungen zu aktualisieren.</para>
 
 <para
->Es überprüft neu installierte Aktualisierungsdateien, &ie; *upd-Dateien, die verwendet werden, um bei Änderung des Formats von Einrichtungsdateien die Einrichtungsdateien der Benutzer zu aktualisieren. Es benutzt das Aktualisierungsprogramm KConfig, um diese Aktualisierungen durchzuführen.</para>
+>Es überprüft neu installierte Aktualisierungsdateien, &ie; *upd-Dateien, die verwendet werden, um bei Änderung des Formats von Einrichtungsdateien die Einrichtungsdateien der Benutzer zu aktualisieren. Es verwendet das Aktualisierungsprogramm KConfig, um diese Aktualisierungen durchzuführen.</para>
 
 <para
 >Diese Aufgaben werden auch bei jedem Start von <command
@@ -103,7 +103,7 @@
 <para
 >Normalerweise müssen Sie <command
 >kded5</command
-> nicht direkt ausführen. In &plasma;-Sitzungen wird es automatisch ausgeführt und immer dann gestartet, wenn eine Anwendung eine &DBus;-Schnittstelle direkt oder durch eines seiner Module benutzt.</para>
+> nicht direkt ausführen. In &plasma;-Sitzungen wird es automatisch ausgeführt und immer dann gestartet, wenn eine Anwendung eine &DBus;-Schnittstelle direkt oder durch eines seiner Module verwendet.</para>
 
 </refsect1>
 
@@ -146,7 +146,7 @@
 >$XDG_CONFIG_HOME</varname
 > nicht festgelegt ist, wird als Voreinstellung <filename
 >~/.config/kded5rc</filename
-> benutzt.</para>
+> verwendet.</para>
 
 <para
 >Einträge in der Einrichtungsdatei werden auf Anforderung gelesen, daher können Änderungen vorgenommen werden, während <command
