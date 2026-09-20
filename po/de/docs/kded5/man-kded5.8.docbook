@@ -85,12 +85,12 @@
 <para
 ><command
 >kded5</command
-> fasst mehrere kleine Dienste in einem Prozess zusammen. Dies sind vor allem &DBus;-Dienste von KDED-Modulen, aber verwaltet auch die Sycoca-Datenbank, einen binären Zwischenspeicher von Diensttypen, &MIME;-Typen und Diensten, die von KService verwendet werden., sowie von Aktualisierungs-Skripten für KConfig, falls nötig.</para>
+> fasst mehrere kleine Dienste in einem Prozess zusammen. Dies sind vor allem &DBus;-Dienste von KDED-Modulen, aber es verwaltet auch die Sycoca-Datenbank, einen binären Zwischenspeicher von Diensttypen, &MIME;-Typen und Diensten, die von KService verwendet werden, sowie bei Bedarf Aktualisierungs-Skripte für KConfig.</para>
 
 <para
->Es überwacht die Ordner mit .desktop-Dateien für die Systemdatenbank mit den Einstellungen. Wenn eine neue Datei hinzugefügt oder eine vorhandene entfernt wird, wartet es 5 Sekunden (falls noch mehr Änderungen vorgenommen werden), und startet anschließend <command
+>Es überwacht die Ordner mit .desktop-Dateien für die Systemdatenbank mit den Einstellungen. Wenn Dateien hinzugefügt oder entfernt werden, wartet es 5 Sekunden (falls noch mehr Änderungen vorgenommen werden) und startet anschließend <command
 >kbuildsycoca5</command
-> um die Systemdatenbank mit den Einstellungen zu aktualisieren.</para>
+>, um die Systemdatenbank mit den Einstellungen zu aktualisieren.</para>
 
 <para
 >Es überprüft neu installierte Aktualisierungsdateien, &ie; *upd-Dateien, die verwendet werden, um bei Änderung des Formats von Einrichtungsdateien die Einrichtungsdateien der Benutzer zu aktualisieren. Es verwendet das Aktualisierungsprogramm KConfig, um diese Aktualisierungen durchzuführen.</para>
