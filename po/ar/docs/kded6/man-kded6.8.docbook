@@ -1,0 +1,249 @@
+<?xml version="1.0" ?>
+<!DOCTYPE refentry PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+  <!ENTITY % Arabic "INCLUDE"
+><!-- change language only here -->
+]>
+
+<refentry lang="&language;">
+
+<refentryinfo>
+<title
+>دليل مستخدم kded6</title>
+<author
+><firstname
+>David</firstname
+> <surname
+>Faure</surname
+> <contrib
+>الصائن</contrib>
+<affiliation>
+<address
+><email
+>faure@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<author
+><firstname
+>Waldo</firstname
+> <surname
+>Bastian</surname
+> <contrib
+>المؤلف الأصلي</contrib>
+<affiliation>
+<address
+><email
+>bastian@kde.org</email
+></address>
+</affiliation>
+</author>
+
+<date
+>2023-06-22</date>
+<releaseinfo
+>أُطر العمل 6</releaseinfo>
+<productname
+>إطار كِيدِي</productname>
+
+</refentryinfo>
+
+<refmeta>
+<refentrytitle
+><command
+>kded6</command
+></refentrytitle>
+<manvolnum
+>8</manvolnum>
+</refmeta>
+
+<refnamediv>
+<refname
+><command
+>kded6</command
+></refname>
+<refpurpose
+>خفيّة كيدي - تُحفّز تحديثات قاعدة بيانات Sycoca عند الحاجة.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<title
+>الموجز</title>
+
+<cmdsynopsis
+><command
+>kded6</command
+> <arg choice="opt"
+>--check</arg
+> </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+<title
+>الوصف</title>
+
+<para
+>يُوحّد <command
+>kded6</command
+> عدة خدمات صغيرة في عملية واحدة. هذه الخدمات هي غالبًا خدمات &DBus; التي تُوفّرها وحدات KDED، لكنه يُدير أيضًا sycoca (خبيئة ثنائية لأنواع الخدمات وأنواع &MIME; والخدمات التي يستخدمها KService) ونصوص تحديث KConfig حسب الحاجة.</para>
+
+<para
+>بالنسبة لـ sycoca، يُراقب الأدلة التي تحتوي على ملفات .desktop. عند إضافة/إزالة ملف، ينتظر 5 ثوانٍ (في حالة سلسلة من التحديثات)، ثم يُشغّل <command
+>kbuildsycoca6</command
+> لتحديث sycoca.</para>
+
+<para
+>بالنسبة لـ KConfig، يتحقق من ملفات التحديث المُثبّتة حديثًا، أي ملفات *.upd المُستخدمة لتحديث ملفات تهيئة المستخدمين عندما تتغير صيغ ملفات التهيئة، ويُشغّل أداة تحديث KConfig لإجراء التحديثات.</para>
+
+<para
+>تُنفّذ هذه المهام أيضًا عند بدء تشغيل <command
+>kded6</command
+> لضمان أن تهيئة المستخدم محدّثة.</para>
+
+<para
+>لا تحتاج عادةً إلى تشغيل <command
+>kded6</command
+> مباشرةً؛ جلسات سطح مكتب بلازما تُشغّله آليًا، ويُبدأ عند الطلب عندما يحاول تطبيق استخدام واجهة &DBus; التي يُوفّرها هو أو إحدى وحداته.</para>
+
+</refsect1>
+
+
+
+<refsect1>
+<title
+>خيارات</title>
+
+<variablelist>
+<varlistentry>
+<term
+><option
+>--check</option
+></term>
+<listitem>
+<para
+>افحص قاعدة بيانات sycoca، وحدّثها إذا لزم الأمر، ثم اخرج. </para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>الضّبط</title>
+
+<para
+>يمكن ضبط <command
+>kded6</command
+> باستخدام ملف التهيئة بنمط ini <filename
+>kded5rc</filename
+>. على أنظمة &UNIX;، يوجد هذا الملف في <filename
+><varname
+>$XDG_CONFIG_HOME</varname
+>/kded5rc</filename
+>؛ إذا لم يُضبط <varname
+>$XDG_CONFIG_HOME</varname
+>، فالمبدئي هو <filename
+>~/.config/kded5rc</filename
+>.</para>
+
+<para
+>تُقرأ مدخلات ملف التهيئة عند الطلب، لذا يمكن إجراء التغييرات أثناء تشغيل <command
+>kded6</command
+>. ومع ذلك، جميع خيارات التهيئة الحالية تؤثر فقط على سلوك بدء تشغيل <command
+>kded6</command
+>.</para>
+
+<para
+>يحتوي القسم <option
+>[General]</option
+> على الخيارات التالية: <variablelist>
+<varlistentry>
+<term
+><option
+>CheckSycoca</option
+></term>
+<listitem
+><para
+>هل يجب تحديث sycoca عند بدء التشغيل (المبدئي: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>CheckUpdates</option
+></term>
+<listitem
+><para
+>هل يجب تنفيذ تحديثات KConfig المُعلّقة عند بدء التشغيل (المبدئي: <constant
+>true</constant
+>).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term
+><option
+>DelayedCheck</option
+></term>
+<listitem
+><para
+>هل يجب تأخير تحديث sycoca الأولي حتى حوالي دقيقة بعد البدء (المبدئي: <constant
+>false</constant
+>).</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+
+<para
+>لكل وحدة أيضًا قسم <option
+>[Module-<replaceable
+>name</replaceable
+>]</option
+> في <filename
+>kded5rc</filename
+>، حيث <replaceable
+>name</replaceable
+> هو اسم ملف سطح المكتب للوحدة دون الامتداد <filename
+>.desktop</filename
+>. يحتوي هذا على خيار <option
+>autoload</option
+> يُحدد ما إذا كان يجب تحميل الوحدة آليًا عند بدء تشغيل <command
+>kded6</command
+> (المبدئي: <constant
+>false</constant
+>. لاحظ أن هذا الإعداد يمكن تغييره أيضًا عبر واجهة &DBus; الخاصة بـ <command
+>kded6</command
+>.</para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>انظر أيضًا</title>
+<para
+><citerefentry
+><refentrytitle
+>kbuildsycoca6</refentrytitle
+><manvolnum
+>8</manvolnum
+></citerefentry
+>، </para>
+</refsect1>
+
+
+
+<refsect1>
+<title
+>العلل</title>
+<para
+>يرجى استخدام <ulink url="https://bugs.kde.org"
+>متتبع علل كيدي</ulink
+> للإبلاغ عن العلل.</para>
+</refsect1>
+
+</refentry>
