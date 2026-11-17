@@ -186,20 +186,6 @@
 <varlistentry>
 <term
 ><option
->CheckFileStamps</option
-></term>
-<listitem
-><para
->Se deve verificar a data/hora dos arquivos ao efetuar a atualização inicial do sycoca (padrão: <constant
->true</constant
->). Consulte a documentação do <command
->kbuildsycoca6</command
-> para obter mais detalhes.</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
 >DelayedCheck</option
 ></term>
 <listitem
@@ -246,13 +232,7 @@
 ><manvolnum
 >8</manvolnum
 ></citerefentry
->, <citerefentry
-><refentrytitle
->kdeinit6</refentrytitle
-><manvolnum
->8</manvolnum
-></citerefentry
-> </para>
+>, </para>
 </refsect1>
 
 
