@@ -75,6 +75,8 @@ Kded::Kded()
 
     m_pTimer->setSingleShot(true);
     connect(m_pTimer, &QTimer::timeout, this, static_cast<void (Kded::*)()>(&Kded::recreate));
+
+    initModules();
 }
 
 Kded::~Kded()
@@ -402,8 +404,6 @@ void Kded::recreate(bool initial)
 void Kded::recreateDone()
 {
     updateResourceList();
-
-    initModules();
 }
 
 void Kded::dirDeleted(const QString &path)
