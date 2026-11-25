@@ -49,7 +49,6 @@ Example kdedrc file with default values:
     [General]
     CheckSycoca=true
     CheckUpdates=true
-    DelayedCheck=false
 
 ### KDED modules
 

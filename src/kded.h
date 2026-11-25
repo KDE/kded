@@ -145,8 +145,6 @@ protected Q_SLOTS:
      */
     void update(const QString &dir);
 
-    void runDelayedCheck();
-
 protected:
     /**
      * Scans dir for new files and new subdirectories.
@@ -196,7 +194,6 @@ protected:
     QSet<long> m_globalWindowIdList;
 
     QStringList m_allResourceDirs;
-    bool m_needDelayedCheck;
 
     static Kded *_self;
 };

@@ -37,7 +37,6 @@
 
 Kded *Kded::_self = nullptr;
 
-static bool delayedCheck;
 static bool bCheckSycoca;
 static bool bCheckUpdates;
 
@@ -58,7 +57,6 @@ static void runKonfUpdate()
 Kded::Kded()
     : m_pDirWatch(new KDirWatch(this))
     , m_pTimer(new QTimer(this))
-    , m_needDelayedCheck(false)
 {
     _self = this;
 
@@ -344,10 +342,6 @@ void Kded::updateResourceList()
         return;
     }
 
-    if (delayedCheck) {
-        return;
-    }
-
     const QStringList dirs = KSycoca::self()->allResourceDirs();
     // For each resource
     for (const auto &dir : dirs) {
@@ -363,14 +357,6 @@ void Kded::recreate()
     recreate(false);
 }
 
-void Kded::runDelayedCheck()
-{
-    if (m_needDelayedCheck) {
-        recreate(false);
-    }
-    m_needDelayedCheck = false;
-}
-
 void Kded::recreate(bool initial)
 {
     // Using KLauncher here is difficult since we might not have a
@@ -381,21 +367,12 @@ void Kded::recreate(bool initial)
         KSycoca::self()->ensureCacheValid();
         recreateDone();
     } else {
-        if (!delayedCheck) {
-            updateDirWatch(); // this would search all the directories
-        }
+        updateDirWatch(); // this would search all the directories
+
         if (bCheckSycoca) {
             KSycoca::self()->ensureCacheValid();
         }
         recreateDone();
-        if (delayedCheck) {
-            // do a proper ksycoca check after a delay
-            QTimer::singleShot(60000, this, &Kded::runDelayedCheck);
-            m_needDelayedCheck = true;
-            delayedCheck = false;
-        } else {
-            m_needDelayedCheck = false;
-        }
     }
 }
 
@@ -577,7 +554,6 @@ int main(int argc, char *argv[])
 
     bCheckSycoca = cg.readEntry("CheckSycoca", true);
     bCheckUpdates = cg.readEntry("CheckUpdates", true);
-    delayedCheck = cg.readEntry("DelayedCheck", false);
 
     signal(SIGTERM, sighandler);
     signal(SIGHUP, sighandler);
